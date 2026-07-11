@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/*
+  Sparklyn design system
+  -----------------------------------------------------------------------------
+  Brief tokens: primary purple #6C4CF5, blue accent, soft-white #FAFAFD ground,
+  white cards with soft shadows, 16-20px radii, generous spacing.
+  Light theme is intentional per the brief's design direction; the token layer
+  is variable-based so a dark theme can drop in later without touching markup.
+*/
+
+:root {
+  /* Ground + surfaces */
+  --background: #fafafd;
+  --surface: #ffffff;
+  --surface-subtle: #f4f3fa;
+
+  /* Text (cool violet-tinted neutrals, harmonised with the purple accent) */
+  --foreground: #171425;
+  --muted-foreground: #6b6780;
+  --faint-foreground: #928da6;
+
+  /* Brand */
+  --primary: #6c4cf5;
+  --primary-hover: #5a3ce0;
+  --primary-foreground: #ffffff;
+  --primary-soft: #ede9fe;
+  --primary-tint: #f6f3ff;
+
+  /* Secondary accent (blue) - used sparingly, never as a second CTA colour */
+  --accent-blue: #3d6bf6;
+  --accent-cyan: #22b8cf;
+
+  /* Category accent scale (soft foregrounds for chips/icons) */
+  --violet: #6c4cf5;
+  --blue: #3d6bf6;
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  --rose: #f43f6e;
+  --cyan: #06b6d4;
+
+  /* Lines + rings */
+  --border: #eceaf3;
+  --border-strong: #e0dcec;
+  --ring: #6c4cf5;
+
+  /* Radii (brief: 16-20px) */
+  --radius: 1rem; /* 16px */
+  --radius-lg: 1.25rem; /* 20px */
+  --radius-sm: 0.625rem; /* 10px, inputs */
+
+  /* Shadows tinted to the violet ground, never pure black */
+  --shadow-xs: 0 1px 2px rgba(23, 20, 37, 0.04);
+  --shadow-sm: 0 2px 8px rgba(76, 60, 160, 0.06);
+  --shadow-md: 0 8px 24px rgba(76, 60, 160, 0.08);
+  --shadow-lg: 0 18px 48px rgba(76, 60, 160, 0.12);
+  --shadow-glow: 0 12px 32px rgba(108, 76, 245, 0.24);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-faint-foreground: var(--faint-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-tint: var(--primary-tint);
+
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-cyan: var(--accent-cyan);
+
+  --color-violet: var(--violet);
+  --color-blue: var(--blue);
+  --color-emerald: var(--emerald);
+  --color-amber: var(--amber);
+  --color-rose: var(--rose);
+  --color-cyan: var(--cyan);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-DEFAULT: var(--radius);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: 1.75rem;
+  --radius-2xl: 2rem;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-glow: var(--shadow-glow);
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* Keep native form controls / scrollbars in the light aesthetic the brief specifies. */
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Consistent, visible focus ring for keyboard users (WCAG 2.4.7). */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Page gutter container, consistent max width and responsive padding. */
+.container-page {
+  margin-inline: auto;
+  max-width: 80rem; /* 1280px */
+  padding-inline: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+/* Hide scrollbar on the trending carousel while keeping it scrollable. */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Soft lavender aurora used behind the hero and a couple of feature moments. */
+.aurora {
+  background:
+    radial-gradient(40% 55% at 78% 20%, rgba(108, 76, 245, 0.18), transparent 70%),
+    radial-gradient(38% 50% at 90% 60%, rgba(61, 107, 246, 0.14), transparent 72%),
+    radial-gradient(45% 60% at 60% 90%, rgba(244, 63, 110, 0.08), transparent 70%);
+}
+
+/* Marquee for the university strip (single marquee on the page, honours reduced motion). */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee-x 42s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Mobile drawer + overlay. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Radix accordion expand/collapse (FAQ). */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/* Skeleton shimmer for loading states. */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-subtle);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
