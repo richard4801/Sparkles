@@ -25,6 +25,20 @@ export interface Resource {
   thumbnailSeed: string; // short descriptive kebab seed for picsum, e.g. "mobile-banking-report"
   trending?: boolean;
   addedDaysAgo: number; // for "recently added", e.g. 2
+  faculty: string; // e.g. "Management Sciences", "Engineering", "Social Sciences"
+  course: string; // course code + title, e.g. "ACC 401 - Financial Reporting"
+  abstract: string; // 3-4 sentence full abstract, plain language, no em-dashes
+  tableOfContents: string[]; // chapter/section titles
+}
+
+export interface Review {
+  id: string;
+  resourceId: string; // must equal an existing Resource.id
+  name: string; // realistic, varied Nigerian name
+  avatarSeed: string; // kebab seed for pravatar
+  rating: number; // 3, 4 or 5
+  date: string; // relative, e.g. "3 weeks ago", "2 months ago"
+  body: string; // <= 40 words, no em-dashes, sounds like a real buyer
 }
 
 export interface Category {

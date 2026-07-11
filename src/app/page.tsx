@@ -1,5 +1,3 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
 import { Categories } from "@/components/sections/categories";
@@ -34,7 +32,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Navbar />
       <main id="main">
         <Hero />
         <div className="space-y-20 py-6 lg:space-y-28 lg:py-10">
@@ -48,7 +45,6 @@ export default function Home() {
           <Newsletter />
         </div>
       </main>
-      <Footer />
     </>
   );
 }
