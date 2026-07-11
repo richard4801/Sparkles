@@ -22,3 +22,17 @@ export function formatCompact(n: number) {
 export function picsum(seed: string, w: number, h: number) {
   return `https://picsum.photos/seed/${seed}/${w}/${h}`;
 }
+
+/** Pravatar placeholder avatar from a seed. */
+export function avatar(seed: string, size = 96) {
+  return `https://i.pravatar.cc/${size}?u=${encodeURIComponent(seed)}`;
+}
+
+/** Slugify a label for use in URLs and filter params. */
+export function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}

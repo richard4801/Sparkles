@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 
 // Self-hosted variable fonts (Plus Jakarta Sans for display, Inter for body).
 // Self-hosting avoids a build-time fetch to Google Fonts and keeps the fonts
@@ -80,7 +82,9 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
