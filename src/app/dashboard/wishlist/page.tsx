@@ -21,7 +21,7 @@ export default async function WishlistPage() {
       {wishlist.length > 0 ? (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {wishlist.map((r) => (
-            <ResourceCard key={r.id} resource={r} />
+            <ResourceCard key={r.id} resource={r} savedInWishlist />
           ))}
         </div>
       ) : (

@@ -14,7 +14,10 @@ import {
   getResourceById,
   getReviewsForResource,
   getAllResources,
+  isWishlisted,
+  canReviewResource,
 } from "@/db/queries";
+import { auth } from "@/auth";
 import { similarResources } from "@/lib/ai/recommend";
 import { smartTags } from "@/lib/ai/tags";
 import Link from "next/link";
@@ -58,6 +61,14 @@ export default async function ResourcePage({
   const all = await getAllResources();
   const related = similarResources(resource, all, 4);
   const tags = smartTags(resource);
+
+  const session = await auth();
+  const saved = session?.user?.id
+    ? await isWishlisted(session.user.id, resource.id)
+    : false;
+  const canReview = session?.user?.id
+    ? await canReviewResource(session.user.id, resource.id)
+    : false;
 
   const meta = [
     { icon: Buildings, label: resource.institution },
@@ -224,6 +235,8 @@ export default async function ResourcePage({
               reviews={reviews}
               rating={resource.rating}
               totalReviews={resource.reviews}
+              resourceId={resource.id}
+              canReview={canReview}
             />
           </div>
         </div>
@@ -231,7 +244,7 @@ export default async function ResourcePage({
         {/* Sticky purchase column (desktop) */}
         <aside className="mt-8 hidden lg:mt-0 lg:block">
           <div className="lg:sticky lg:top-24">
-            <PurchaseCard resource={resource} />
+            <PurchaseCard resource={resource} saved={saved} />
           </div>
         </aside>
       </div>

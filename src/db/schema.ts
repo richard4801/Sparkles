@@ -75,6 +75,7 @@ export const reviews = pgTable(
     resourceId: text("resource_id")
       .notNull()
       .references(() => resources.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
     name: text("name").notNull(),
     avatarSeed: text("avatar_seed").notNull(),
     rating: integer("rating").notNull(),
@@ -218,3 +219,22 @@ export const notifications = pgTable(
   },
   (t) => [index("notifications_user_idx").on(t.userId)],
 );
+
+/* -------------------------------------------------------------------------- */
+/*  Site (newsletter + contact)                                                */
+/* -------------------------------------------------------------------------- */
+
+export const subscribers = pgTable("subscribers", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull().default(""),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});

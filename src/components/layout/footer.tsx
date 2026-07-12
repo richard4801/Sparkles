@@ -15,18 +15,18 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
     title: "Company",
     links: [
       { label: "About", href: "/about" },
+      { label: "Services", href: "/services" },
       { label: "How it works", href: "/how-it-works" },
       { label: "Pricing", href: "/pricing" },
-      { label: "Blog", href: "/blog" },
     ],
   },
   {
     title: "Support",
     links: [
-      { label: "Help center", href: "/support" },
       { label: "Contact us", href: "/contact" },
       { label: "Refund policy", href: "/refunds" },
-      { label: "Report a resource", href: "/report" },
+      { label: "Browse resources", href: "/browse" },
+      { label: "Study assistant", href: "/dashboard/assistant" },
     ],
   },
   {
@@ -34,8 +34,7 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
     links: [
       { label: "Terms of service", href: "/terms" },
       { label: "Privacy policy", href: "/privacy" },
-      { label: "Cookie policy", href: "/cookies" },
-      { label: "Copyright", href: "/copyright" },
+      { label: "Refund policy", href: "/refunds" },
     ],
   },
 ];
