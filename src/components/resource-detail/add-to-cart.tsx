@@ -1,24 +1,37 @@
 "use client";
 
-import * as React from "react";
+import { useSyncExternalStore } from "react";
 import { ShoppingBagOpen, Check } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import {
+  subscribeCart,
+  getCartSnapshot,
+  getCartServerSnapshot,
+  toggleCart,
+  type CartItem,
+} from "@/lib/cart";
 
-export function AddToCart({ title }: { title: string }) {
-  const [added, setAdded] = React.useState(false);
+export function AddToCart({ item }: { item: CartItem }) {
+  const cart = useSyncExternalStore(
+    subscribeCart,
+    getCartSnapshot,
+    getCartServerSnapshot,
+  );
+  const inCart = cart.some((i) => i.id === item.id);
+
   return (
     <Button
       type="button"
-      variant={added ? "secondary" : "outline"}
+      variant={inCart ? "secondary" : "outline"}
       size="lg"
       className="w-full"
-      aria-live="polite"
-      onClick={() => setAdded((v) => !v)}
+      aria-pressed={inCart}
+      onClick={() => toggleCart(item)}
     >
-      {added ? (
+      {inCart ? (
         <>
           <Check weight="bold" className="size-5" aria-hidden />
-          Added to cart
+          In cart
         </>
       ) : (
         <>
@@ -26,7 +39,6 @@ export function AddToCart({ title }: { title: string }) {
           Add to cart
         </>
       )}
-      <span className="sr-only">{title}</span>
     </Button>
   );
 }

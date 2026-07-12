@@ -51,7 +51,15 @@ export function PurchaseCard({ resource }: { resource: Resource }) {
             Buy and download now
           </a>
         </Button>
-        <AddToCart title={resource.title} />
+        <AddToCart
+          item={{
+            id: resource.id,
+            title: resource.title,
+            priceNaira: resource.priceNaira,
+            thumbnailSeed: resource.thumbnailSeed,
+            type: resource.type,
+          }}
+        />
       </div>
 
       <ul className="mt-5 grid gap-2.5 border-t border-border pt-5">

@@ -17,6 +17,11 @@ import { Logo } from "./logo";
 import { Button } from "@/components/ui/button";
 import { CategoryIcon } from "@/components/category-icon";
 import { categories } from "@/lib/data";
+import {
+  subscribeCart,
+  getCartSnapshot,
+  getCartServerSnapshot,
+} from "@/lib/cart";
 import { cn } from "@/lib/utils";
 
 const resourceTypes = [
@@ -307,6 +312,11 @@ export function Navbar() {
     const next = y > 8;
     setScrolled((prev) => (prev === next ? prev : next));
   });
+  const cart = React.useSyncExternalStore(
+    subscribeCart,
+    getCartSnapshot,
+    getCartServerSnapshot,
+  );
 
   return (
     <header
@@ -340,10 +350,10 @@ export function Navbar() {
           <IconLink href="/search" label="Search">
             <MagnifyingGlass weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
-          <IconLink href="/wishlist" label="Wishlist" count={3}>
+          <IconLink href="/wishlist" label="Wishlist">
             <Heart weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
-          <IconLink href="/cart" label="Cart" count={2}>
+          <IconLink href="/cart" label="Cart" count={cart.length || undefined}>
             <ShoppingBag weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
 

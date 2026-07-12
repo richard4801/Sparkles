@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Receipt, CreditCard } from "@phosphor-icons/react/dist/ssr";
 import { requireUser } from "@/lib/require-user";
 import { getOrders } from "@/db/queries";
@@ -63,10 +64,19 @@ export default async function OrdersPage() {
                 <span className="font-display text-lg font-extrabold text-foreground">
                   {formatNaira(o.totalNaira)}
                 </span>
-                <Button variant="outline" size="sm" disabled={o.status === "Refunded"}>
-                  <Receipt weight="bold" className="size-4" aria-hidden />
-                  Receipt
-                </Button>
+                {o.status === "Paid" ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/receipt/${o.id}`}>
+                      <Receipt weight="bold" className="size-4" aria-hidden />
+                      Receipt
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm" disabled>
+                    <Receipt weight="bold" className="size-4" aria-hidden />
+                    Receipt
+                  </Button>
+                )}
               </div>
             </div>
           </li>
