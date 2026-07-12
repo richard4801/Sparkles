@@ -46,6 +46,9 @@ None are required for Phase 1. Later phases will add secrets (set them under
 | `PAYSTACK_SECRET_KEY` | Phase 4b | Paystack secret key (test or live) |
 | `FLUTTERWAVE_SECRET_KEY` | Phase 4b | Flutterwave secret key |
 | `FLUTTERWAVE_WEBHOOK_HASH` | Phase 4b | Shared secret set in the Flutterwave dashboard |
+| `ANTHROPIC_API_KEY` | optional | Enables Claude answers in the Study Assistant (Phase 5); AI runs in local mode without it |
+| `ANTHROPIC_MODEL` | optional | Override the Claude model id used for AI answers |
+| `NEXT_PUBLIC_SITE_URL` | optional | Production URL used in `/llms.txt` links |
 
 See **DATABASE.md** for provisioning Postgres and running migrations/seed.
 
@@ -62,6 +65,13 @@ so the flow is demoable. To take real payments, add the provider keys above.
 - The redirect callback (`/checkout/callback`) verifies the transaction server-side
   before granting downloads; the webhook does the same idempotently, so an order
   is only fulfilled once.
+
+## AI features (Phase 5)
+
+The Study Assistant, semantic search, recommendations and smart tags all work
+with **no keys** (local heuristic mode). Add `ANTHROPIC_API_KEY` to enable
+Claude-generated answers in the assistant. A live catalog index for AI agents is
+served at `/llms.txt`. See **AI.md** for the full architecture.
 
 ## Notes
 

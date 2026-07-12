@@ -7,6 +7,7 @@ import {
   Receipt,
   Bell,
   Gear,
+  Sparkle,
   ChartLineUp,
   Books,
   SquaresFour as GridIcon,
@@ -23,6 +24,7 @@ export interface DashNavItem {
 
 export const dashNav: DashNavItem[] = [
   { href: "/dashboard", label: "Overview", icon: SquaresFour, exact: true },
+  { href: "/dashboard/assistant", label: "Study assistant", icon: Sparkle },
   { href: "/dashboard/purchases", label: "Purchases", icon: BagSimple },
   { href: "/dashboard/downloads", label: "Downloads", icon: DownloadSimple },
   { href: "/dashboard/wishlist", label: "Wishlist", icon: Heart },
