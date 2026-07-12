@@ -43,9 +43,25 @@ None are required for Phase 1. Later phases will add secrets (set them under
 | `AUTH_SECRET` | Phase 4a | Auth.js session secret (`openssl rand -base64 32`) |
 | `AUTH_TRUST_HOST` | Phase 4a | Set to `true` on Vercel |
 | `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | optional | Enables Google sign-in |
-| `PAYSTACK_SECRET_KEY` / `FLUTTERWAVE_SECRET_KEY` | Phase 4b | Payment provider keys |
+| `PAYSTACK_SECRET_KEY` | Phase 4b | Paystack secret key (test or live) |
+| `FLUTTERWAVE_SECRET_KEY` | Phase 4b | Flutterwave secret key |
+| `FLUTTERWAVE_WEBHOOK_HASH` | Phase 4b | Shared secret set in the Flutterwave dashboard |
 
 See **DATABASE.md** for provisioning Postgres and running migrations/seed.
+
+## Payments (Phase 4b)
+
+Checkout works without any keys via a **simulate mode**: orders complete instantly
+so the flow is demoable. To take real payments, add the provider keys above.
+
+- **Webhook URLs** to register in the provider dashboards:
+  - Paystack: `https://<your-domain>/api/webhooks/paystack`
+  - Flutterwave: `https://<your-domain>/api/webhooks/flutterwave`
+- Paystack webhooks are verified with `PAYSTACK_SECRET_KEY` (HMAC SHA512).
+- Flutterwave webhooks are verified against `FLUTTERWAVE_WEBHOOK_HASH`.
+- The redirect callback (`/checkout/callback`) verifies the transaction server-side
+  before granting downloads; the webhook does the same idempotently, so an order
+  is only fulfilled once.
 
 ## Notes
 
