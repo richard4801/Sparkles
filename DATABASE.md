@@ -41,6 +41,20 @@ start with an empty dashboard.
 | `npm run db:seed` | Reset + seed catalog and demo data |
 | `npm run db:studio` | Open Drizzle Studio to browse the data |
 
+## Quick start with Supabase (no local tooling)
+
+Supabase is a hosted Postgres with a built-in table editor. The app only uses it
+as a database (not Supabase Auth/SDK), so any Postgres host works the same way.
+
+1. Create a project at <https://supabase.com>. Save the database password.
+2. **SQL Editor** -> paste the contents of `drizzle/0000_windy_lila_cheney.sql`
+   -> Run. (creates the tables)
+3. **SQL Editor** -> paste the contents of `supabase-seed.sql` -> Run. (loads the
+   catalog + demo/admin accounts) You can now browse rows in **Table Editor**.
+4. **Project Settings -> Database -> Connection string -> URI**: copy it and
+   replace `[YOUR-PASSWORD]`. Use the connection-pooling URI (port 6543) for the
+   app. That value is your `DATABASE_URL` in Vercel.
+
 ## Production (Vercel + hosted Postgres)
 
 The app and its API run on Vercel; the database is a **separate hosted Postgres**
