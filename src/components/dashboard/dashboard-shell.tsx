@@ -17,7 +17,7 @@ import {
   Storefront,
 } from "@phosphor-icons/react";
 import { Logo } from "@/components/layout/logo";
-import { dashNav } from "./nav-items";
+import { dashNav, adminNav, type DashNavItem } from "./nav-items";
 import { logoutAction } from "@/lib/auth-actions";
 import { avatar, cn } from "@/lib/utils";
 
@@ -31,35 +31,63 @@ function isActive(pathname: string, href: string, exact?: boolean) {
   return exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+function NavLink({
+  item,
+  onNavigate,
+}: {
+  item: DashNavItem;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
+  const active = isActive(pathname, item.href, item.exact);
   return (
-    <nav className="grid gap-1" aria-label="Dashboard">
-      {dashNav.map((item) => {
-        const active = isActive(pathname, item.href, item.exact);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
-              active
-                ? "bg-primary text-primary-foreground shadow-[var(--shadow-sm)]"
-                : "text-muted-foreground hover:bg-surface-subtle hover:text-foreground",
-            )}
-          >
-            <item.icon
-              weight={active ? "fill" : "regular"}
-              className="size-5 shrink-0"
-              aria-hidden
-            />
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <Link
+      href={item.href}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors",
+        active
+          ? "bg-primary text-primary-foreground shadow-[var(--shadow-sm)]"
+          : "text-muted-foreground hover:bg-surface-subtle hover:text-foreground",
+      )}
+    >
+      <item.icon
+        weight={active ? "fill" : "regular"}
+        className="size-5 shrink-0"
+        aria-hidden
+      />
+      {item.label}
+    </Link>
+  );
+}
+
+function SidebarNav({
+  isAdmin,
+  onNavigate,
+}: {
+  isAdmin?: boolean;
+  onNavigate?: () => void;
+}) {
+  return (
+    <div className="grid gap-1">
+      <nav className="grid gap-1" aria-label="Dashboard">
+        {dashNav.map((item) => (
+          <NavLink key={item.href} item={item} onNavigate={onNavigate} />
+        ))}
+      </nav>
+
+      {isAdmin ? (
+        <nav className="mt-6 grid gap-1" aria-label="Admin">
+          <p className="px-3.5 pb-1 text-xs font-bold uppercase tracking-wider text-faint-foreground">
+            Admin
+          </p>
+          {adminNav.map((item) => (
+            <NavLink key={item.href} item={item} onNavigate={onNavigate} />
+          ))}
+        </nav>
+      ) : null}
+    </div>
   );
 }
 
@@ -162,10 +190,12 @@ export function DashboardShell({
   children,
   user,
   unread,
+  isAdmin,
 }: {
   children: React.ReactNode;
   user: ShellUser;
   unread: number;
+  isAdmin?: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -178,8 +208,8 @@ export function DashboardShell({
             <Logo />
           </Link>
         </div>
-        <div className="mt-6 flex-1">
-          <SidebarNav />
+        <div className="mt-6 flex-1 overflow-y-auto">
+          <SidebarNav isAdmin={isAdmin} />
         </div>
         <SidebarFooter />
       </aside>
@@ -215,8 +245,8 @@ export function DashboardShell({
                     </Dialog.Close>
                   </div>
                   <Dialog.Title className="sr-only">Dashboard navigation</Dialog.Title>
-                  <div className="mt-6 flex-1">
-                    <SidebarNav onNavigate={() => setOpen(false)} />
+                  <div className="mt-6 flex-1 overflow-y-auto">
+                    <SidebarNav isAdmin={isAdmin} onNavigate={() => setOpen(false)} />
                   </div>
                   <SidebarFooter />
                 </Dialog.Content>
