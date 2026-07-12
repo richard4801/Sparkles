@@ -8,17 +8,21 @@ import {
   ArrowRight,
   CaretRight,
 } from "@phosphor-icons/react/dist/ssr";
-import { currentUser, dashStats, spendSeries, recentlyViewed } from "@/lib/dashboard-data";
-import { getResourceById, trendingResources } from "@/lib/data";
+import { spendSeries, recentlyViewed } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getDashStats, getAllResources } from "@/db/queries";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { BarChart } from "@/components/dashboard/bar-chart";
 import { ResourceCard } from "@/components/resource-card";
 import { formatNaira, formatCompact, picsum } from "@/lib/utils";
 
-export default function DashboardOverview() {
-  const recommended = trendingResources.slice(0, 3);
+export default async function DashboardOverview() {
+  const user = await requireUser();
+  const dashStats = await getDashStats(user.id);
+  const all = await getAllResources();
+  const recommended = all.filter((r) => r.trending).slice(0, 3);
   const recent = recentlyViewed
-    .map((id) => getResourceById(id))
+    .map((id) => all.find((r) => r.id === id))
     .filter((r): r is NonNullable<typeof r> => Boolean(r))
     .slice(0, 4);
 
@@ -29,7 +33,7 @@ export default function DashboardOverview() {
     <div className="mx-auto max-w-6xl">
       <header>
         <h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
-          Welcome back, {currentUser.name.split(" ")[0]}
+          Welcome back, {(user.name ?? "there").split(" ")[0]}
         </h1>
         <p className="mt-1.5 text-muted-foreground">
           Here is what is happening with your account.

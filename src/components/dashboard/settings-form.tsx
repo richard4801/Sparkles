@@ -7,7 +7,7 @@ import { Field } from "@/components/auth/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordField } from "@/components/auth/password-field";
-import { currentUser } from "@/lib/dashboard-data";
+import type { DashUser } from "@/types/dashboard";
 import { avatar, cn } from "@/lib/utils";
 
 const LEVELS = ["ND", "HND", "BSc", "PGD", "MSc", "PhD"];
@@ -61,13 +61,13 @@ function Card({ title, description, children }: { title: string; description?: s
   );
 }
 
-export function SettingsForm() {
+export function SettingsForm({ user }: { user: DashUser }) {
   const [profile, setProfile] = React.useState({
-    name: currentUser.name,
-    email: currentUser.email,
-    institution: currentUser.institution,
-    department: currentUser.department,
-    level: currentUser.level,
+    name: user.name,
+    email: user.email,
+    institution: user.institution,
+    department: user.department,
+    level: user.level,
   });
   const [prefs, setPrefs] = React.useState({
     purchases: true,
@@ -91,7 +91,7 @@ export function SettingsForm() {
       <Card title="Profile" description="This information appears on your receipts and reviews.">
         <div className="flex items-center gap-4">
           <Image
-            src={avatar(currentUser.avatarSeed, 128)}
+            src={avatar(user.avatarSeed, 128)}
             alt=""
             width={64}
             height={64}

@@ -24,6 +24,7 @@ const STRENGTH = [
 
 export function PasswordField({
   id,
+  name,
   value,
   onChange,
   placeholder = "Enter your password",
@@ -32,6 +33,7 @@ export function PasswordField({
   showStrength = false,
 }: {
   id: string;
+  name?: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
@@ -47,6 +49,7 @@ export function PasswordField({
       <div className="relative">
         <input
           id={id}
+          name={name}
           type={show ? "text" : "password"}
           value={value}
           onChange={(e) => onChange(e.target.value)}

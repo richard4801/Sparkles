@@ -37,11 +37,15 @@ vercel --prod   # promote to production
 None are required for Phase 1. Later phases will add secrets (set them under
 **Project → Settings → Environment Variables** in Vercel, never in the repo):
 
-| Variable | Phase | Purpose |
-|----------|-------|---------|
-| `NEXT_PUBLIC_API_URL` | 4 | Base URL of the Laravel API |
-| `PAYSTACK_SECRET_KEY` | 4 | Paystack server key |
-| `FLUTTERWAVE_SECRET_KEY` | 4 | Flutterwave server key |
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `DATABASE_URL` | Phase 4a | Hosted PostgreSQL connection string (Neon/Supabase/etc.) |
+| `AUTH_SECRET` | Phase 4a | Auth.js session secret (`openssl rand -base64 32`) |
+| `AUTH_TRUST_HOST` | Phase 4a | Set to `true` on Vercel |
+| `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET` | optional | Enables Google sign-in |
+| `PAYSTACK_SECRET_KEY` / `FLUTTERWAVE_SECRET_KEY` | Phase 4b | Payment provider keys |
+
+See **DATABASE.md** for provisioning Postgres and running migrations/seed.
 
 ## Notes
 

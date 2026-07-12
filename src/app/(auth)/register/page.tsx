@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GoogleButton } from "@/components/auth/google-button";
 import { RegisterForm } from "@/components/auth/register-form";
+import { googleEnabled } from "@/auth";
+import { googleLoginAction } from "@/lib/auth-actions";
 
 export const metadata: Metadata = {
   title: "Create account",
@@ -18,17 +20,22 @@ export default function RegisterPage() {
         Join thousands of students finding resources faster.
       </p>
 
-      <div className="mt-8">
-        <GoogleButton label="Sign up with Google" />
-      </div>
-
-      <div className="my-6 flex items-center gap-4">
-        <span className="h-px flex-1 bg-border" />
-        <span className="text-xs font-medium uppercase tracking-wide text-faint-foreground">
-          or
-        </span>
-        <span className="h-px flex-1 bg-border" />
-      </div>
+      {googleEnabled ? (
+        <>
+          <form action={googleLoginAction} className="mt-8">
+            <GoogleButton label="Sign up with Google" />
+          </form>
+          <div className="my-6 flex items-center gap-4">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs font-medium uppercase tracking-wide text-faint-foreground">
+              or
+            </span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+        </>
+      ) : (
+        <div className="mt-8" />
+      )}
 
       <RegisterForm />
 

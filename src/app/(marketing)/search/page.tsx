@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { TrendUp, SlidersHorizontal, FileMagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
-import { resources, categories } from "@/lib/data";
+import { categories } from "@/lib/data";
+import { getAllResources } from "@/db/queries";
 import { parseFilters, applyFilters } from "@/lib/filters";
 import { SearchBox } from "@/components/search/search-box";
 import { RecentSearches } from "@/components/search/recent-searches";
@@ -33,6 +34,7 @@ export default async function SearchPage({
   const sp = await searchParams;
   const filters = parseFilters(sp);
   const hasQuery = filters.q.length > 0;
+  const resources = await getAllResources();
   const results = hasQuery ? applyFilters(resources, filters) : [];
 
   const resourceIndex = resources.map((r) => ({
