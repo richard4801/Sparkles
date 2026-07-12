@@ -10,7 +10,8 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { spendSeries, recentlyViewed } from "@/lib/dashboard-data";
 import { requireUser } from "@/lib/require-user";
-import { getDashStats, getAllResources } from "@/db/queries";
+import { getDashStats, getAllResources, getPurchases } from "@/db/queries";
+import { recommendForUser } from "@/lib/ai/recommend";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { BarChart } from "@/components/dashboard/bar-chart";
 import { ResourceCard } from "@/components/resource-card";
@@ -20,7 +21,11 @@ export default async function DashboardOverview() {
   const user = await requireUser();
   const dashStats = await getDashStats(user.id);
   const all = await getAllResources();
-  const recommended = all.filter((r) => r.trending).slice(0, 3);
+  const purchases = await getPurchases(user.id);
+  const ownedIds = new Set(purchases.map((p) => p.resourceId));
+  const owned = all.filter((r) => ownedIds.has(r.id));
+  const recommended = recommendForUser(owned, all, 3);
+  const personalized = owned.length > 0;
   const recent = recentlyViewed
     .map((id) => all.find((r) => r.id === id))
     .filter((r): r is NonNullable<typeof r> => Boolean(r))
@@ -107,9 +112,16 @@ export default async function DashboardOverview() {
       {/* Recommended */}
       <section className="mt-8">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-lg font-bold text-foreground">
-            Recommended for you
-          </h2>
+          <div>
+            <h2 className="font-display text-lg font-bold text-foreground">
+              Recommended for you
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {personalized
+                ? "Picked from what you've bought."
+                : "Trending across Sparklyn to get you started."}
+            </p>
+          </div>
           <Link
             href="/browse"
             className="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-colors hover:text-primary-hover"

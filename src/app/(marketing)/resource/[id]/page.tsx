@@ -13,8 +13,10 @@ import {
 import {
   getResourceById,
   getReviewsForResource,
-  getRelatedResources,
+  getAllResources,
 } from "@/db/queries";
+import { similarResources } from "@/lib/ai/recommend";
+import { smartTags } from "@/lib/ai/tags";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -53,7 +55,9 @@ export default async function ResourcePage({
   if (!resource) notFound();
 
   const reviews = await getReviewsForResource(resource.id);
-  const related = await getRelatedResources(resource, 4);
+  const all = await getAllResources();
+  const related = similarResources(resource, all, 4);
+  const tags = smartTags(resource);
 
   const meta = [
     { icon: Buildings, label: resource.institution },
@@ -149,6 +153,25 @@ export default async function ResourcePage({
             ))}
           </dl>
 
+          {/* Smart tags */}
+          {tags.length > 0 ? (
+            <div className="mt-6">
+              <h2 className="sr-only">Topics</h2>
+              <ul className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <li key={tag}>
+                    <Link
+                      href={`/search?q=${encodeURIComponent(tag)}`}
+                      className="inline-flex items-center rounded-full border border-border bg-surface-subtle px-3 py-1 text-xs font-medium capitalize text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                    >
+                      {tag}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
           {/* Abstract */}
           <section aria-labelledby="abstract-heading" className="mt-10">
             <h2
@@ -220,8 +243,11 @@ export default async function ResourcePage({
             id="related-heading"
             className="font-display text-2xl font-extrabold tracking-tight text-foreground"
           >
-            Related resources
+            Similar resources
           </h2>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Picked by content similarity to what you&apos;re viewing.
+          </p>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r) => (
               <ResourceCard key={r.id} resource={r} />

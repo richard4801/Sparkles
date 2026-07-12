@@ -23,6 +23,7 @@ export default async function DashboardLayout({
     <DashboardShell
       user={{ name: user.name ?? "Student", email: user.email ?? "", avatarSeed: user.avatarSeed }}
       unread={unread}
+      isAdmin={user.role === "admin"}
     >
       {children}
     </DashboardShell>
