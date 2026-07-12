@@ -18,8 +18,14 @@ import {
 } from "@phosphor-icons/react";
 import { Logo } from "@/components/layout/logo";
 import { dashNav } from "./nav-items";
-import { currentUser, notifications } from "@/lib/dashboard-data";
+import { logoutAction } from "@/lib/auth-actions";
 import { avatar, cn } from "@/lib/utils";
+
+interface ShellUser {
+  name: string;
+  email: string;
+  avatarSeed: string;
+}
 
 function isActive(pathname: string, href: string, exact?: boolean) {
   return exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
@@ -69,8 +75,7 @@ function SidebarFooter() {
   );
 }
 
-function UserMenu() {
-  const unread = notifications.filter((n) => !n.read).length;
+function UserMenu({ user, unread }: { user: ShellUser; unread: number }) {
   return (
     <div className="flex items-center gap-1.5">
       <Link
@@ -93,14 +98,14 @@ function UserMenu() {
             className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 transition-colors hover:bg-surface-subtle"
           >
             <Image
-              src={avatar(currentUser.avatarSeed)}
+              src={avatar(user.avatarSeed)}
               alt=""
               width={32}
               height={32}
               className="size-8 rounded-full object-cover"
             />
             <span className="hidden text-sm font-semibold text-foreground sm:block">
-              {currentUser.name.split(" ")[0]}
+              {user.name.split(" ")[0]}
             </span>
             <CaretDown weight="bold" className="size-3.5 text-faint-foreground" aria-hidden />
           </button>
@@ -112,10 +117,8 @@ function UserMenu() {
             className="z-[90] w-56 rounded-2xl border border-border bg-surface p-1.5 shadow-[var(--shadow-lg)]"
           >
             <div className="px-3 py-2">
-              <p className="truncate text-sm font-semibold text-foreground">
-                {currentUser.name}
-              </p>
-              <p className="truncate text-xs text-muted-foreground">{currentUser.email}</p>
+              <p className="truncate text-sm font-semibold text-foreground">{user.name}</p>
+              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
             </div>
             <div className="my-1 h-px bg-border" />
             <DropdownMenu.Item asChild>
@@ -138,13 +141,15 @@ function UserMenu() {
             </DropdownMenu.Item>
             <div className="my-1 h-px bg-border" />
             <DropdownMenu.Item asChild>
-              <Link
-                href="/login"
-                className="flex cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-rose outline-none transition-colors hover:bg-rose/5 data-[highlighted]:bg-rose/5"
-              >
-                <SignOut weight="bold" className="size-4" aria-hidden />
-                Log out
-              </Link>
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-rose outline-none transition-colors hover:bg-rose/5 data-[highlighted]:bg-rose/5"
+                >
+                  <SignOut weight="bold" className="size-4" aria-hidden />
+                  Log out
+                </button>
+              </form>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
@@ -153,7 +158,15 @@ function UserMenu() {
   );
 }
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+export function DashboardShell({
+  children,
+  user,
+  unread,
+}: {
+  children: React.ReactNode;
+  user: ShellUser;
+  unread: number;
+}) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -215,7 +228,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
 
-          <UserMenu />
+          <UserMenu user={user} unread={unread} />
         </header>
 
         <main id="main" className="flex-1 px-4 py-6 lg:px-8 lg:py-8">

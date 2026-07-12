@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Receipt, CreditCard } from "@phosphor-icons/react/dist/ssr";
-import { orders } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getOrders } from "@/db/queries";
 import type { Order } from "@/types/dashboard";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,9 @@ const statusStyle: Record<Order["status"], string> = {
 
 export const metadata: Metadata = { title: "Orders" };
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const user = await requireUser();
+  const orders = await getOrders(user.id);
   return (
     <div className="mx-auto max-w-4xl">
       <DashPageHeader

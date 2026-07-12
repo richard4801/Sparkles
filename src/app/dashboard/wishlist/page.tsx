@@ -1,22 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Heart, ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { resources } from "@/lib/data";
-import { dashStats } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getWishlist } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 import { ResourceCard } from "@/components/resource-card";
 
 export const metadata: Metadata = { title: "Wishlist" };
 
-// Mock wishlist selection until the backend tracks saved items (Phase 4).
-const wishlist = resources.slice(2, 2 + 5);
-
-export default function WishlistPage() {
+export default async function WishlistPage() {
+  const user = await requireUser();
+  const wishlist = await getWishlist(user.id);
   return (
     <div className="mx-auto max-w-6xl">
       <DashPageHeader
         title="Wishlist"
-        description={`${dashStats.wishlist} resources saved for later.`}
+        description={`${wishlist.length} resources saved for later.`}
       />
 
       {wishlist.length > 0 ? (

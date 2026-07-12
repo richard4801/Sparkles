@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { requireUser } from "@/lib/require-user";
+import { getUnreadNotificationCount } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: {
@@ -9,10 +11,20 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <DashboardShell>{children}</DashboardShell>;
+  const user = await requireUser();
+  const unread = await getUnreadNotificationCount(user.id);
+
+  return (
+    <DashboardShell
+      user={{ name: user.name ?? "Student", email: user.email ?? "", avatarSeed: user.avatarSeed }}
+      unread={unread}
+    >
+      {children}
+    </DashboardShell>
+  );
 }

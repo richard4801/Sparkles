@@ -11,11 +11,10 @@ import {
   CalendarBlank,
 } from "@phosphor-icons/react/dist/ssr";
 import {
-  resources,
   getResourceById,
-  getReviewsFor,
+  getReviewsForResource,
   getRelatedResources,
-} from "@/lib/data";
+} from "@/db/queries";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,17 +24,13 @@ import { PreviewGallery } from "@/components/resource-detail/preview-gallery";
 import { Reviews } from "@/components/resource-detail/reviews";
 import { formatNaira, formatCompact, picsum, slugify } from "@/lib/utils";
 
-export function generateStaticParams() {
-  return resources.map((r) => ({ id: r.id }));
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const resource = getResourceById(id);
+  const resource = await getResourceById(id);
   if (!resource) return { title: "Resource not found" };
   return {
     title: resource.title,
@@ -54,11 +49,11 @@ export default async function ResourcePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const resource = getResourceById(id);
+  const resource = await getResourceById(id);
   if (!resource) notFound();
 
-  const reviews = getReviewsFor(resource.id);
-  const related = getRelatedResources(resource, 4);
+  const reviews = await getReviewsForResource(resource.id);
+  const related = await getRelatedResources(resource, 4);
 
   const meta = [
     { icon: Buildings, label: resource.institution },

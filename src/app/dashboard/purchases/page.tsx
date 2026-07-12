@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { DownloadSimple, ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { purchases } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getPurchases } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,9 @@ import { picsum, formatNaira } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Purchases" };
 
-export default function PurchasesPage() {
+export default async function PurchasesPage() {
+  const user = await requireUser();
+  const purchases = await getPurchases(user.id);
   return (
     <div className="mx-auto max-w-5xl">
       <DashPageHeader

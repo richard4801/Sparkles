@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MagnifyingGlass, ArrowRight } from "@phosphor-icons/react/dist/ssr";
-import { savedSearches } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getSavedSearches } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Saved searches" };
 
-export default function SavedSearchesPage() {
+export default async function SavedSearchesPage() {
+  const user = await requireUser();
+  const savedSearches = await getSavedSearches(user.id);
   return (
     <div className="mx-auto max-w-4xl">
       <DashPageHeader

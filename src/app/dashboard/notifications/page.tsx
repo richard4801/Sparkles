@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { notifications } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getNotifications } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 import { NotificationsFeed } from "@/components/dashboard/notifications-feed";
 
 export const metadata: Metadata = { title: "Notifications" };
 
-export default function NotificationsPage() {
+export default async function NotificationsPage() {
+  const user = await requireUser();
+  const notifications = await getNotifications(user.id);
   return (
     <div className="mx-auto max-w-3xl">
       <DashPageHeader title="Notifications" description="Updates about your account and resources." />

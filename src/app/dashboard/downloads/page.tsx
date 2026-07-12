@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
-import { downloadHistory } from "@/lib/dashboard-data";
+import { requireUser } from "@/lib/require-user";
+import { getDownloadHistory } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
 
 export const metadata: Metadata = { title: "Download history" };
 
-export default function DownloadsPage() {
+export default async function DownloadsPage() {
+  const user = await requireUser();
+  const downloadHistory = await getDownloadHistory(user.id);
   return (
     <div className="mx-auto max-w-5xl">
       <DashPageHeader

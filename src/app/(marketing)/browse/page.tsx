@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { MagnifyingGlass, FileMagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
-import { resources } from "@/lib/data";
+import { getAllResources } from "@/db/queries";
 import {
   parseFilters,
   buildFacets,
@@ -29,6 +29,7 @@ export default async function BrowsePage({
 }) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
+  const resources = await getAllResources();
   const facets = buildFacets(resources);
   const results = applyFilters(resources, filters);
   const active = countActive(filters);
