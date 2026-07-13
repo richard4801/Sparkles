@@ -1,16 +1,21 @@
 import Image from "next/image";
 import type { Review } from "@/types";
 import { Stars } from "@/components/stars";
+import { ReviewForm } from "./review-form";
 import { avatar } from "@/lib/utils";
 
 export function Reviews({
   reviews,
   rating,
   totalReviews,
+  resourceId,
+  canReview = false,
 }: {
   reviews: Review[];
   rating: number;
   totalReviews: number;
+  resourceId: string;
+  canReview?: boolean;
 }) {
   // Distribution across the shown reviews (proxy for the full set).
   const dist = [5, 4, 3, 2, 1].map((star) => ({
@@ -88,6 +93,8 @@ export function Reviews({
           No reviews yet. Be the first to review this resource after your purchase.
         </p>
       )}
+
+      {canReview ? <ReviewForm resourceId={resourceId} /> : null}
     </section>
   );
 }

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordField } from "@/components/auth/password-field";
 import type { DashUser } from "@/types/dashboard";
+import { updateProfile, updatePassword } from "@/lib/settings-actions";
 import { avatar, cn } from "@/lib/utils";
 
 const LEVELS = ["ND", "HND", "BSc", "PGD", "MSc", "PhD"];
@@ -77,10 +78,43 @@ export function SettingsForm({ user }: { user: DashUser }) {
   });
   const [password, setPassword] = React.useState({ current: "", next: "" });
   const [saved, setSaved] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<{ section: string; message: string } | null>(null);
+  const [pending, startTransition] = React.useTransition();
 
-  function save(section: string) {
+  function flashSaved(section: string) {
     setSaved(section);
-    window.setTimeout(() => setSaved((s) => (s === section ? null : s)), 2000);
+    window.setTimeout(() => setSaved((s) => (s === section ? null : s)), 2500);
+  }
+
+  function saveProfile() {
+    setError(null);
+    const fd = new FormData();
+    fd.set("name", profile.name);
+    fd.set("email", profile.email);
+    fd.set("institution", profile.institution);
+    fd.set("department", profile.department);
+    fd.set("level", profile.level);
+    startTransition(async () => {
+      const res = await updateProfile(fd);
+      if (res.ok) flashSaved("profile");
+      else setError({ section: "profile", message: res.error ?? "Could not save." });
+    });
+  }
+
+  function savePassword() {
+    setError(null);
+    const fd = new FormData();
+    fd.set("current", password.current);
+    fd.set("next", password.next);
+    startTransition(async () => {
+      const res = await updatePassword(fd);
+      if (res.ok) {
+        flashSaved("password");
+        setPassword({ current: "", next: "" });
+      } else {
+        setError({ section: "password", message: res.error ?? "Could not update." });
+      }
+    });
   }
 
   const field = (k: keyof typeof profile, v: string) =>
@@ -105,7 +139,7 @@ export function SettingsForm({ user }: { user: DashUser }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            save("profile");
+            saveProfile();
           }}
           className="mt-6 grid gap-4 sm:grid-cols-2"
         >
@@ -135,13 +169,18 @@ export function SettingsForm({ user }: { user: DashUser }) {
               ))}
             </select>
           </Field>
-          <div className="flex items-end sm:col-span-2">
-            <Button type="submit" size="md">
+          <div className="flex flex-col gap-2 sm:col-span-2">
+            {error?.section === "profile" ? (
+              <p className="text-sm font-medium text-rose">{error.message}</p>
+            ) : null}
+            <Button type="submit" size="md" disabled={pending}>
               {saved === "profile" ? (
                 <>
                   <Check weight="bold" className="size-4" aria-hidden />
                   Saved
                 </>
+              ) : pending ? (
+                "Saving…"
               ) : (
                 "Save changes"
               )}
@@ -183,7 +222,7 @@ export function SettingsForm({ user }: { user: DashUser }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            save("password");
+            savePassword();
           }}
           className="grid gap-4 sm:max-w-md"
         >
@@ -204,13 +243,18 @@ export function SettingsForm({ user }: { user: DashUser }) {
               showStrength
             />
           </Field>
-          <div>
-            <Button type="submit" size="md">
+          <div className="grid gap-2">
+            {error?.section === "password" ? (
+              <p className="text-sm font-medium text-rose">{error.message}</p>
+            ) : null}
+            <Button type="submit" size="md" disabled={pending} className="justify-self-start">
               {saved === "password" ? (
                 <>
                   <Check weight="bold" className="size-4" aria-hidden />
                   Updated
                 </>
+              ) : pending ? (
+                "Updating…"
               ) : (
                 "Update password"
               )}

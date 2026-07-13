@@ -1,6 +1,6 @@
 import { PaperPlaneTilt, CheckCircle } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "@/components/motion/reveal";
-import { Button } from "@/components/ui/button";
+import { NewsletterForm } from "./newsletter-form";
 
 const perks = ["New resources weekly", "Exam-season guides", "No spam, unsubscribe anytime"];
 
@@ -26,31 +26,7 @@ export function Newsletter() {
               in their inbox.
             </p>
 
-            <form
-              action="/api/subscribe"
-              method="post"
-              className="mx-auto mt-8 flex max-w-md flex-col gap-2.5 sm:flex-row"
-            >
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="newsletter-email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="you@university.edu.ng"
-                className="h-13 flex-1 rounded-full border border-white/20 bg-white/95 px-5 text-[0.98rem] text-foreground placeholder:text-faint-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="bg-white text-primary hover:bg-white hover:text-primary-hover"
-              >
-                Subscribe
-              </Button>
-            </form>
+            <NewsletterForm />
 
             <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
               {perks.map((p) => (

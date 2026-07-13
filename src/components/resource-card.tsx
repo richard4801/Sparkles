@@ -9,9 +9,11 @@ import { cn, formatNaira, formatCompact, picsum } from "@/lib/utils";
 export function ResourceCard({
   resource,
   className,
+  savedInWishlist = false,
 }: {
   resource: Resource;
   className?: string;
+  savedInWishlist?: boolean;
 }) {
   const href = `/resource/${resource.id}`;
   return (
@@ -34,7 +36,12 @@ export function ResourceCard({
             {resource.type}
           </Badge>
         </div>
-        <BookmarkButton title={resource.title} className="absolute right-3 top-3" />
+        <BookmarkButton
+          resourceId={resource.id}
+          title={resource.title}
+          initialSaved={savedInWishlist}
+          className="absolute right-3 top-3"
+        />
       </div>
 
       <div className="flex flex-1 flex-col p-4">

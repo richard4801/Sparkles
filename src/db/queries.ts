@@ -256,6 +256,42 @@ export async function getNotifications(userId: string): Promise<DashNotification
   }));
 }
 
+/** A user may review a resource if they've bought it and not reviewed it yet. */
+export async function canReviewResource(
+  userId: string,
+  resourceId: string,
+): Promise<boolean> {
+  const [bought] = await db
+    .select({ id: purchases.id })
+    .from(purchases)
+    .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
+    .limit(1);
+  if (!bought) return false;
+  const [reviewed] = await db
+    .select({ id: reviews.id })
+    .from(reviews)
+    .where(and(eq(reviews.userId, userId), eq(reviews.resourceId, resourceId)))
+    .limit(1);
+  return !reviewed;
+}
+
+export async function isWishlisted(userId: string, resourceId: string): Promise<boolean> {
+  const [row] = await db
+    .select({ id: wishlists.id })
+    .from(wishlists)
+    .where(and(eq(wishlists.userId, userId), eq(wishlists.resourceId, resourceId)))
+    .limit(1);
+  return Boolean(row);
+}
+
+export async function getWishlistedIds(userId: string): Promise<Set<string>> {
+  const rows = await db
+    .select({ resourceId: wishlists.resourceId })
+    .from(wishlists)
+    .where(eq(wishlists.userId, userId));
+  return new Set(rows.map((r) => r.resourceId));
+}
+
 export async function getWishlist(userId: string): Promise<Resource[]> {
   const rows = await baseResourceQuery()
     .innerJoin(wishlists, eq(wishlists.resourceId, resources.id))

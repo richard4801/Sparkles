@@ -17,7 +17,13 @@ const includes = [
   { icon: Lightning, label: "Editable and print ready" },
 ];
 
-export function PurchaseCard({ resource }: { resource: Resource }) {
+export function PurchaseCard({
+  resource,
+  saved = false,
+}: {
+  resource: Resource;
+  saved?: boolean;
+}) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow-md)]">
       <div className="flex items-end justify-between gap-3">
@@ -28,7 +34,9 @@ export function PurchaseCard({ resource }: { resource: Resource }) {
           </p>
         </div>
         <BookmarkButton
+          resourceId={resource.id}
           title={resource.title}
+          initialSaved={saved}
           className="relative right-0 top-0 border border-border"
         />
       </div>
