@@ -13,16 +13,16 @@ export interface UploadedFile {
   size: number;
 }
 
-/** Upload a resource's downloadable file to Blob storage. Stored under a
- *  per-resource path with a random suffix so URLs are unguessable; access is
- *  still gated by our /api/download route (the URL is never exposed to buyers). */
+/** Upload a resource's downloadable file to Blob storage. Stored privately —
+ *  the blob URL is not publicly fetchable; only our /api/download route (holding
+ *  the read-write token) can read it back, after verifying the buyer. */
 export async function uploadResourceFile(
   file: File,
   resourceId: string,
 ): Promise<UploadedFile> {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_") || "resource.pdf";
   const blob = await put(`resources/${resourceId}/${safeName}`, file, {
-    access: "public",
+    access: "private",
     addRandomSuffix: true,
     token: process.env.BLOB_READ_WRITE_TOKEN,
   });

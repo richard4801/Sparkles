@@ -1,4 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
+import { get } from "@vercel/blob";
 import { db } from "@/db";
 import { resources, purchases, downloads } from "@/db/schema";
 import { auth } from "@/auth";
@@ -49,11 +50,16 @@ export async function GET(
   let contentType = "application/pdf";
   if (resource.fileUrl) {
     try {
-      const res = await fetch(resource.fileUrl);
-      if (!res.ok) throw new Error(`blob ${res.status}`);
-      body = Buffer.from(await res.arrayBuffer());
+      // The blob is private, so read it through the SDK with the token — a plain
+      // fetch of the URL would be denied.
+      const res = await get(resource.fileUrl, {
+        access: "private",
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
+      if (!res || res.statusCode !== 200 || !res.stream) throw new Error("blob get failed");
+      body = Buffer.from(await new Response(res.stream).arrayBuffer());
       filename = resource.fileName || `${resource.id}.pdf`;
-      contentType = res.headers.get("content-type") || "application/octet-stream";
+      contentType = res.blob.contentType || "application/octet-stream";
     } catch {
       body = placeholderPdf(resource.title, `${resource.type} · ${resource.department}`);
       filename = `${resource.id}.pdf`;
