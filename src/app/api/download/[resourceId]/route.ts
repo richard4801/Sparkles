@@ -28,15 +28,19 @@ export async function GET(
     .limit(1);
   if (!resource) return new Response("Not found.", { status: 404 });
 
-  const [bought] = await db
-    .select({ id: purchases.id })
-    .from(purchases)
-    .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
-    .limit(1);
-  if (!bought) {
-    return new Response("You need to buy this resource before downloading it.", {
-      status: 403,
-    });
+  // Admins own the entire library — they can download anything without buying.
+  const isAdmin = session.user.role === "admin";
+  if (!isAdmin) {
+    const [bought] = await db
+      .select({ id: purchases.id })
+      .from(purchases)
+      .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
+      .limit(1);
+    if (!bought) {
+      return new Response("You need to buy this resource before downloading it.", {
+        status: 403,
+      });
+    }
   }
 
   // Fetch the real file, or fall back to a generated placeholder PDF.

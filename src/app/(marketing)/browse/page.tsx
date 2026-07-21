@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { MagnifyingGlass, FileMagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
-import { getAllResources } from "@/db/queries";
+import { getAllResources, getSessionWishlistIds } from "@/db/queries";
 import {
   parseFilters,
   buildFacets,
@@ -29,7 +29,10 @@ export default async function BrowsePage({
 }) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
-  const resources = await getAllResources();
+  const [resources, saved] = await Promise.all([
+    getAllResources(),
+    getSessionWishlistIds(),
+  ]);
   const facets = buildFacets(resources);
   const results = applyFilters(resources, filters);
   const active = countActive(filters);
@@ -88,7 +91,7 @@ export default async function BrowsePage({
           {results.length > 0 ? (
             <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {results.map((r) => (
-                <ResourceCard key={r.id} resource={r} />
+                <ResourceCard key={r.id} resource={r} savedInWishlist={saved.has(r.id)} />
               ))}
             </div>
           ) : (

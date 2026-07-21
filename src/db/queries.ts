@@ -1,5 +1,6 @@
 import "server-only";
 import { and, desc, eq, or, sql } from "drizzle-orm";
+import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   resources,
@@ -265,17 +266,22 @@ export async function hasPurchased(userId: string, resourceId: string): Promise<
   return Boolean(row);
 }
 
-/** A user may review a resource if they've bought it and not reviewed it yet. */
+/** A user may review a resource if they've bought it and not reviewed it yet.
+ *  Admins own the whole library, so the purchase requirement is waived for them —
+ *  they only need to not have reviewed it already. */
 export async function canReviewResource(
   userId: string,
   resourceId: string,
+  isAdmin = false,
 ): Promise<boolean> {
-  const [bought] = await db
-    .select({ id: purchases.id })
-    .from(purchases)
-    .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
-    .limit(1);
-  if (!bought) return false;
+  if (!isAdmin) {
+    const [bought] = await db
+      .select({ id: purchases.id })
+      .from(purchases)
+      .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
+      .limit(1);
+    if (!bought) return false;
+  }
   const [reviewed] = await db
     .select({ id: reviews.id })
     .from(reviews)
@@ -299,6 +305,15 @@ export async function getWishlistedIds(userId: string): Promise<Set<string>> {
     .from(wishlists)
     .where(eq(wishlists.userId, userId));
   return new Set(rows.map((r) => r.resourceId));
+}
+
+/** Wishlisted resource ids for the currently signed-in user, or an empty set
+ *  when there's no session. Convenience for server components that render
+ *  resource grids and want each card's saved state without wiring auth. */
+export async function getSessionWishlistIds(): Promise<Set<string>> {
+  const session = await auth();
+  if (!session?.user?.id) return new Set();
+  return getWishlistedIds(session.user.id);
 }
 
 export async function getWishlist(userId: string): Promise<Resource[]> {

@@ -3,9 +3,11 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "./section-heading";
 import { ResourceCard } from "@/components/resource-card";
 import { recentResources } from "@/lib/data";
+import { getSessionWishlistIds } from "@/db/queries";
 
 /** Recently added materials: responsive card grid. Layout family: card grid. */
-export function RecentlyAdded() {
+export async function RecentlyAdded() {
+  const saved = await getSessionWishlistIds();
   return (
     <section aria-labelledby="recent-heading" className="container-page">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -38,7 +40,7 @@ export function RecentlyAdded() {
                   New
                 </span>
               ) : null}
-              <ResourceCard resource={r} />
+              <ResourceCard resource={r} savedInWishlist={saved.has(r.id)} />
             </div>
           </Reveal>
         ))}

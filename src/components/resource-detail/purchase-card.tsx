@@ -21,10 +21,12 @@ export function PurchaseCard({
   resource,
   saved = false,
   owned = false,
+  isAdmin = false,
 }: {
   resource: Resource;
   saved?: boolean;
   owned?: boolean;
+  isAdmin?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow-md)]">
@@ -64,7 +66,9 @@ export function PurchaseCard({
               </a>
             </Button>
             <p className="text-center text-sm font-medium text-emerald">
-              You already own this resource.
+              {isAdmin
+                ? "Admin access — every resource is yours to download."
+                : "You already own this resource."}
             </p>
           </>
         ) : (

@@ -28,14 +28,17 @@ export async function submitReview(
   const text = String(body ?? "").trim();
   if (text.length < 10) return { ok: false, error: "Please write at least a sentence." };
 
-  // Must have purchased it.
-  const [bought] = await db
-    .select({ id: purchases.id })
-    .from(purchases)
-    .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
-    .limit(1);
-  if (!bought) {
-    return { ok: false, error: "You can review a resource once you've purchased it." };
+  // Must have purchased it — admins own the whole library, so they may review
+  // anything.
+  if (session.user.role !== "admin") {
+    const [bought] = await db
+      .select({ id: purchases.id })
+      .from(purchases)
+      .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
+      .limit(1);
+    if (!bought) {
+      return { ok: false, error: "You can review a resource once you've purchased it." };
+    }
   }
 
   // One review per user per resource.

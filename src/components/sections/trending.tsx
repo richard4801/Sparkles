@@ -3,9 +3,11 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "./section-heading";
 import { ResourceCard } from "@/components/resource-card";
 import { trendingResources } from "@/lib/data";
+import { getSessionWishlistIds } from "@/db/queries";
 
 /** Trending resources: horizontal scroll-snap carousel. Layout family: carousel. */
-export function Trending() {
+export async function Trending() {
+  const saved = await getSessionWishlistIds();
   return (
     <section aria-labelledby="trending-heading" className="overflow-hidden">
       <div className="container-page">
@@ -23,7 +25,7 @@ export function Trending() {
               key={r.id}
               className="w-[80%] shrink-0 snap-start sm:w-[46%] lg:w-[23rem]"
             >
-              <ResourceCard resource={r} />
+              <ResourceCard resource={r} savedInWishlist={saved.has(r.id)} />
             </div>
           ))}
           <div className="flex w-[80%] shrink-0 snap-start items-center justify-center sm:w-[46%] lg:w-[23rem]">

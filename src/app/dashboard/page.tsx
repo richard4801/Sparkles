@@ -10,7 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { spendSeries, recentlyViewed } from "@/lib/dashboard-data";
 import { requireUser } from "@/lib/require-user";
-import { getDashStats, getAllResources, getPurchases } from "@/db/queries";
+import { getDashStats, getAllResources, getPurchases, getWishlistedIds } from "@/db/queries";
 import { recommendForUser } from "@/lib/ai/recommend";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { BarChart } from "@/components/dashboard/bar-chart";
@@ -22,6 +22,7 @@ export default async function DashboardOverview() {
   const dashStats = await getDashStats(user.id);
   const all = await getAllResources();
   const purchases = await getPurchases(user.id);
+  const saved = await getWishlistedIds(user.id);
   const ownedIds = new Set(purchases.map((p) => p.resourceId));
   const owned = all.filter((r) => ownedIds.has(r.id));
   const recommended = recommendForUser(owned, all, 3);
@@ -132,7 +133,7 @@ export default async function DashboardOverview() {
         </div>
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {recommended.map((r) => (
-            <ResourceCard key={r.id} resource={r} />
+            <ResourceCard key={r.id} resource={r} savedInWishlist={saved.has(r.id)} />
           ))}
         </div>
       </section>
