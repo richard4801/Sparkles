@@ -83,7 +83,7 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       {/* Revenue + categories */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.4fr_1fr] [&>section]:min-w-0">
         <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
           <div className="flex items-center justify-between">
             <div>
@@ -108,7 +108,7 @@ export default async function AdminAnalyticsPage() {
         <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
           <h2 className="font-display text-lg font-bold text-foreground">Categories</h2>
           <p className="text-sm text-muted-foreground">By total downloads.</p>
-          <ul className="mt-5 grid gap-3.5">
+          <ul className="mt-5 grid grid-cols-1 gap-3.5">
             {categories.map((c) => (
               <li key={c.name}>
                 <div className="mb-1 flex items-center justify-between text-sm">
@@ -128,7 +128,7 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       {/* Top resources + search trends */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2 [&>section]:min-w-0">
         <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-lg font-bold text-foreground">Top resources</h2>
@@ -139,7 +139,7 @@ export default async function AdminAnalyticsPage() {
               Manage
             </Link>
           </div>
-          <ul className="mt-4 grid gap-1">
+          <ul className="mt-4 grid grid-cols-1 gap-1">
             {topResources.map((r, i) => (
               <li key={r.id}>
                 <Link

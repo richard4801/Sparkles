@@ -69,10 +69,16 @@ function SidebarNav({
   isAdmin?: boolean;
   onNavigate?: () => void;
 }) {
+  // Admins get a focused operator sidebar — the personal buyer sections
+  // (purchases, downloads, wishlist, saved searches, personal orders,
+  // notifications) are hidden to keep the admin view about running the store.
+  const adminKeep = new Set(["/dashboard", "/dashboard/assistant", "/dashboard/settings"]);
+  const personalNav = isAdmin ? dashNav.filter((i) => adminKeep.has(i.href)) : dashNav;
+
   return (
     <div className="grid gap-1">
       <nav className="grid gap-1" aria-label="Dashboard">
-        {dashNav.map((item) => (
+        {personalNav.map((item) => (
           <NavLink key={item.href} item={item} onNavigate={onNavigate} />
         ))}
       </nav>
