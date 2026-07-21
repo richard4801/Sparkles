@@ -48,7 +48,10 @@ None are required for Phase 1. Later phases will add secrets (set them under
 | `FLUTTERWAVE_WEBHOOK_HASH` | Phase 4b | Shared secret set in the Flutterwave dashboard |
 | `ANTHROPIC_API_KEY` | optional | Enables Claude answers in the Study Assistant (Phase 5); AI runs in local mode without it |
 | `ANTHROPIC_MODEL` | optional | Override the Claude model id used for AI answers |
-| `NEXT_PUBLIC_SITE_URL` | optional | Production URL used in `/llms.txt` links |
+| `NEXT_PUBLIC_SITE_URL` | recommended | Production URL — used in `/llms.txt` and in email links |
+| `BLOB_READ_WRITE_TOKEN` | for uploads | Vercel Blob token (auto-provisioned when you add Blob storage); enables admin file uploads |
+| `RESEND_API_KEY` | for email | Resend API key; without it emails are logged, not sent |
+| `EMAIL_FROM` | for email | Sender address on your verified Resend domain |
 
 See **DATABASE.md** for provisioning Postgres and running migrations/seed.
 
@@ -72,6 +75,30 @@ The Study Assistant, semantic search, recommendations and smart tags all work
 with **no keys** (local heuristic mode). Add `ANTHROPIC_API_KEY` to enable
 Claude-generated answers in the assistant. A live catalog index for AI agents is
 served at `/llms.txt`. See **AI.md** for the full architecture.
+
+## Downloads (Vercel Blob)
+
+Buyers download files through the gated `/api/download/[resourceId]` route — it
+verifies the purchase, then streams the file. To store real files:
+
+1. In the Vercel dashboard, open **Storage → Create → Blob** and connect it to
+   the project. `BLOB_READ_WRITE_TOKEN` is added automatically.
+2. In the admin panel, edit a resource and use **Downloadable file** to upload
+   its PDF/Word document (up to 25MB).
+
+Until a resource has a file, buyers receive a generated placeholder PDF, so the
+purchase → download flow always works.
+
+## Email (Resend)
+
+Receipts, password-reset and email-verification messages are sent via Resend.
+
+1. Create a free account at <https://resend.com>, add and verify your domain.
+2. Set `RESEND_API_KEY` and `EMAIL_FROM` (an address on your verified domain).
+
+Without a key, emails are logged to the server console instead of being sent —
+nothing else breaks. For local testing you can send from Resend's
+`onboarding@resend.dev`, which only delivers to your own account email.
 
 ## Notes
 

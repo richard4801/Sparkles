@@ -6,6 +6,7 @@ import { EnvelopeSimple, ArrowLeft, CheckCircle } from "@phosphor-icons/react";
 import { Field } from "./field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { requestPasswordReset } from "@/lib/account-actions";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -13,6 +14,7 @@ export function ForgotForm() {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState<string>();
   const [sent, setSent] = React.useState(false);
+  const [pending, startTransition] = React.useTransition();
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,7 +23,11 @@ export function ForgotForm() {
       return;
     }
     setError(undefined);
-    setSent(true);
+    startTransition(async () => {
+      const res = await requestPasswordReset(email);
+      if (res.ok) setSent(true);
+      else setError(res.error ?? "Something went wrong.");
+    });
   }
 
   if (sent) {
@@ -79,8 +85,8 @@ export function ForgotForm() {
             className="h-12"
           />
         </Field>
-        <Button type="submit" size="lg" className="w-full">
-          Send reset link
+        <Button type="submit" size="lg" disabled={pending} className="w-full">
+          {pending ? "Sending…" : "Send reset link"}
         </Button>
       </form>
 

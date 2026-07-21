@@ -32,11 +32,11 @@ export default function TermsPage() {
           your institution&apos;s rules.
         </p>
 
-        <h2>3. Selling resources</h2>
+        <h2>3. Our content</h2>
         <p>
-          If you list a resource you confirm that you own it or have the right to sell it,
-          that it does not infringe anyone&apos;s copyright, and that it is your original work
-          or properly attributed. Sparklyn may remove any listing that breaches these terms.
+          Resources in the catalogue are curated and provided by Sparklyn. They remain the
+          property of Sparklyn or its licensors, and are made available to you under the
+          personal licence described above. You may not copy, redistribute or resell them.
         </p>
 
         <h2>4. Academic integrity</h2>

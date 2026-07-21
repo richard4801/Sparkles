@@ -51,19 +51,18 @@ export default async function CheckoutSuccessPage({
                     {formatNaira(it.priceNaira)}
                   </p>
                 </div>
-                <Button
-                  asChild
-                  size="sm"
-                  variant="subtle"
-                >
-                  <a
-                    href={it.resourceId ? `/resource/${it.resourceId}` : "#"}
-                    aria-label={`Download ${it.title}`}
-                  >
-                    <DownloadSimple weight="bold" className="size-4" aria-hidden />
-                    Download
-                  </a>
-                </Button>
+                {it.resourceId ? (
+                  <Button asChild size="sm" variant="subtle">
+                    <a
+                      href={`/api/download/${it.resourceId}`}
+                      download
+                      aria-label={`Download ${it.title}`}
+                    >
+                      <DownloadSimple weight="bold" className="size-4" aria-hidden />
+                      Download
+                    </a>
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { signIn, signOut } from "@/auth";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+import { sendVerificationFor } from "@/lib/account-actions";
 
 export interface AuthActionState {
   error?: string;
@@ -58,6 +59,7 @@ export async function registerAction(
 
   const passwordHash = await bcrypt.hash(password, 10);
   await db.insert(users).values({ name, email, passwordHash });
+  await sendVerificationFor(email); // best-effort welcome/verify email
 
   try {
     await signIn("credentials", { email, password, redirectTo: "/dashboard" });

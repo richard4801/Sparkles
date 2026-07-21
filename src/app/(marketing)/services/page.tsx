@@ -6,7 +6,7 @@ import {
   Presentation,
   ChartLineUp,
   Sparkle,
-  Storefront,
+  SealCheck,
 } from "@phosphor-icons/react/dist/ssr";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Button } from "@/components/ui/button";
@@ -44,9 +44,9 @@ const services = [
     body: "Ask in plain language and get pointed to the most relevant resources in the catalogue instantly.",
   },
   {
-    icon: Storefront,
-    title: "Sell your own work",
-    body: "Turn the resources you've written into income — list them, set your price and earn on every sale.",
+    icon: SealCheck,
+    title: "Vetted for quality",
+    body: "Every resource in the catalogue is reviewed and curated by the Sparklyn team before it goes live — so you can trust what you download.",
   },
 ];
 

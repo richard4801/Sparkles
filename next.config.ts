@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "i.pravatar.cc" },
     ],
   },
+  experimental: {
+    // Admin resource-file uploads go through a server action; allow larger PDFs.
+    serverActions: { bodySizeLimit: "25mb" },
+  },
 };
 
 export default nextConfig;

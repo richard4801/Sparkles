@@ -13,6 +13,7 @@ import {
 import { requireAdmin } from "@/lib/require-admin";
 import { slugify } from "@/lib/utils";
 import { CATEGORY_ACCENTS } from "@/lib/catalog";
+import { storageConfigured, uploadResourceFile } from "@/lib/storage";
 
 export interface ActionResult {
   ok: boolean;
@@ -106,7 +107,9 @@ export async function createResource(fd: FormData): Promise<ActionResult> {
     id = `${base}-${Math.random().toString(36).slice(2, 6)}`;
   }
 
-  await db.insert(resources).values({ id, ...v });
+  const up = await readFileUpload(fd, id);
+  if (!up.ok) return up;
+  await db.insert(resources).values({ id, ...v, ...up.fields });
   revalidateCatalog(id);
   redirect("/dashboard/admin/resources");
 }
@@ -117,9 +120,35 @@ export async function updateResource(id: string, fd: FormData): Promise<ActionRe
   const err = validateResource(v);
   if (err) return { ok: false, error: err };
 
-  await db.update(resources).set(v).where(eq(resources.id, id));
+  const up = await readFileUpload(fd, id);
+  if (!up.ok) return up;
+  await db.update(resources).set({ ...v, ...up.fields }).where(eq(resources.id, id));
   revalidateCatalog(id);
   redirect("/dashboard/admin/resources");
+}
+
+/** Reads an optional uploaded file from the form and stores it in Blob. */
+async function readFileUpload(
+  fd: FormData,
+  resourceId: string,
+): Promise<
+  | { ok: true; fields: { fileUrl?: string; fileName?: string } }
+  | { ok: false; error: string }
+> {
+  const file = fd.get("file");
+  if (!(file instanceof File) || file.size === 0) return { ok: true, fields: {} };
+  if (!storageConfigured()) {
+    return {
+      ok: false,
+      error: "File storage isn't set up yet — add Vercel Blob to your project to upload files.",
+    };
+  }
+  try {
+    const uploaded = await uploadResourceFile(file, resourceId);
+    return { ok: true, fields: { fileUrl: uploaded.url, fileName: uploaded.name } };
+  } catch {
+    return { ok: false, error: "File upload failed. Please try again." };
+  }
 }
 
 export async function deleteResource(id: string): Promise<ActionResult> {

@@ -674,8 +674,8 @@ export const faqs: Faq[] = [
     a: "Yes. If the resource you downloaded is clearly different from what was described on its page, contact support within 48 hours and we will refund or replace it.",
   },
   {
-    q: "How do you make sure the work is original?",
-    a: "Every upload is screened for duplicate content before it goes live, and each listing shows the source institution so you can judge originality yourself. We still recommend using materials as a guide, not for direct submission.",
+    q: "How do you make sure the work is good quality?",
+    a: "Every resource is reviewed and curated by the Sparklyn team before it goes live, and each one shows its source institution so you can judge it yourself. We still recommend using materials as a study guide, not for direct submission.",
   },
   {
     q: "What file formats are the resources available in?",

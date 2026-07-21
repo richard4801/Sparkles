@@ -1,7 +1,5 @@
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { sql } from "drizzle-orm";
-import bcrypt from "bcryptjs";
 import * as schema from "./schema";
 import {
   resources as mockResources,
@@ -9,14 +7,6 @@ import {
   universities as mockUniversities,
   reviews as mockReviews,
 } from "../lib/data";
-import {
-  currentUser,
-  purchases as mockPurchases,
-  orders as mockOrders,
-  downloadHistory,
-  savedSearches as mockSaved,
-  notifications as mockNotifs,
-} from "../lib/dashboard-data";
 
 function slugify(v: string) {
   return v
@@ -32,22 +22,20 @@ function shortNameFrom(name: string) {
   return name.split(/\s+/)[0].slice(0, 6).toUpperCase();
 }
 
+/**
+ * Seeds the catalogue only — categories, universities, resources and reviews.
+ * No user accounts are created: Sparklyn is a first-party library, so real
+ * users register through the app. To grant yourself admin, run:
+ *   UPDATE users SET role = 'admin' WHERE email = 'you@example.com';
+ */
 async function main() {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   const db = drizzle(pool, { schema });
 
-  console.log("Clearing existing rows...");
-  await db.execute(sql`
-    TRUNCATE TABLE
-      notifications, saved_searches, downloads, wishlists,
-      order_items, orders, purchases, reviews, resources,
-      users, categories, universities
-    RESTART IDENTITY CASCADE
-  `);
-
-  // Categories
+  // Non-destructive: insert catalogue rows that don't already exist. Safe to run
+  // against a live database — it never touches users or their purchases.
   console.log("Seeding categories...");
-  const insertedCats = await db
+  await db
     .insert(schema.categories)
     .values(
       mockCategories.map((c) => ({
@@ -57,8 +45,9 @@ async function main() {
         accent: c.accent,
       })),
     )
-    .returning();
-  const catBySlug = new Map(insertedCats.map((c) => [c.slug, c.id]));
+    .onConflictDoNothing();
+  const allCats = await db.select().from(schema.categories);
+  const catBySlug = new Map(allCats.map((c) => [c.slug, c.id]));
 
   // Universities: from the mock list + any institution referenced by a resource.
   console.log("Seeding universities...");
@@ -81,11 +70,12 @@ async function main() {
       });
     }
   }
-  const insertedUnis = await db
+  await db
     .insert(schema.universities)
     .values([...uniByName.values()])
-    .returning();
-  const uniIdByName = new Map(insertedUnis.map((u) => [u.name, u.id]));
+    .onConflictDoNothing();
+  const allUnis = await db.select().from(schema.universities);
+  const uniIdByName = new Map(allUnis.map((u) => [u.name, u.id]));
 
   // Resources
   console.log(`Seeding ${mockResources.length} resources...`);
@@ -119,124 +109,28 @@ async function main() {
         createdAt: new Date(Date.now() - r.addedDaysAgo * 86_400_000),
       };
     }),
-  );
+  ).onConflictDoNothing();
 
-  // Reviews
+  // Reviews (catalogue seed data; no user attribution)
   console.log(`Seeding ${mockReviews.length} reviews...`);
-  await db.insert(schema.reviews).values(
-    mockReviews.map((rv) => ({
-      id: rv.id,
-      resourceId: rv.resourceId,
-      name: rv.name,
-      avatarSeed: rv.avatarSeed,
-      rating: rv.rating,
-      date: rv.date,
-      body: rv.body,
-    })),
-  );
-
-  // Users: a populated demo account + an admin.
-  console.log("Seeding users...");
-  const [demo] = await db
-    .insert(schema.users)
-    .values({
-      name: currentUser.name,
-      email: "demo@sparklyn.ng",
-      passwordHash: await bcrypt.hash("password123", 10),
-      avatarSeed: currentUser.avatarSeed,
-      institution: currentUser.institution,
-      department: currentUser.department,
-      level: currentUser.level,
-      role: "user",
-      emailVerified: new Date(),
-    })
-    .returning();
-  await db.insert(schema.users).values({
-    name: "Sparklyn Admin",
-    email: "admin@sparklyn.ng",
-    passwordHash: await bcrypt.hash("admin123", 10),
-    avatarSeed: "sparklyn-admin",
-    role: "admin",
-    emailVerified: new Date(),
-  });
-
-  // Demo user's commerce + activity
-  console.log("Seeding demo account activity...");
-  await db.insert(schema.purchases).values(
-    mockPurchases.map((p) => ({
-      id: p.id,
-      userId: demo.id,
-      resourceId: p.resourceId,
-      priceNaira: p.priceNaira,
-      purchasedOn: p.purchasedOn,
-      downloads: p.downloads,
-    })),
-  );
-
-  for (const o of mockOrders) {
-    await db.insert(schema.orders).values({
-      id: o.id,
-      userId: demo.id,
-      date: o.date,
-      totalNaira: o.totalNaira,
-      status: o.status,
-      method: o.method,
-    });
-    await db.insert(schema.orderItems).values(
-      o.items.map((title) => ({
-        orderId: o.id,
-        resourceId: mockResources.find((r) => r.title === title)?.id ?? null,
-        title,
-        priceNaira: 0,
+  await db
+    .insert(schema.reviews)
+    .values(
+      mockReviews.map((rv) => ({
+        id: rv.id,
+        resourceId: rv.resourceId,
+        name: rv.name,
+        avatarSeed: rv.avatarSeed,
+        rating: rv.rating,
+        date: rv.date,
+        body: rv.body,
       })),
-    );
-  }
-
-  await db.insert(schema.downloads).values(
-    downloadHistory.map((d) => ({
-      id: d.id,
-      userId: demo.id,
-      resourceId: d.resourceId,
-      title: d.title,
-      type: d.type,
-      downloadedOn: d.downloadedOn,
-      sizeMb: d.sizeMb,
-    })),
-  );
-
-  await db.insert(schema.savedSearches).values(
-    mockSaved.map((s) => ({
-      id: s.id,
-      userId: demo.id,
-      query: s.query,
-      filtersLabel: s.filtersLabel,
-      newMatches: s.newMatches,
-      savedOn: s.savedOn,
-    })),
-  );
-
-  await db.insert(schema.notifications).values(
-    mockNotifs.map((n) => ({
-      id: n.id,
-      userId: demo.id,
-      kind: n.kind,
-      title: n.title,
-      body: n.body,
-      time: n.time,
-      read: n.read,
-    })),
-  );
-
-  // A small wishlist for the demo user.
-  const wishlistResourceIds = mockResources.slice(2, 2 + 5).map((r) => r.id);
-  await db.insert(schema.wishlists).values(
-    wishlistResourceIds.map((resourceId) => ({ userId: demo.id, resourceId })),
-  );
+    )
+    .onConflictDoNothing();
 
   await pool.end();
-  console.log("Seed complete.");
-  console.log("  Demo login:  demo@sparklyn.ng / password123");
-  console.log("  Admin login: admin@sparklyn.ng / admin123");
+  console.log("Seed complete — catalogue only. Register a real account in the app,");
+  console.log("then grant admin with: UPDATE users SET role='admin' WHERE email='you@example.com';");
 }
 
 main().catch((err) => {
