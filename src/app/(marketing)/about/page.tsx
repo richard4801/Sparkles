@@ -34,7 +34,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About us"
         title="Helping Nigerian students learn faster"
-        subtitle="Sparklyn is a marketplace for vetted academic resources — and a way for students to earn from the work they've already put in."
+        subtitle="Sparklyn is a curated library of vetted academic resources — quality research projects, past questions and study material, all in one place."
       />
 
       <section className="container-page py-14 lg:py-20">
@@ -43,14 +43,14 @@ export default function AboutPage() {
           <p className="mt-4 leading-relaxed text-muted-foreground">
             Finding good project references, past questions or seminar papers in Nigeria
             usually means trawling group chats, paying for photocopies sight-unseen, or
-            starting from scratch. Meanwhile, thousands of students have already written
-            excellent work that never reaches anyone else.
+            starting from scratch. Quality material is scattered, hard to judge before you
+            pay, and often never reaches the students who need it.
           </p>
           <p className="mt-3 leading-relaxed text-muted-foreground">
-            Sparklyn connects those two sides. Students who need resources can search,
-            preview and download in minutes. Students who&apos;ve created resources can list
-            them and earn on every sale. Everything is vetted, reviewed and priced fairly —
-            with secure local payments and instant delivery.
+            Sparklyn fixes that. We build and curate a single, vetted library of academic
+            resources so students can search, preview and download exactly what they need in
+            minutes — everything reviewed for quality, fairly priced, with secure local
+            payments and instant delivery.
           </p>
         </div>
 

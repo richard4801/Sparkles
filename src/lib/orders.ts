@@ -7,8 +7,10 @@ import {
   orderItems,
   purchases,
   notifications,
+  users,
 } from "@/db/schema";
 import type { CartItem } from "@/lib/cart";
+import { sendReceiptEmail } from "@/lib/email";
 
 function today() {
   return new Date().toLocaleDateString("en-GB", {
@@ -116,6 +118,26 @@ export async function fulfillOrder(reference: string): Promise<boolean> {
       read: false,
     })
     .onConflictDoNothing();
+
+  // Email a receipt (best-effort — never block fulfilment on email).
+  try {
+    const [buyer] = await db
+      .select({ email: users.email })
+      .from(users)
+      .where(eq(users.id, order.userId))
+      .limit(1);
+    if (buyer?.email) {
+      await sendReceiptEmail({
+        to: buyer.email,
+        orderId: reference,
+        items: items.map((it) => ({ title: it.title, priceNaira: it.priceNaira })),
+        totalNaira: order.totalNaira,
+        method: order.method,
+      });
+    }
+  } catch {
+    // ignore email failures
+  }
 
   return true;
 }

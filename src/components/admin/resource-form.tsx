@@ -29,6 +29,7 @@ export interface ResourceInitial {
   year: number;
   thumbnailSeed: string;
   trending: boolean;
+  fileName?: string | null;
 }
 
 interface Option {
@@ -256,6 +257,27 @@ export function ResourceForm({
           <span className="text-sm font-medium text-foreground">Mark as trending</span>
         </label>
       </Card>
+
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
+        <h2 className="font-display text-lg font-bold text-foreground">Downloadable file</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          The document buyers receive. PDF or Word, up to 25MB.
+          {initial.fileName ? (
+            <>
+              {" "}Current file: <span className="font-medium text-foreground">{initial.fileName}</span>.
+              Upload a new one to replace it.
+            </>
+          ) : (
+            " Until you upload one, buyers get a placeholder PDF."
+          )}
+        </p>
+        <input
+          type="file"
+          name="file"
+          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-primary-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-[#e3ddfc]"
+        />
+      </section>
 
       <div className="flex items-center gap-3">
         <Button type="submit" size="md" disabled={pending}>

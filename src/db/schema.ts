@@ -59,6 +59,8 @@ export const resources = pgTable(
     year: integer("year").notNull(),
     thumbnailSeed: text("thumbnail_seed").notNull(),
     trending: boolean("trending").notNull().default(false),
+    fileUrl: text("file_url"), // Blob URL of the downloadable file (null = placeholder)
+    fileName: text("file_name"), // original filename for the download
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
@@ -238,3 +240,17 @@ export const contactMessages = pgTable("contact_messages", {
   message: text("message").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+/** Single-use tokens for password reset and email verification. */
+export const verificationTokens = pgTable(
+  "verification_tokens",
+  {
+    id: serial("id").primaryKey(),
+    identifier: text("identifier").notNull(), // email
+    token: text("token").notNull().unique(),
+    type: text("type").notNull(), // password_reset | email_verify
+    expires: timestamp("expires", { withTimezone: true }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("verification_tokens_identifier_idx").on(t.identifier)],
+);

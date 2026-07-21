@@ -53,9 +53,11 @@ export default async function PurchasesPage() {
               <span className="font-display font-bold text-foreground">
                 {formatNaira(p.priceNaira)}
               </span>
-              <Button size="sm">
-                <DownloadSimple weight="bold" className="size-4" aria-hidden />
-                Download
+              <Button asChild size="sm">
+                <a href={`/api/download/${p.resourceId}`} download>
+                  <DownloadSimple weight="bold" className="size-4" aria-hidden />
+                  Download
+                </a>
               </Button>
             </div>
           </li>

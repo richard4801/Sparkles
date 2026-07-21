@@ -43,6 +43,7 @@ export default async function EditResourcePage({
     year: row.year,
     thumbnailSeed: row.thumbnailSeed,
     trending: row.trending,
+    fileName: row.fileName,
   };
 
   return (

@@ -20,9 +20,11 @@ const includes = [
 export function PurchaseCard({
   resource,
   saved = false,
+  owned = false,
 }: {
   resource: Resource;
   saved?: boolean;
+  owned?: boolean;
 }) {
   return (
     <div className="rounded-2xl border border-border bg-surface p-5 shadow-[var(--shadow-md)]">
@@ -53,21 +55,37 @@ export function PurchaseCard({
       </div>
 
       <div className="mt-5 grid gap-2.5">
-        <Button asChild size="lg" className="w-full">
-          <a href="#buy" id="buy">
-            <Lightning weight="fill" className="size-5" aria-hidden />
-            Buy and download now
-          </a>
-        </Button>
-        <AddToCart
-          item={{
-            id: resource.id,
-            title: resource.title,
-            priceNaira: resource.priceNaira,
-            thumbnailSeed: resource.thumbnailSeed,
-            type: resource.type,
-          }}
-        />
+        {owned ? (
+          <>
+            <Button asChild size="lg" className="w-full">
+              <a href={`/api/download/${resource.id}`} download id="buy">
+                <DownloadSimple weight="bold" className="size-5" aria-hidden />
+                Download now
+              </a>
+            </Button>
+            <p className="text-center text-sm font-medium text-emerald">
+              You already own this resource.
+            </p>
+          </>
+        ) : (
+          <>
+            <Button asChild size="lg" className="w-full">
+              <a href="#buy" id="buy">
+                <Lightning weight="fill" className="size-5" aria-hidden />
+                Buy and download now
+              </a>
+            </Button>
+            <AddToCart
+              item={{
+                id: resource.id,
+                title: resource.title,
+                priceNaira: resource.priceNaira,
+                thumbnailSeed: resource.thumbnailSeed,
+                type: resource.type,
+              }}
+            />
+          </>
+        )}
       </div>
 
       <ul className="mt-5 grid gap-2.5 border-t border-border pt-5">

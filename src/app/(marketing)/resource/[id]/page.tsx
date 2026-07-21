@@ -16,6 +16,7 @@ import {
   getAllResources,
   isWishlisted,
   canReviewResource,
+  hasPurchased,
 } from "@/db/queries";
 import { auth } from "@/auth";
 import { similarResources } from "@/lib/ai/recommend";
@@ -68,6 +69,9 @@ export default async function ResourcePage({
     : false;
   const canReview = session?.user?.id
     ? await canReviewResource(session.user.id, resource.id)
+    : false;
+  const owned = session?.user?.id
+    ? await hasPurchased(session.user.id, resource.id)
     : false;
 
   const meta = [
@@ -244,7 +248,7 @@ export default async function ResourcePage({
         {/* Sticky purchase column (desktop) */}
         <aside className="mt-8 hidden lg:mt-0 lg:block">
           <div className="lg:sticky lg:top-24">
-            <PurchaseCard resource={resource} saved={saved} />
+            <PurchaseCard resource={resource} saved={saved} owned={owned} />
           </div>
         </aside>
       </div>

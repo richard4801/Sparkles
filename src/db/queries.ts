@@ -256,6 +256,15 @@ export async function getNotifications(userId: string): Promise<DashNotification
   }));
 }
 
+export async function hasPurchased(userId: string, resourceId: string): Promise<boolean> {
+  const [row] = await db
+    .select({ id: purchases.id })
+    .from(purchases)
+    .where(and(eq(purchases.userId, userId), eq(purchases.resourceId, resourceId)))
+    .limit(1);
+  return Boolean(row);
+}
+
 /** A user may review a resource if they've bought it and not reviewed it yet. */
 export async function canReviewResource(
   userId: string,
