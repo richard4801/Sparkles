@@ -110,6 +110,7 @@ function SidebarFooter() {
 }
 
 function UserMenu({ user, unread }: { user: ShellUser; unread: number }) {
+  const [, startLogout] = React.useTransition();
   return (
     <div className="flex items-center gap-1.5">
       <Link
@@ -174,16 +175,17 @@ function UserMenu({ user, unread }: { user: ShellUser; unread: number }) {
               </Link>
             </DropdownMenu.Item>
             <div className="my-1 h-px bg-border" />
-            <DropdownMenu.Item asChild>
-              <form action={logoutAction}>
-                <button
-                  type="submit"
-                  className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-rose outline-none transition-colors hover:bg-rose/5 data-[highlighted]:bg-rose/5"
-                >
-                  <SignOut weight="bold" className="size-4" aria-hidden />
-                  Log out
-                </button>
-              </form>
+            <DropdownMenu.Item
+              onSelect={(e) => {
+                // Radix closes (unmounts) the menu on select, which cancels a
+                // nested <form> submit — so trigger the sign-out action here.
+                e.preventDefault();
+                startLogout(() => logoutAction());
+              }}
+              className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-rose outline-none transition-colors hover:bg-rose/5 data-[highlighted]:bg-rose/5"
+            >
+              <SignOut weight="bold" className="size-4" aria-hidden />
+              Log out
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>

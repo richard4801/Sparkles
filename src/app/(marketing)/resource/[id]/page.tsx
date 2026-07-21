@@ -234,7 +234,10 @@ export default async function ResourcePage({
           <div className="mt-10">
             <PreviewGallery
               resourceId={resource.id}
-              seed={resource.thumbnailSeed}
+              title={resource.title}
+              type={resource.type}
+              abstract={resource.abstract}
+              tableOfContents={resource.tableOfContents}
               pages={resource.pages}
             />
           </div>
