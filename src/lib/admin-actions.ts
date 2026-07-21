@@ -146,8 +146,11 @@ async function readFileUpload(
   try {
     const uploaded = await uploadResourceFile(file, resourceId);
     return { ok: true, fields: { fileUrl: uploaded.url, fileName: uploaded.name } };
-  } catch {
-    return { ok: false, error: "File upload failed. Please try again." };
+  } catch (err) {
+    console.error("[blob upload] failed:", err);
+    const detail =
+      err instanceof Error ? err.message : typeof err === "string" ? err : "Unknown error";
+    return { ok: false, error: `File upload failed: ${detail}` };
   }
 }
 
