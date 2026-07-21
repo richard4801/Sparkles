@@ -1,13 +1,17 @@
 import Image from "next/image";
-import { LockSimple } from "@phosphor-icons/react/dist/ssr";
+import { LockSimple, FilePdf } from "@phosphor-icons/react/dist/ssr";
+import { Button } from "@/components/ui/button";
 import { picsum } from "@/lib/utils";
 
 /** Document preview pages. The first pages are readable; later pages are locked
- *  behind purchase. These are real page-image placeholders, not fake UI. */
+ *  behind purchase. These are real page-image placeholders, not fake UI. A real,
+ *  truncated preview PDF is available to read before buying. */
 export function PreviewGallery({
+  resourceId,
   seed,
   pages,
 }: {
+  resourceId: string;
   seed: string;
   pages: number;
 }) {
@@ -57,6 +61,23 @@ export function PreviewGallery({
             )}
           </div>
         ))}
+      </div>
+
+      <div className="mt-5 flex flex-col items-start gap-2 rounded-xl border border-border bg-surface-subtle/50 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-muted-foreground">
+          Read the opening pages as a real PDF — the premium preview cuts off
+          halfway.
+        </p>
+        <Button asChild variant="outline" size="sm" className="shrink-0">
+          <a
+            href={`/api/preview/${resourceId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FilePdf weight="bold" className="size-4" aria-hidden />
+            Read free preview
+          </a>
+        </Button>
       </div>
     </section>
   );

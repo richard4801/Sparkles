@@ -13,6 +13,7 @@ import {
   CaretDown,
   ArrowRight,
 } from "@phosphor-icons/react";
+import Image from "next/image";
 import { Logo } from "./logo";
 import { Button } from "@/components/ui/button";
 import { CategoryIcon } from "@/components/category-icon";
@@ -22,7 +23,13 @@ import {
   getCartSnapshot,
   getCartServerSnapshot,
 } from "@/lib/cart";
-import { cn } from "@/lib/utils";
+import { logoutAction } from "@/lib/auth-actions";
+import { avatar, cn } from "@/lib/utils";
+
+export interface NavUser {
+  name: string;
+  avatarSeed: string;
+}
 
 const resourceTypes = [
   { label: "Research Projects", desc: "Full final-year projects", href: "/browse?type=research-project" },
@@ -185,7 +192,7 @@ function BrowseMega() {
   );
 }
 
-function MobileDrawer() {
+function MobileDrawer({ user }: { user?: NavUser }) {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -265,12 +272,42 @@ function MobileDrawer() {
           </nav>
 
           <div className="mt-auto flex flex-col gap-3 pt-8">
-            <Button asChild variant="outline" size="lg">
-              <a href="/login">Log in</a>
-            </Button>
-            <Button asChild size="lg">
-              <a href="/register">Create free account</a>
-            </Button>
+            {user ? (
+              <>
+                <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface-subtle px-3.5 py-3">
+                  <Image
+                    src={avatar(user.avatarSeed)}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="size-10 rounded-full object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-foreground">
+                      {user.name || "Your account"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Signed in</p>
+                  </div>
+                </div>
+                <Button asChild size="lg">
+                  <a href="/dashboard">Go to dashboard</a>
+                </Button>
+                <form action={logoutAction}>
+                  <Button type="submit" variant="outline" size="lg" className="w-full">
+                    Log out
+                  </Button>
+                </form>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="lg">
+                  <a href="/login">Log in</a>
+                </Button>
+                <Button asChild size="lg">
+                  <a href="/register">Create free account</a>
+                </Button>
+              </>
+            )}
           </div>
         </Dialog.Content>
       </Dialog.Portal>
@@ -305,7 +342,7 @@ function IconLink({
   );
 }
 
-export function Navbar() {
+export function Navbar({ user }: { user?: NavUser }) {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = React.useState(false);
   useMotionValueEvent(scrollY, "change", (y) => {
@@ -358,15 +395,35 @@ export function Navbar() {
           </IconLink>
 
           <div className="ml-1 hidden items-center gap-2 lg:flex">
-            <Button asChild variant="ghost" size="sm">
-              <a href="/login">Log in</a>
-            </Button>
-            <Button asChild size="sm">
-              <a href="/register">Get started</a>
-            </Button>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 rounded-full py-1 pl-1 pr-3 transition-colors hover:bg-surface-subtle"
+              >
+                <Image
+                  src={avatar(user.avatarSeed)}
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="size-8 rounded-full object-cover"
+                />
+                <span className="text-sm font-semibold text-foreground">
+                  {user.name.split(" ")[0] || "Account"}
+                </span>
+              </Link>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <a href="/login">Log in</a>
+                </Button>
+                <Button asChild size="sm">
+                  <a href="/register">Get started</a>
+                </Button>
+              </>
+            )}
           </div>
 
-          <MobileDrawer />
+          <MobileDrawer user={user} />
         </div>
       </div>
     </header>

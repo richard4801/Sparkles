@@ -64,14 +64,16 @@ export default async function ResourcePage({
   const tags = smartTags(resource);
 
   const session = await auth();
+  const isAdmin = session?.user?.role === "admin";
   const saved = session?.user?.id
     ? await isWishlisted(session.user.id, resource.id)
     : false;
   const canReview = session?.user?.id
-    ? await canReviewResource(session.user.id, resource.id)
+    ? await canReviewResource(session.user.id, resource.id, isAdmin)
     : false;
+  // Admins own the entire library, so they can download without purchasing.
   const owned = session?.user?.id
-    ? await hasPurchased(session.user.id, resource.id)
+    ? isAdmin || (await hasPurchased(session.user.id, resource.id))
     : false;
 
   const meta = [
@@ -230,7 +232,11 @@ export default async function ResourcePage({
 
           {/* Preview */}
           <div className="mt-10">
-            <PreviewGallery seed={resource.thumbnailSeed} pages={resource.pages} />
+            <PreviewGallery
+              resourceId={resource.id}
+              seed={resource.thumbnailSeed}
+              pages={resource.pages}
+            />
           </div>
 
           {/* Reviews */}
@@ -248,7 +254,7 @@ export default async function ResourcePage({
         {/* Sticky purchase column (desktop) */}
         <aside className="mt-8 hidden lg:mt-0 lg:block">
           <div className="lg:sticky lg:top-24">
-            <PurchaseCard resource={resource} saved={saved} owned={owned} />
+            <PurchaseCard resource={resource} saved={saved} owned={owned} isAdmin={isAdmin} />
           </div>
         </aside>
       </div>
@@ -276,14 +282,24 @@ export default async function ResourcePage({
       {/* Mobile sticky buy bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-border bg-surface/95 px-4 py-3 shadow-[0_-8px_24px_rgba(76,60,160,0.08)] backdrop-blur lg:hidden">
         <div>
-          <p className="text-xs text-muted-foreground">One-time payment</p>
+          <p className="text-xs text-muted-foreground">
+            {owned ? (isAdmin ? "Admin access" : "You own this") : "One-time payment"}
+          </p>
           <p className="font-display text-xl font-extrabold text-foreground">
             {formatNaira(resource.priceNaira)}
           </p>
         </div>
-        <Button asChild size="lg">
-          <a href="#buy">Buy and download</a>
-        </Button>
+        {owned ? (
+          <Button asChild size="lg">
+            <a href={`/api/download/${resource.id}`} download>
+              Download now
+            </a>
+          </Button>
+        ) : (
+          <Button asChild size="lg">
+            <a href="#buy">Buy and download</a>
+          </Button>
+        )}
       </div>
     </main>
   );
