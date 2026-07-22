@@ -4,6 +4,7 @@ import { MagnifyingGlass, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import { requireUser } from "@/lib/require-user";
 import { getSavedSearches } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = { title: "Saved searches" };
@@ -11,6 +12,25 @@ export const metadata: Metadata = { title: "Saved searches" };
 export default async function SavedSearchesPage() {
   const user = await requireUser();
   const savedSearches = await getSavedSearches(user.id);
+
+  if (savedSearches.length === 0) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <DashPageHeader
+          title="Saved searches"
+          description="We check these for new matches so you do not have to."
+        />
+        <EmptyState
+          icon={MagnifyingGlass}
+          title="No saved searches"
+          description="Run a search, then save it — we'll watch for new matching resources and flag them here."
+          ctaLabel="Search resources"
+          ctaHref="/search"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-4xl">
       <DashPageHeader
