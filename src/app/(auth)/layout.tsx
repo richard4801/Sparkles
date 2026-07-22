@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SealCheck, Lightning, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/layout/logo";
+import { picsum } from "@/lib/utils";
 
 const points = [
   { icon: Lightning, text: "Preview and download resources in seconds" },
@@ -16,17 +18,22 @@ export default function AuthLayout({
   return (
     <div className="grid min-h-[100dvh] lg:grid-cols-2">
       {/* Brand panel */}
-      <aside className="relative hidden overflow-hidden bg-gradient-to-br from-primary via-[#7a58f7] to-[#8b6bff] p-12 lg:flex lg:flex-col lg:justify-between">
-        <div className="pointer-events-none absolute -right-20 -top-20 size-72 rounded-full bg-white/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 -left-16 size-72 rounded-full bg-accent-blue/20 blur-3xl" />
+      <aside className="relative hidden overflow-hidden bg-brand-deep p-12 lg:flex lg:flex-col lg:justify-between">
+        {/* Campus photo, washed into the teal brand */}
+        <Image
+          src={picsum("sparklyn-nigerian-students-campus", 1100, 1500)}
+          alt=""
+          fill
+          sizes="50vw"
+          className="object-cover opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-deep/90 via-primary/75 to-brand-deep/95" />
+        <div className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-accent-lime/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-20 size-72 rounded-full bg-accent-cyan/20 blur-3xl" />
 
         <Link href="/" className="relative">
-          <span className="inline-flex items-center gap-2 text-primary-foreground">
-            <span className="grid size-8 place-items-center rounded-[0.6rem] bg-white/20 backdrop-blur">
-              <SealCheck weight="fill" className="size-5" aria-hidden />
-            </span>
-            <span className="font-display text-xl font-extrabold">Sparklyn</span>
-          </span>
+          <Logo light />
         </Link>
 
         <div className="relative max-w-md">
