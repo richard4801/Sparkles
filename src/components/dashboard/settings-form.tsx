@@ -125,7 +125,7 @@ export function SettingsForm({ user }: { user: DashUser }) {
       <Card title="Profile" description="This information appears on your receipts and reviews.">
         <div className="flex items-center gap-4">
           <Image
-            src={avatar(user.avatarSeed, 128)}
+            src={avatar(user.avatarSeed)}
             alt=""
             width={64}
             height={64}

@@ -18,14 +18,54 @@ export function formatCompact(n: number) {
   }).format(n);
 }
 
-/** Picsum placeholder URL from a descriptive seed. */
-export function picsum(seed: string, w: number, h: number) {
-  return `https://picsum.photos/seed/${seed}/${w}/${h}`;
+/*
+  Catalog imagery is served from committed local assets under /public, so every
+  picture is chosen to match its topic and to feel Nigerian (no random Western
+  stock). Real photos live at these exact paths; on-brand placeholders occupy
+  them until a generated photo is dropped in with the same filename.
+*/
+
+/** Cover image for a resource, keyed by its id: /public/catalog/<id>.jpg */
+export function resourceImage(id: string) {
+  return `/catalog/${id}.jpg`;
 }
 
-/** Pravatar placeholder avatar from a seed. */
-export function avatar(seed: string, size = 96) {
-  return `https://i.pravatar.cc/${size}?u=${encodeURIComponent(seed)}`;
+/** Tile image for a category, keyed by slug: /public/categories/<slug>.jpg */
+export function categoryImage(slug: string) {
+  return `/categories/${slug}.jpg`;
+}
+
+/** A fixed decorative scene: /public/scenes/<name>.jpg */
+export function sceneImage(name: string) {
+  return `/scenes/${name}.jpg`;
+}
+
+// First names in our seed data that belong to women, so a seed routes to a
+// female face in the avatar pool. Anything else falls back to the male pool.
+const FEMALE_GIVEN_NAMES = new Set([
+  "chiamaka", "ngozi", "fatima", "chidinma", "blessing", "aisha", "folake",
+  "grace", "halima", "ifeoma", "adaeze", "precious", "nkechi", "ada", "zainab",
+  "amaka", "hauwa", "funmilayo", "rukayat", "chinelo", "damilola", "esther",
+]);
+
+function hashSeed(seed: string) {
+  let h = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+/**
+ * A consistent Nigerian portrait for a name or seed, drawn from a committed
+ * pool: /public/avatars/f1..f8 (women) and m1..m8 (men). The same seed always
+ * maps to the same face, and the face's gender matches the name where known.
+ */
+export function avatar(seed: string) {
+  const given = seed.toLowerCase().split(/[^a-z]+/).filter(Boolean)[0] ?? "";
+  const group = FEMALE_GIVEN_NAMES.has(given) ? "f" : "m";
+  const index = (hashSeed(seed) % 8) + 1;
+  return `/avatars/${group}${index}.jpg`;
 }
 
 /** Slugify a label for use in URLs and filter params. */

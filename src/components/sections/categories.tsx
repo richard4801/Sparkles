@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "./section-heading";
 import { categories } from "@/lib/data";
-import { formatCompact, picsum } from "@/lib/utils";
+import { formatCompact, categoryImage } from "@/lib/utils";
 
 /** Popular categories: image tiles with a teal wash, name and count. The photo
  *  carries each field; the brand-teal overlay keeps the grid cohesive.
@@ -35,7 +35,7 @@ export function Categories() {
               className="group relative flex aspect-[5/4] flex-col justify-end overflow-hidden rounded-2xl bg-brand-deep shadow-[var(--shadow-sm)] ring-1 ring-black/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]"
             >
               <Image
-                src={picsum(`sparklyn-field-${c.slug}`, 480, 384)}
+                src={categoryImage(c.slug)}
                 alt=""
                 fill
                 sizes="(max-width: 768px) 45vw, (max-width: 1024px) 30vw, 22vw"

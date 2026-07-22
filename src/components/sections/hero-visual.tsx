@@ -65,7 +65,7 @@ export function HeroShowcase() {
           {["ada", "chidi", "zainab"].map((s) => (
             <Image
               key={s}
-              src={avatar(s, 48)}
+              src={avatar(s)}
               alt=""
               width={24}
               height={24}

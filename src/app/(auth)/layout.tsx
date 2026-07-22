@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SealCheck, Lightning, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 import { Logo } from "@/components/layout/logo";
-import { picsum } from "@/lib/utils";
+import { sceneImage } from "@/lib/utils";
 
 const points = [
   { icon: Lightning, text: "Preview and download resources in seconds" },
@@ -21,7 +21,7 @@ export default function AuthLayout({
       <aside className="relative hidden overflow-hidden bg-brand-deep p-12 lg:flex lg:flex-col lg:justify-between">
         {/* Campus photo, washed into the teal brand */}
         <Image
-          src={picsum("sparklyn-nigerian-students-campus", 1100, 1500)}
+          src={sceneImage("campus")}
           alt=""
           fill
           sizes="50vw"

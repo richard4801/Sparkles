@@ -25,7 +25,7 @@ import {
   getCartServerSnapshot,
 } from "@/lib/cart";
 import { logoutAction } from "@/lib/auth-actions";
-import { avatar, cn, picsum } from "@/lib/utils";
+import { avatar, cn, sceneImage } from "@/lib/utils";
 
 /** Routes whose first section is a teal hero band the header can float over. */
 const DARK_HERO_ROUTES = new Set([
@@ -168,7 +168,7 @@ function BrowseMega({ light }: { light?: boolean }) {
                   className="group relative flex min-h-[15rem] flex-col justify-between overflow-hidden rounded-2xl bg-brand-deep p-5 text-primary-foreground"
                 >
                   <Image
-                    src={picsum("sparklyn-university-library-shelves", 640, 720)}
+                    src={sceneImage("library")}
                     alt=""
                     fill
                     sizes="20rem"

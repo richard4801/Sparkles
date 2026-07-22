@@ -22,7 +22,7 @@ export interface Resource {
   priceNaira: number; // e.g. 3500 (range 1500 - 9000, multiples of 500)
   level: "ND" | "HND" | "BSc" | "PGD" | "MSc" | "PhD";
   year: number; // 2019 - 2025
-  thumbnailSeed: string; // short descriptive kebab seed for picsum, e.g. "mobile-banking-report"
+  thumbnailSeed: string; // short descriptive kebab hint for the topic image, e.g. "mobile-banking-report" (cover art is served from /catalog/<id>.jpg)
   trending?: boolean;
   addedDaysAgo: number; // for "recently added", e.g. 2
   faculty: string; // e.g. "Management Sciences", "Engineering", "Social Sciences"
@@ -35,7 +35,7 @@ export interface Review {
   id: string;
   resourceId: string; // must equal an existing Resource.id
   name: string; // realistic, varied Nigerian name
-  avatarSeed: string; // kebab seed for pravatar
+  avatarSeed: string; // name-based seed → a Nigerian face from the /avatars pool
   rating: number; // 3, 4 or 5
   date: string; // relative, e.g. "3 weeks ago", "2 months ago"
   body: string; // <= 40 words, no em-dashes, sounds like a real buyer
@@ -63,7 +63,7 @@ export interface Testimonial {
   name: string; // realistic Nigerian name (varied: Yoruba, Igbo, Hausa, etc.)
   role: string; // e.g. "Final year, Accounting"
   institution: string;
-  avatarSeed: string; // kebab seed for picsum avatar
+  avatarSeed: string; // name-based seed → a Nigerian face from the /avatars pool
   rating: number; // 4 or 5
 }
 
