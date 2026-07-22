@@ -48,23 +48,23 @@ export default function HowItWorksPage() {
         subtitle="Sparklyn cuts out the endless WhatsApp groups and photocopy shops. Everything vetted, previewable and one payment away."
       />
 
-      <section className="container-page py-14 lg:py-20">
-        <ol className="grid gap-6 sm:grid-cols-2">
+      <section className="container-page py-16 lg:py-24">
+        <ol className="relative grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {/* connecting rail on desktop */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-8 right-8 top-8 hidden h-px bg-gradient-to-r from-transparent via-border-strong to-transparent lg:block"
+          />
           {steps.map((s, i) => (
-            <li
-              key={s.title}
-              className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]"
-            >
-              <div className="flex items-center gap-3">
-                <span className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary">
-                  <s.icon weight="fill" className="size-6" aria-hidden />
-                </span>
-                <span className="font-display text-sm font-bold text-faint-foreground">
-                  Step {i + 1}
+            <li key={s.title} className="relative">
+              <div className="relative z-10 grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-primary to-brand-deep text-white shadow-[var(--shadow-md)]">
+                <s.icon weight="fill" className="size-7" aria-hidden />
+                <span className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-accent-lime text-[0.7rem] font-extrabold text-accent-lime-foreground ring-4 ring-background">
+                  {i + 1}
                 </span>
               </div>
-              <h2 className="mt-4 font-display text-xl font-bold text-foreground">{s.title}</h2>
-              <p className="mt-2 leading-relaxed text-muted-foreground">{s.body}</p>
+              <h2 className="mt-5 font-display text-lg font-bold text-foreground">{s.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
             </li>
           ))}
         </ol>

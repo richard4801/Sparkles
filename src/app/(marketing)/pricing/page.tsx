@@ -37,8 +37,8 @@ export default function PricingPage() {
 
       <section className="container-page py-14 lg:py-20">
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-surface p-8 shadow-[var(--shadow-xs)]">
-            <span className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary">
+          <div className="rounded-2xl border border-border bg-surface p-8 shadow-[var(--shadow-xs)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+            <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-primary to-brand-deep text-white shadow-[var(--shadow-sm)]">
               <CreditCard weight="fill" className="size-6" aria-hidden />
             </span>
             <h2 className="mt-4 font-display text-2xl font-extrabold text-foreground">
