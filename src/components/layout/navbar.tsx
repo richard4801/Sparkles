@@ -17,7 +17,7 @@ import {
 import Image from "next/image";
 import { Logo } from "./logo";
 import { Button } from "@/components/ui/button";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryBadge } from "@/components/category-badge";
 import { categories } from "@/lib/data";
 import {
   subscribeCart,
@@ -46,14 +46,6 @@ const topLinks = [
   { label: "Pricing", href: "/pricing" },
 ];
 
-const accentText: Record<string, string> = {
-  violet: "text-violet",
-  blue: "text-blue",
-  emerald: "text-emerald",
-  amber: "text-amber",
-  rose: "text-rose",
-  cyan: "text-cyan",
-};
 
 function BrowseMega({ light }: { light?: boolean }) {
   const [open, setOpen] = React.useState(false);
@@ -151,11 +143,7 @@ function BrowseMega({ light }: { light?: boolean }) {
                           href={`/browse?category=${c.slug}`}
                           className="group flex items-center gap-2.5 rounded-xl px-3 py-2 transition-colors hover:bg-primary-tint"
                         >
-                          <CategoryIcon
-                            name={c.iconName}
-                            className={cn("size-5", accentText[c.accent])}
-                            aria-hidden
-                          />
+                          <CategoryBadge name={c.name} className="size-7 text-[0.65rem]" />
                           <span className="text-[0.9rem] font-medium text-foreground group-hover:text-primary">
                             {c.name}
                           </span>
