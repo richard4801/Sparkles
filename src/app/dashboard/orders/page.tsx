@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/require-user";
 import { getOrders } from "@/db/queries";
 import type { Order } from "@/types/dashboard";
 import { DashPageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 import { Button } from "@/components/ui/button";
 import { formatNaira, cn } from "@/lib/utils";
 
@@ -19,6 +20,25 @@ export const metadata: Metadata = { title: "Orders" };
 export default async function OrdersPage() {
   const user = await requireUser();
   const orders = await getOrders(user.id);
+
+  if (orders.length === 0) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <DashPageHeader
+          title="Order history"
+          description="Your past orders and downloadable receipts."
+        />
+        <EmptyState
+          icon={Receipt}
+          title="No orders yet"
+          description="Your orders and receipts will appear here after your first purchase."
+          ctaLabel="Browse the marketplace"
+          ctaHref="/browse"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-4xl">
       <DashPageHeader

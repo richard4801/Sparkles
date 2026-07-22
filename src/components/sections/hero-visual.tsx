@@ -30,8 +30,13 @@ export function HeroShowcase() {
       {/* Lime glow behind the figure */}
       <div className="absolute inset-x-8 bottom-16 top-20 rounded-[50%] bg-accent-lime/25 blur-3xl" />
 
-      {/* The cutout — sits at the bottom of the box so the feet reach the edge */}
-      <div className="absolute inset-0 z-10">
+      {/*
+        The cutout — sits at the bottom of the box so the feet reach the edge.
+        On desktop a clip-path carves a notch out of the bottom-right (the chair's
+        front leg) along the Stats-card top edge, so the card appears to pass in
+        front of the leg while her shoes still spill over the card.
+      */}
+      <div className="absolute inset-0 z-10 lg:[clip-path:polygon(0%_0%,100%_0%,100%_80%,41%_80%,41%_100%,0%_100%)]">
         <Image
           src="/hero-student.png"
           alt="A student smiling while reading a study resource on a laptop"

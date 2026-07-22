@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { DownloadSimple, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import { DownloadSimple, ArrowRight, BagSimple } from "@phosphor-icons/react/dist/ssr";
 import { requireUser } from "@/lib/require-user";
 import { getPurchases } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { picsum, formatNaira } from "@/lib/utils";
@@ -14,6 +15,25 @@ export const metadata: Metadata = { title: "Purchases" };
 export default async function PurchasesPage() {
   const user = await requireUser();
   const purchases = await getPurchases(user.id);
+
+  if (purchases.length === 0) {
+    return (
+      <div className="mx-auto max-w-5xl">
+        <DashPageHeader
+          title="Your purchases"
+          description="Resources you own and can download any time."
+        />
+        <EmptyState
+          icon={BagSimple}
+          title="No purchases yet"
+          description="Anything you buy lands here, ready to download instantly — as many times as you need."
+          ctaLabel="Browse the marketplace"
+          ctaHref="/browse"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-5xl">
       <DashPageHeader
@@ -25,7 +45,7 @@ export default async function PurchasesPage() {
         {purchases.map((p) => (
           <li
             key={p.id}
-            className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center"
+            className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-[var(--shadow-sm)] sm:flex-row sm:items-center"
           >
             <span className="relative h-20 w-full shrink-0 overflow-hidden rounded-xl sm:size-20">
               <Image

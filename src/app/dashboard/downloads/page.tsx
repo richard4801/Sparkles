@@ -4,12 +4,32 @@ import { FileText, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
 import { requireUser } from "@/lib/require-user";
 import { getDownloadHistory } from "@/db/queries";
 import { DashPageHeader } from "@/components/dashboard/page-header";
+import { EmptyState } from "@/components/dashboard/empty-state";
 
 export const metadata: Metadata = { title: "Download history" };
 
 export default async function DownloadsPage() {
   const user = await requireUser();
   const downloadHistory = await getDownloadHistory(user.id);
+
+  if (downloadHistory.length === 0) {
+    return (
+      <div className="mx-auto max-w-5xl">
+        <DashPageHeader
+          title="Download history"
+          description="Every file you have downloaded, most recent first."
+        />
+        <EmptyState
+          icon={DownloadSimple}
+          title="Nothing downloaded yet"
+          description="Once you download a resource, it shows up here so you can grab it again any time."
+          ctaLabel="Browse the marketplace"
+          ctaHref="/browse"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-5xl">
       <DashPageHeader
