@@ -104,8 +104,8 @@
   --radius-xl: 1.75rem;
   --radius-2xl: 2rem;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);

@@ -2,19 +2,12 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-// Self-hosted variable fonts (Plus Jakarta Sans for display, Inter for body).
-// Self-hosting avoids a build-time fetch to Google Fonts and keeps the fonts
+// Self-hosted Montserrat (variable) for the whole site — display and body.
+// Self-hosting avoids a build-time fetch to Google Fonts and keeps the font
 // versioned with the app.
-const jakarta = localFont({
-  src: "../fonts/plus-jakarta-sans-variable.woff2",
-  variable: "--font-jakarta",
-  display: "swap",
-  weight: "200 800",
-});
-
-const inter = localFont({
-  src: "../fonts/inter-variable.woff2",
-  variable: "--font-inter",
+const montserrat = localFont({
+  src: "../fonts/montserrat-variable.woff2",
+  variable: "--font-montserrat",
   display: "swap",
   weight: "100 900",
 });
@@ -59,7 +52,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#6c4cf5",
+  themeColor: "#0f766e",
   colorScheme: "light",
 };
 
@@ -69,10 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${jakarta.variable} ${inter.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full bg-background text-foreground">
         <a
           href="#main"
