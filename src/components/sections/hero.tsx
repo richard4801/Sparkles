@@ -85,7 +85,7 @@ export function Hero() {
         <Reveal
           delay={0.15}
           y={32}
-          className="mt-8 lg:absolute lg:-bottom-24 lg:right-0 lg:z-30 lg:mt-0 lg:w-[53%]"
+          className="relative z-20 mt-8 lg:absolute lg:-bottom-24 lg:right-0 lg:z-30 lg:mt-0 lg:w-[53%]"
         >
           <HeroShowcase />
         </Reveal>

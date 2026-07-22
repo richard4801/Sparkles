@@ -82,8 +82,8 @@ export default async function DashboardOverview() {
       <section className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
         <h2 className="font-display text-lg font-bold text-foreground">Your activity</h2>
         <p className="text-sm text-muted-foreground">Spending and downloads this year.</p>
-        <div className="mt-6 grid gap-8 sm:grid-cols-2">
-          <div>
+        <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2">
+          <div className="min-w-0">
             <div className="mb-3 flex items-center gap-2">
               <span className="size-2.5 rounded-full bg-primary" aria-hidden />
               <span className="text-sm font-semibold text-foreground">Spending</span>
@@ -142,7 +142,7 @@ export default async function DashboardOverview() {
       {recent.length > 0 ? (
         <section className="mt-8">
           <h2 className="font-display text-lg font-bold text-foreground">Recently viewed</h2>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {recent.map((r) => (
               <li key={r.id}>
                 <Link
