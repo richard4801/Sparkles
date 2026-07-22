@@ -27,6 +27,16 @@ import {
 import { logoutAction } from "@/lib/auth-actions";
 import { avatar, cn, picsum } from "@/lib/utils";
 
+/** Routes whose first section is a teal hero band the header can float over. */
+const DARK_HERO_ROUTES = new Set([
+  "/",
+  "/services",
+  "/pricing",
+  "/about",
+  "/how-it-works",
+  "/contact",
+]);
+
 export interface NavUser {
   name: string;
   avatarSeed: string;
@@ -374,10 +384,10 @@ export function Navbar({ user }: { user?: NavUser }) {
     getCartServerSnapshot,
   );
 
-  // On the home page the header floats transparently over the teal hero band
-  // until the user scrolls; everywhere else it stays solid.
+  // On pages that open with a teal hero band, the header floats transparently
+  // over it until the user scrolls; everywhere else it stays solid.
   const pathname = usePathname();
-  const overlay = pathname === "/" && !scrolled;
+  const overlay = DARK_HERO_ROUTES.has(pathname) && !scrolled;
 
   return (
     <header

@@ -12,20 +12,24 @@ export function PageHero({
   subtitle?: string;
 }) {
   return (
-    <section className="border-b border-border bg-surface-subtle/50">
-      <div className="container-page py-14 lg:py-20">
+    <section className="brand-band relative -mt-16 overflow-hidden text-white lg:-mt-[4.5rem]">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -right-24 -top-24 size-80 rounded-full bg-accent-lime/10 blur-3xl" />
+        <div className="absolute -bottom-28 left-1/4 size-80 rounded-full bg-accent-cyan/15 blur-3xl" />
+      </div>
+      <div className="container-page relative pb-16 pt-28 lg:pb-24 lg:pt-36">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             {eyebrow ? (
-              <p className="text-sm font-bold uppercase tracking-wider text-primary">
+              <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent-lime">
                 {eyebrow}
               </p>
             ) : null}
-            <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+            <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
               {title}
             </h1>
             {subtitle ? (
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-white/75">
                 {subtitle}
               </p>
             ) : null}
