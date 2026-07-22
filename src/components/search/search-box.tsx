@@ -101,7 +101,7 @@ export function SearchBox({
     <div ref={wrapRef} className="relative">
       <div
         className={cn(
-          "flex items-center gap-2.5 rounded-full border border-border-strong bg-surface px-4 shadow-[var(--shadow-sm)] transition-colors focus-within:border-primary/50",
+          "flex items-center gap-2.5 rounded-full bg-surface px-4 shadow-[var(--shadow-sm)] ring-1 ring-black/[0.04] transition-shadow focus-within:ring-2 focus-within:ring-accent-lime/70",
           size === "lg" ? "h-14" : "h-11",
         )}
       >
@@ -127,7 +127,8 @@ export function SearchBox({
         <button
           type="button"
           onClick={submit}
-          className="hidden rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover sm:block"
+          style={{ outline: "none" }}
+          className="hidden rounded-full bg-accent-lime px-5 py-2 text-sm font-semibold text-accent-lime-foreground shadow-sm transition-all hover:bg-accent-lime-hover hover:shadow-[0_12px_28px_rgba(191,242,63,0.4)] sm:block"
         >
           Search
         </button>
