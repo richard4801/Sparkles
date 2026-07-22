@@ -59,7 +59,7 @@ export function HeroShowcase() {
       {/* Glass: rating with avatars (lower-left) */}
       <motion.div
         {...float(0.9)}
-        className="absolute -left-2 bottom-16 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl lg:bottom-24"
+        className="absolute -left-2 bottom-16 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl lg:bottom-[13.5rem]"
       >
         <div className="flex -space-x-2">
           {["ada", "chidi", "zainab"].map((s) => (

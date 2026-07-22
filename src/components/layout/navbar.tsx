@@ -341,10 +341,10 @@ function IconLink({
       href={href}
       aria-label={count ? `${label}, ${count} items` : label}
       className={cn(
-        "relative grid size-11 place-items-center rounded-full transition-colors",
+        "relative grid size-10 place-items-center rounded-full transition-colors",
         light
-          ? "text-white/80 hover:bg-white/10 hover:text-white"
-          : "text-muted-foreground hover:bg-surface-subtle hover:text-foreground",
+          ? "text-white/85 hover:bg-white/15 hover:text-white"
+          : "text-muted-foreground hover:bg-surface hover:text-foreground",
       )}
     >
       {children}
@@ -389,16 +389,7 @@ export function Navbar({ user }: { user?: NavUser }) {
           <Link href="/" aria-label="Sparklyn home">
             <Logo light={overlay} />
           </Link>
-          <nav
-            className={cn(
-              "ml-4 hidden items-center gap-0.5 rounded-full lg:flex",
-              // No backdrop-filter here: it would become the containing block for
-              // the Browse mega-menu's absolute panel and squash it.
-              overlay &&
-                "border border-white/15 bg-white/10 px-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]",
-            )}
-            aria-label="Primary"
-          >
+          <nav className="ml-6 hidden items-center gap-1 lg:flex" aria-label="Primary">
             <BrowseMega light={overlay} />
             {topLinks.map((l) => (
               <a
@@ -417,24 +408,26 @@ export function Navbar({ user }: { user?: NavUser }) {
           </nav>
         </div>
 
-        <div className="flex items-center gap-1">
-          <IconLink href="/search" label="Search" light={overlay}>
-            <MagnifyingGlass weight="bold" className="size-[1.35rem]" aria-hidden />
-          </IconLink>
-          <IconLink href="/wishlist" label="Wishlist" light={overlay}>
-            <Heart weight="bold" className="size-[1.35rem]" aria-hidden />
-          </IconLink>
-          <IconLink href="/cart" label="Cart" count={cart.length || undefined} light={overlay}>
-            <ShoppingBag weight="bold" className="size-[1.35rem]" aria-hidden />
-          </IconLink>
-
-          <span
+        <div className="flex items-center gap-2.5">
+          {/* Utility cluster — a single frosted control, not loose icons */}
+          <div
             className={cn(
-              "mx-1.5 hidden h-6 w-px lg:block",
-              overlay ? "bg-white/20" : "bg-border-strong",
+              "flex items-center gap-0.5 rounded-full p-1",
+              overlay
+                ? "border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
+                : "border border-border bg-surface-subtle/70",
             )}
-            aria-hidden
-          />
+          >
+            <IconLink href="/search" label="Search" light={overlay}>
+              <MagnifyingGlass weight="bold" className="size-[1.2rem]" aria-hidden />
+            </IconLink>
+            <IconLink href="/wishlist" label="Wishlist" light={overlay}>
+              <Heart weight="bold" className="size-[1.2rem]" aria-hidden />
+            </IconLink>
+            <IconLink href="/cart" label="Cart" count={cart.length || undefined} light={overlay}>
+              <ShoppingBag weight="bold" className="size-[1.2rem]" aria-hidden />
+            </IconLink>
+          </div>
 
           <div className="hidden items-center gap-2 lg:flex">
             {user ? (

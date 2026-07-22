@@ -6,17 +6,20 @@ import { stats } from "@/lib/data";
  *  Layout family: inline metric strip. */
 export function Stats() {
   return (
-    <section aria-label="Platform statistics" className="container-page">
+    <section
+      aria-label="Platform statistics"
+      className="container-page relative z-[5] lg:-mt-24"
+    >
       <Reveal>
-        <div className="grid grid-cols-2 gap-y-8 rounded-2xl border border-border bg-surface px-6 py-8 shadow-[var(--shadow-sm)] sm:px-10 lg:grid-cols-4 lg:divide-x lg:divide-border">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-y-6 rounded-2xl border border-border bg-surface px-6 py-6 shadow-[0_24px_60px_-12px_rgba(10,60,54,0.22)] sm:px-8 lg:grid-cols-4 lg:divide-x lg:divide-border">
           {stats.map((s) => {
             const decimals = Number.isInteger(s.value) ? 0 : 1;
             return (
               <div key={s.label} className="px-2 text-center lg:px-6">
-                <p className="font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                <p className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
                   <Counter value={s.value} suffix={s.suffix} decimals={decimals} />
                 </p>
-                <p className="mt-2 text-sm font-medium text-muted-foreground">
+                <p className="mt-1.5 text-sm font-medium text-muted-foreground">
                   {s.label}
                 </p>
               </div>
