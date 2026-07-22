@@ -167,7 +167,7 @@ function BrowseMega({ light }: { light?: boolean }) {
 
                 <a
                   href="/browse"
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-[#8b6bff] p-5 text-primary-foreground"
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-brand-deep p-5 text-primary-foreground"
                 >
                   <div>
                     <p className="font-display text-lg font-bold leading-tight">
@@ -392,7 +392,10 @@ export function Navbar({ user }: { user?: NavUser }) {
           <nav
             className={cn(
               "ml-4 hidden items-center gap-0.5 rounded-full lg:flex",
-              overlay && "border border-white/15 bg-white/10 px-1 backdrop-blur-md",
+              // No backdrop-filter here: it would become the containing block for
+              // the Browse mega-menu's absolute panel and squash it.
+              overlay &&
+                "border border-white/15 bg-white/10 px-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]",
             )}
             aria-label="Primary"
           >
@@ -425,7 +428,15 @@ export function Navbar({ user }: { user?: NavUser }) {
             <ShoppingBag weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
 
-          <div className="ml-1 hidden items-center gap-2 lg:flex">
+          <span
+            className={cn(
+              "mx-1.5 hidden h-6 w-px lg:block",
+              overlay ? "bg-white/20" : "bg-border-strong",
+            )}
+            aria-hidden
+          />
+
+          <div className="hidden items-center gap-2 lg:flex">
             {user ? (
               <Link
                 href="/dashboard"
