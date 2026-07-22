@@ -2,7 +2,7 @@ import type { Icon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const accents: Record<string, string> = {
-  violet: "bg-violet/10 text-violet",
+  primary: "bg-primary/10 text-primary",
   blue: "bg-blue/10 text-blue",
   emerald: "bg-emerald/10 text-emerald",
   amber: "bg-amber/10 text-amber",
@@ -13,7 +13,7 @@ export function StatCard({
   label,
   value,
   sublabel,
-  accent = "violet",
+  accent = "primary",
 }: {
   icon: Icon;
   label: string;

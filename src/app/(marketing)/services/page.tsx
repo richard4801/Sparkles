@@ -59,24 +59,30 @@ export default function ServicesPage() {
         subtitle="A vetted marketplace of academic resources built specifically for Nigerian universities and polytechnics."
       />
 
-      <section className="container-page py-14 lg:py-20">
+      <section className="container-page py-16 lg:py-24">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
+          {services.map((s, i) => (
             <article
               key={s.title}
-              className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)] transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:shadow-[var(--shadow-sm)]"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--shadow-md)]"
             >
-              <span className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-1 top-1 font-display text-7xl font-extrabold leading-none text-primary/[0.06]"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="relative grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-primary to-brand-deep text-white shadow-[var(--shadow-sm)]">
                 <s.icon weight="fill" className="size-6" aria-hidden />
               </span>
-              <h2 className="mt-4 font-display text-lg font-bold text-foreground">{s.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              <h2 className="relative mt-4 font-display text-lg font-bold text-foreground">{s.title}</h2>
+              <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
             </article>
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <Button asChild size="lg">
+        <div className="mt-12 text-center">
+          <Button asChild variant="accent" size="lg">
             <Link href="/browse">Explore the marketplace</Link>
           </Button>
         </div>

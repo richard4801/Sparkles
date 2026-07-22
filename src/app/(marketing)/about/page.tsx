@@ -58,9 +58,9 @@ export default function AboutPage() {
           {values.map((v) => (
             <div
               key={v.title}
-              className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]"
+              className="group rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--shadow-md)]"
             >
-              <span className="grid size-11 place-items-center rounded-xl bg-primary-soft text-primary">
+              <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-primary to-brand-deep text-white shadow-[var(--shadow-sm)]">
                 <v.icon weight="fill" className="size-6" aria-hidden />
               </span>
               <h3 className="mt-4 font-display text-lg font-bold text-foreground">{v.title}</h3>
@@ -68,6 +68,20 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+
+        <dl className="mt-12 grid grid-cols-2 gap-6 rounded-2xl border border-border bg-surface-subtle/60 p-8 sm:grid-cols-4">
+          {[
+            { v: "12,480+", l: "Vetted resources" },
+            { v: "148", l: "Institutions" },
+            { v: "86,300+", l: "Students served" },
+            { v: "4.7/5", l: "Average rating" },
+          ].map((s) => (
+            <div key={s.l} className="text-center">
+              <dt className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">{s.v}</dt>
+              <dd className="mt-1 text-sm font-medium text-muted-foreground">{s.l}</dd>
+            </div>
+          ))}
+        </dl>
 
         <div className="mt-12 flex flex-wrap items-center justify-center gap-3 text-center">
           <Button asChild size="lg">

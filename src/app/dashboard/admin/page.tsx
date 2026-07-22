@@ -64,7 +64,7 @@ export default async function AdminAnalyticsPage() {
           label="Sales"
           value={String(stats.sales)}
           sublabel={`${stats.pendingOrders} pending orders`}
-          accent="violet"
+          accent="primary"
         />
         <StatCard
           icon={UsersThree}
