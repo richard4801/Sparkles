@@ -18,5 +18,8 @@ async function main() {
 
 main().catch((err) => {
   console.error(err);
-  process.exit(1);
+  // During the build (MIGRATE_NONFATAL=1) a migration problem must never block a
+  // deploy — log it and carry on. The schema may already be correct (e.g. a
+  // column added by hand). The explicit `db:migrate` script stays strict.
+  process.exit(process.env.MIGRATE_NONFATAL ? 0 : 1);
 });
