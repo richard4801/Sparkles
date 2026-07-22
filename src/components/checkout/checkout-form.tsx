@@ -20,7 +20,6 @@ import { formatNaira, cn } from "@/lib/utils";
 
 const methods: { id: Provider; label: string; dot: string }[] = [
   { id: "paystack", label: "Paystack", dot: "bg-[#0fa958]" },
-  { id: "flutterwave", label: "Flutterwave", dot: "bg-[#f5a623]" },
 ];
 
 export function CheckoutForm({
@@ -129,8 +128,7 @@ export function CheckoutForm({
           {simulate ? (
             <p className="mt-4 rounded-xl bg-amber/10 px-3.5 py-2.5 text-xs text-amber">
               Demo mode: no payment keys configured, so checkout completes
-              instantly without charging. Add Paystack or Flutterwave keys to go
-              live.
+              instantly without charging. Add your Paystack keys to go live.
             </p>
           ) : null}
         </section>

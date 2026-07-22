@@ -56,7 +56,7 @@ export function Footer() {
               </span>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-subtle px-3 py-1.5 text-xs font-medium text-muted-foreground">
                 <ShieldCheck weight="fill" className="size-3.5 text-primary" aria-hidden />
-                Paystack &amp; Flutterwave
+                Paystack
               </span>
             </div>
           </div>

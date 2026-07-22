@@ -88,7 +88,7 @@ export const orders: Order[] = [
     ],
     totalNaira: 3500,
     status: "Paid",
-    method: "Flutterwave",
+    method: "Paystack",
   },
   {
     id: "SPK-10512",
@@ -112,7 +112,7 @@ export const orders: Order[] = [
     items: [resourceById("impact-mobile-banking-sme-lagos").title],
     totalNaira: 4000,
     status: "Paid",
-    method: "Flutterwave",
+    method: "Paystack",
   },
   {
     id: "SPK-10701",

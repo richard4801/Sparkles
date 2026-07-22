@@ -1177,7 +1177,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We accept debit cards, bank transfer and USSD through Paystack and Flutterwave, so you can pay with most Nigerian bank accounts.",
+    a: "We accept debit cards, bank transfer and USSD through Paystack, so you can pay with most Nigerian bank accounts.",
   },
   {
     q: "Can I get a refund if the material does not match my topic?",

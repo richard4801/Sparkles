@@ -26,7 +26,7 @@ export default function PrivacyPage() {
         <h2>What we don&apos;t store</h2>
         <p>
           We never see or store your full card details. Payments are handled entirely by
-          Paystack and Flutterwave, who are PCI-compliant.
+          Paystack, which is PCI-compliant.
         </p>
 
         <h2>How we use your data</h2>
