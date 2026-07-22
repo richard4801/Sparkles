@@ -8,7 +8,7 @@ export function Stats() {
   return (
     <section
       aria-label="Platform statistics"
-      className="container-page relative z-[5] lg:-mt-24"
+      className="container-page relative z-[5] -mt-32 sm:-mt-36 lg:-mt-24"
     >
       <Reveal>
         <div className="mx-auto grid max-w-5xl grid-cols-2 gap-y-6 rounded-2xl border border-border bg-surface px-6 py-6 shadow-[0_24px_60px_-12px_rgba(10,60,54,0.22)] sm:px-8 lg:grid-cols-4 lg:divide-x lg:divide-border">
