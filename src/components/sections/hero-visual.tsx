@@ -26,7 +26,7 @@ export function HeroShowcase() {
         };
 
   return (
-    <div className="relative mx-auto h-[24rem] w-full max-w-[24rem] sm:h-[28rem] lg:h-[40rem] lg:max-w-none">
+    <div className="relative mx-auto h-[26rem] w-full max-w-[26rem] sm:h-[30rem] lg:h-[48rem] lg:max-w-none">
       {/* Lime glow behind the figure */}
       <div className="absolute inset-x-8 bottom-16 top-20 rounded-[50%] bg-accent-lime/25 blur-3xl" />
 

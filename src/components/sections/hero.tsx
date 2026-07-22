@@ -41,26 +41,30 @@ export function Hero() {
               action="/search"
               method="get"
               role="search"
-              className="mt-8 flex flex-col gap-2.5 rounded-full border border-white/15 bg-white/10 p-1.5 backdrop-blur-xl sm:flex-row sm:items-center"
+              className="mt-8 flex max-w-lg items-center gap-2 rounded-full bg-white p-2 pl-5 shadow-[0_18px_40px_rgba(10,40,36,0.28)] ring-1 ring-black/[0.04] transition-shadow focus-within:ring-2 focus-within:ring-accent-lime/70"
             >
               <label htmlFor="hero-search" className="sr-only">
                 Search study resources
               </label>
-              <div className="flex flex-1 items-center gap-2.5 rounded-full bg-white px-4">
-                <MagnifyingGlass
-                  weight="bold"
-                  className="size-5 shrink-0 text-faint-foreground"
-                  aria-hidden
-                />
-                <input
-                  id="hero-search"
-                  name="q"
-                  type="search"
-                  placeholder="Try 'impact of inflation on SMEs'"
-                  className="h-12 w-full bg-transparent text-[0.98rem] text-foreground placeholder:text-faint-foreground focus:outline-none"
-                />
-              </div>
-              <Button type="submit" variant="accent" size="lg" className="sm:px-8">
+              <MagnifyingGlass
+                weight="bold"
+                className="size-5 shrink-0 text-primary"
+                aria-hidden
+              />
+              <input
+                id="hero-search"
+                name="q"
+                type="search"
+                placeholder="Try 'impact of inflation on SMEs'"
+                style={{ outline: "none" }}
+                className="h-11 w-full flex-1 bg-transparent text-[0.98rem] text-foreground placeholder:text-faint-foreground"
+              />
+              <Button
+                type="submit"
+                variant="accent"
+                size="md"
+                className="shrink-0 rounded-full px-6"
+              >
                 Search
               </Button>
             </form>
@@ -81,7 +85,7 @@ export function Hero() {
         <Reveal
           delay={0.15}
           y={32}
-          className="mt-8 lg:absolute lg:-bottom-10 lg:right-2 lg:mt-0 lg:w-[44%]"
+          className="mt-8 lg:absolute lg:-bottom-24 lg:right-0 lg:mt-0 lg:w-[53%]"
         >
           <HeroShowcase />
         </Reveal>
