@@ -107,8 +107,7 @@ export function PurchaseCard({
       <div className="mt-5 flex items-center gap-2 rounded-xl bg-surface-subtle px-3.5 py-3">
         <ShieldCheck weight="fill" className="size-5 shrink-0 text-emerald" aria-hidden />
         <p className="text-xs text-muted-foreground">
-          Secure checkout with Paystack and Flutterwave. Your payment details are
-          never stored.
+          Secure checkout with Paystack. Your payment details are never stored.
         </p>
       </div>
     </div>

@@ -14,7 +14,7 @@ const howYouPay = [
   "No subscription, ever — pay only for what you download",
   "Prices are per resource, typically ₦1,500 – ₦9,000",
   "Preview the abstract, contents and reviews before paying",
-  "Pay with card, bank transfer or USSD via Paystack & Flutterwave",
+  "Pay with card, bank transfer or USSD via Paystack",
   "The price you see is the price you pay — no hidden charges",
 ];
 

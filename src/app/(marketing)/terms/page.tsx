@@ -48,7 +48,7 @@ export default function TermsPage() {
 
         <h2>5. Payments</h2>
         <p>
-          Payments are processed by Paystack and Flutterwave. Prices are shown in Naira and
+          Payments are processed by Paystack. Prices are shown in Naira and
           are the final amount you pay. See our refund policy for returns.
         </p>
 

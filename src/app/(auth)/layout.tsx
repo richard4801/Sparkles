@@ -7,7 +7,7 @@ import { sceneImage } from "@/lib/utils";
 const points = [
   { icon: Lightning, text: "Preview and download resources in seconds" },
   { icon: SealCheck, text: "Every resource vetted before it is listed" },
-  { icon: ShieldCheck, text: "Secure payments with Paystack and Flutterwave" },
+  { icon: ShieldCheck, text: "Secure payments with Paystack" },
 ];
 
 export default function AuthLayout({

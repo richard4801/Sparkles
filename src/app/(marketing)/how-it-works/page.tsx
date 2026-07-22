@@ -30,7 +30,7 @@ const steps = [
   {
     icon: CreditCard,
     title: "Pay securely",
-    body: "Check out with Paystack or Flutterwave — card, bank transfer or USSD. One-time payment, no subscription, instant confirmation.",
+    body: "Check out with Paystack — card, bank transfer or USSD. One-time payment, no subscription, instant confirmation.",
   },
   {
     icon: DownloadSimple,
