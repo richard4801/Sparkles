@@ -53,7 +53,7 @@ export default async function DashboardOverview() {
           label="Purchases"
           value={String(dashStats.purchases)}
           sublabel="All-time resources bought"
-          accent="violet"
+          accent="primary"
         />
         <StatCard
           icon={DownloadSimple}
