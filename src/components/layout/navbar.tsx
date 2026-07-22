@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "motion/react";
 import {
@@ -54,7 +55,7 @@ const accentText: Record<string, string> = {
   cyan: "text-cyan",
 };
 
-function BrowseMega() {
+function BrowseMega({ light }: { light?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const wrapRef = React.useRef<HTMLDivElement>(null);
@@ -91,8 +92,10 @@ function BrowseMega() {
         aria-haspopup="true"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "inline-flex items-center gap-1 rounded-full px-3 py-2 text-[0.95rem] font-medium text-muted-foreground transition-colors hover:text-foreground",
-          open && "text-foreground",
+          "inline-flex items-center gap-1 rounded-full px-3 py-2 text-[0.95rem] font-medium transition-colors",
+          light
+            ? cn("text-white/85 hover:text-white", open && "text-white")
+            : cn("text-muted-foreground hover:text-foreground", open && "text-foreground"),
         )}
       >
         Browse
@@ -192,7 +195,7 @@ function BrowseMega() {
   );
 }
 
-function MobileDrawer({ user }: { user?: NavUser }) {
+function MobileDrawer({ user, light }: { user?: NavUser; light?: boolean }) {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -200,7 +203,12 @@ function MobileDrawer({ user }: { user?: NavUser }) {
         <button
           type="button"
           aria-label="Open menu"
-          className="grid size-11 place-items-center rounded-full text-foreground transition-colors hover:bg-surface-subtle lg:hidden"
+          className={cn(
+            "grid size-11 place-items-center rounded-full transition-colors lg:hidden",
+            light
+              ? "text-white hover:bg-white/10"
+              : "text-foreground hover:bg-surface-subtle",
+          )}
         >
           <List weight="bold" className="size-6" aria-hidden />
         </button>
@@ -319,18 +327,25 @@ function IconLink({
   href,
   label,
   count,
+  light,
   children,
 }: {
   href: string;
   label: string;
   count?: number;
+  light?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <a
       href={href}
       aria-label={count ? `${label}, ${count} items` : label}
-      className="relative grid size-11 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-surface-subtle hover:text-foreground"
+      className={cn(
+        "relative grid size-11 place-items-center rounded-full transition-colors",
+        light
+          ? "text-white/80 hover:bg-white/10 hover:text-white"
+          : "text-muted-foreground hover:bg-surface-subtle hover:text-foreground",
+      )}
     >
       {children}
       {count ? (
@@ -355,27 +370,43 @@ export function Navbar({ user }: { user?: NavUser }) {
     getCartServerSnapshot,
   );
 
+  // On the home page the header floats transparently over the teal hero band
+  // until the user scrolls; everywhere else it stays solid.
+  const pathname = usePathname();
+  const overlay = pathname === "/" && !scrolled;
+
   return (
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-colors duration-300",
-        scrolled
-          ? "border-b border-border bg-surface/85 backdrop-blur-xl"
-          : "border-b border-transparent bg-background/0",
+        overlay
+          ? "border-b border-transparent bg-transparent"
+          : "border-b border-border bg-surface/85 backdrop-blur-xl",
       )}
     >
       <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
         <div className="flex items-center gap-1">
           <Link href="/" aria-label="Sparklyn home">
-            <Logo />
+            <Logo light={overlay} />
           </Link>
-          <nav className="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="Primary">
-            <BrowseMega />
+          <nav
+            className={cn(
+              "ml-4 hidden items-center gap-0.5 rounded-full lg:flex",
+              overlay && "border border-white/15 bg-white/10 px-1 backdrop-blur-md",
+            )}
+            aria-label="Primary"
+          >
+            <BrowseMega light={overlay} />
             {topLinks.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
-                className="rounded-full px-3 py-2 text-[0.95rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className={cn(
+                  "rounded-full px-3 py-2 text-[0.95rem] font-medium transition-colors",
+                  overlay
+                    ? "text-white/85 hover:text-white"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
                 {l.label}
               </a>
@@ -384,13 +415,13 @@ export function Navbar({ user }: { user?: NavUser }) {
         </div>
 
         <div className="flex items-center gap-1">
-          <IconLink href="/search" label="Search">
+          <IconLink href="/search" label="Search" light={overlay}>
             <MagnifyingGlass weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
-          <IconLink href="/wishlist" label="Wishlist">
+          <IconLink href="/wishlist" label="Wishlist" light={overlay}>
             <Heart weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
-          <IconLink href="/cart" label="Cart" count={cart.length || undefined}>
+          <IconLink href="/cart" label="Cart" count={cart.length || undefined} light={overlay}>
             <ShoppingBag weight="bold" className="size-[1.35rem]" aria-hidden />
           </IconLink>
 
@@ -398,32 +429,45 @@ export function Navbar({ user }: { user?: NavUser }) {
             {user ? (
               <Link
                 href="/dashboard"
-                className="flex items-center gap-2 rounded-full py-1 pl-1 pr-3 transition-colors hover:bg-surface-subtle"
+                className={cn(
+                  "flex items-center gap-2 rounded-full py-1 pl-1 pr-3 transition-colors",
+                  overlay ? "hover:bg-white/10" : "hover:bg-surface-subtle",
+                )}
               >
                 <Image
                   src={avatar(user.avatarSeed)}
                   alt=""
                   width={32}
                   height={32}
-                  className="size-8 rounded-full object-cover"
+                  className="size-8 rounded-full object-cover ring-2 ring-white/30"
                 />
-                <span className="text-sm font-semibold text-foreground">
+                <span
+                  className={cn(
+                    "text-sm font-semibold",
+                    overlay ? "text-white" : "text-foreground",
+                  )}
+                >
                   {user.name.split(" ")[0] || "Account"}
                 </span>
               </Link>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className={cn(overlay && "text-white/90 hover:bg-white/10 hover:text-white")}
+                >
                   <a href="/login">Log in</a>
                 </Button>
-                <Button asChild size="sm">
+                <Button asChild variant="accent" size="sm">
                   <a href="/register">Get started</a>
                 </Button>
               </>
             )}
           </div>
 
-          <MobileDrawer user={user} />
+          <MobileDrawer user={user} light={overlay} />
         </div>
       </div>
     </header>
