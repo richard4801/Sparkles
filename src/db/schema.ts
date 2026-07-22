@@ -61,6 +61,8 @@ export const resources = pgTable(
     trending: boolean("trending").notNull().default(false),
     fileUrl: text("file_url"), // Blob URL of the downloadable file (null = placeholder)
     fileName: text("file_name"), // original filename for the download
+    imageUrl: text("image_url"), // Blob URL of an uploaded cover image (null = generated placeholder)
+    previewImages: jsonb("preview_images").$type<string[]>(), // Blob URLs of uploaded preview-page screenshots
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [

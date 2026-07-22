@@ -29,6 +29,8 @@ export interface Resource {
   course: string; // course code + title, e.g. "ACC 401 - Financial Reporting"
   abstract: string; // 3-4 sentence full abstract, plain language, no em-dashes
   tableOfContents: string[]; // chapter/section titles
+  imageUrl?: string | null; // admin-uploaded cover (served via /api/cover); null = generated placeholder
+  previewImages?: string[] | null; // admin-uploaded preview-page screenshots (served via /api/preview)
 }
 
 export interface Review {

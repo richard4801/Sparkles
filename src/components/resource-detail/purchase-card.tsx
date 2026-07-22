@@ -74,7 +74,7 @@ export function PurchaseCard({
         ) : (
           <>
             <Button asChild size="lg" className="w-full">
-              <a href="#buy" id="buy">
+              <a href={`/checkout?buy=${resource.id}`} id="buy">
                 <Lightning weight="fill" className="size-5" aria-hidden />
                 Buy and download now
               </a>

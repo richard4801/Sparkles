@@ -52,6 +52,8 @@ const resourceSelect = {
   year: resources.year,
   thumbnailSeed: resources.thumbnailSeed,
   trending: resources.trending,
+  imageUrl: resources.imageUrl,
+  previewImages: resources.previewImages,
   createdAt: resources.createdAt,
 };
 
@@ -87,6 +89,8 @@ function toResource(row: Record<string, unknown>): Resource {
     year: row.year as number,
     thumbnailSeed: row.thumbnailSeed as string,
     trending: row.trending as boolean,
+    imageUrl: (row.imageUrl as string | null) ?? null,
+    previewImages: (row.previewImages as string[] | null) ?? null,
     addedDaysAgo,
   };
 }

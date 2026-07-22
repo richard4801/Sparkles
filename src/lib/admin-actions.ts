@@ -13,7 +13,7 @@ import {
 import { requireAdmin } from "@/lib/require-admin";
 import { slugify } from "@/lib/utils";
 import { CATEGORY_ACCENTS } from "@/lib/catalog";
-import { storageConfigured, uploadResourceFile } from "@/lib/storage";
+import { storageConfigured, uploadResourceFile, uploadResourceImage } from "@/lib/storage";
 
 export interface ActionResult {
   ok: boolean;
@@ -127,30 +127,56 @@ export async function updateResource(id: string, fd: FormData): Promise<ActionRe
   redirect("/dashboard/admin/resources");
 }
 
-/** Reads an optional uploaded file from the form and stores it in Blob. */
+interface UploadFields {
+  fileUrl?: string;
+  fileName?: string;
+  imageUrl?: string;
+  previewImages?: string[];
+}
+
+/** Reads the optional uploads (document, cover image, preview-page images) from
+ *  the form and stores them in Blob. Only keys for files actually uploaded are
+ *  returned, so unchanged uploads are preserved on edit. */
 async function readFileUpload(
   fd: FormData,
   resourceId: string,
-): Promise<
-  | { ok: true; fields: { fileUrl?: string; fileName?: string } }
-  | { ok: false; error: string }
-> {
+): Promise<{ ok: true; fields: UploadFields } | { ok: false; error: string }> {
   const file = fd.get("file");
-  if (!(file instanceof File) || file.size === 0) return { ok: true, fields: {} };
+  const image = fd.get("image");
+  const previews = fd.getAll("previewImages").filter((p): p is File => p instanceof File && p.size > 0);
+
+  const hasFile = file instanceof File && file.size > 0;
+  const hasImage = image instanceof File && image.size > 0;
+  if (!hasFile && !hasImage && previews.length === 0) return { ok: true, fields: {} };
+
   if (!storageConfigured()) {
     return {
       ok: false,
       error: "File storage isn't set up yet — add Vercel Blob to your project to upload files.",
     };
   }
+
   try {
-    const uploaded = await uploadResourceFile(file, resourceId);
-    return { ok: true, fields: { fileUrl: uploaded.url, fileName: uploaded.name } };
+    const fields: UploadFields = {};
+    if (hasFile) {
+      const uploaded = await uploadResourceFile(file, resourceId);
+      fields.fileUrl = uploaded.url;
+      fields.fileName = uploaded.name;
+    }
+    if (hasImage) {
+      fields.imageUrl = await uploadResourceImage(image, resourceId, "cover");
+    }
+    if (previews.length > 0) {
+      fields.previewImages = await Promise.all(
+        previews.map((p) => uploadResourceImage(p, resourceId, "preview")),
+      );
+    }
+    return { ok: true, fields };
   } catch (err) {
     console.error("[blob upload] failed:", err);
     const detail =
       err instanceof Error ? err.message : typeof err === "string" ? err : "Unknown error";
-    return { ok: false, error: `File upload failed: ${detail}` };
+    return { ok: false, error: `Upload failed: ${detail}` };
   }
 }
 
