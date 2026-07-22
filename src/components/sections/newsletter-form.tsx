@@ -52,12 +52,7 @@ export function NewsletterForm() {
           placeholder="you@university.edu.ng"
           className="h-13 flex-1 rounded-full border border-white/20 bg-white/95 px-5 text-[0.98rem] text-foreground placeholder:text-faint-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         />
-        <Button
-          type="submit"
-          size="lg"
-          disabled={pending}
-          className="bg-white text-primary hover:bg-white hover:text-primary-hover"
-        >
+        <Button type="submit" variant="accent" size="lg" disabled={pending}>
           {pending ? "Subscribing…" : "Subscribe"}
         </Button>
       </form>
