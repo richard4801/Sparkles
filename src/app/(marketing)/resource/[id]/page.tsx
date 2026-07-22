@@ -300,7 +300,7 @@ export default async function ResourcePage({
           </Button>
         ) : (
           <Button asChild size="lg">
-            <a href="#buy">Buy and download</a>
+            <a href={`/checkout?buy=${resource.id}`}>Buy and download</a>
           </Button>
         )}
       </div>

@@ -2,13 +2,16 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSyncExternalStore, useTransition } from "react";
-import { Lightning, ShieldCheck } from "@phosphor-icons/react";
+import { Lightning, ShieldCheck, ArrowLeft, ShoppingCart } from "@phosphor-icons/react";
 import {
   subscribeCart,
   getCartSnapshot,
   getCartServerSnapshot,
   cartTotal,
+  addToCart,
+  type CartItem,
 } from "@/lib/cart";
 import { startCheckout } from "@/lib/checkout-actions";
 import type { Provider } from "@/lib/payments";
@@ -23,18 +26,36 @@ const methods: { id: Provider; label: string; dot: string }[] = [
 export function CheckoutForm({
   email,
   simulate,
+  buyNow = null,
 }: {
   email: string;
   simulate: boolean;
+  buyNow?: CartItem | null;
 }) {
-  const cart = useSyncExternalStore(
+  const router = useRouter();
+  const storeCart = useSyncExternalStore(
     subscribeCart,
     getCartSnapshot,
     getCartServerSnapshot,
   );
   const [provider, setProvider] = React.useState<Provider>("paystack");
   const [pending, startTransition] = useTransition();
+  const [leaving, setLeaving] = React.useState(false);
+
+  // In buy-now mode the order is the single item, not the persistent cart.
+  const cart = buyNow ? [buyNow] : storeCart;
   const total = cartTotal(cart);
+
+  // Leaving the buy-now checkout offers to save the item to the cart first.
+  const backHref = buyNow ? `/resource/${buyNow.id}` : "/cart";
+  function requestLeave() {
+    if (buyNow) setLeaving(true);
+    else router.push(backHref);
+  }
+  function leaveAdding() {
+    if (buyNow) addToCart(buyNow);
+    router.push(backHref);
+  }
 
   if (cart.length === 0) {
     return (
@@ -48,7 +69,17 @@ export function CheckoutForm({
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
+    <div className="grid gap-6">
+      <button
+        type="button"
+        onClick={requestLeave}
+        className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
+      >
+        <ArrowLeft weight="bold" className="size-4" aria-hidden />
+        {buyNow ? "Back to resource" : "Back to cart"}
+      </button>
+
+      <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
       {/* Left: contact + payment method */}
       <div className="grid gap-6">
         <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
@@ -151,6 +182,48 @@ export function CheckoutForm({
           </p>
         </div>
       </aside>
+      </div>
+
+      {leaving && buyNow ? (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-foreground/40 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="leave-title"
+          onClick={() => setLeaving(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-lg)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="grid size-11 place-items-center rounded-full bg-primary-soft text-primary">
+              <ShoppingCart weight="bold" className="size-5" aria-hidden />
+            </div>
+            <h2 id="leave-title" className="mt-4 font-display text-lg font-bold text-foreground">
+              Add to cart before you go?
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Save <span className="font-medium text-foreground">{buyNow.title}</span> to your
+              cart so you can check out later.
+            </p>
+            <div className="mt-5 grid gap-2.5">
+              <Button type="button" size="md" className="w-full" onClick={leaveAdding}>
+                <ShoppingCart weight="bold" className="size-4" aria-hidden />
+                Add to cart
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="md"
+                className="w-full"
+                onClick={() => router.push(backHref)}
+              >
+                No thanks
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
