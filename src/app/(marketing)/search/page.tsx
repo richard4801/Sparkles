@@ -6,7 +6,7 @@ import { parseFilters, applyFilters } from "@/lib/filters";
 import { SearchBox } from "@/components/search/search-box";
 import { RecentSearches } from "@/components/search/recent-searches";
 import { ResourceCard } from "@/components/resource-card";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryBadge } from "@/components/category-badge";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
@@ -147,11 +147,7 @@ export default async function SearchPage({
                   href={`/browse?category=${c.slug}`}
                   className="group flex items-center gap-3 rounded-xl border border-border bg-surface p-3 transition-colors hover:border-primary/30 hover:bg-primary-tint"
                 >
-                  <CategoryIcon
-                    name={c.iconName}
-                    className="size-5 text-primary"
-                    aria-hidden
-                  />
+                  <CategoryBadge name={c.name} className="size-8 text-xs" />
                   <span className="text-sm font-medium text-foreground group-hover:text-primary">
                     {c.name}
                   </span>

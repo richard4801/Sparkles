@@ -24,7 +24,6 @@ const columns: { title: string; links: { label: string; href: string }[] }[] = [
     title: "Support",
     links: [
       { label: "Contact us", href: "/contact" },
-      { label: "Refund policy", href: "/refunds" },
       { label: "Browse resources", href: "/browse" },
       { label: "Study assistant", href: "/dashboard/assistant" },
     ],
