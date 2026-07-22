@@ -4,7 +4,7 @@ import type { Resource } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/bookmark-button";
-import { cn, formatNaira, formatCompact, picsum } from "@/lib/utils";
+import { cn, formatNaira, formatCompact, resourceImage } from "@/lib/utils";
 
 export function ResourceCard({
   resource,
@@ -25,7 +25,7 @@ export function ResourceCard({
     >
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
-          src={picsum(resource.thumbnailSeed, 640, 400)}
+          src={resourceImage(resource.id)}
           alt=""
           fill
           sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw"

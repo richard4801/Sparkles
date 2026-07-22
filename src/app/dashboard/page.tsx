@@ -15,7 +15,7 @@ import { recommendForUser } from "@/lib/ai/recommend";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { BarChart } from "@/components/dashboard/bar-chart";
 import { ResourceCard } from "@/components/resource-card";
-import { formatNaira, formatCompact, picsum } from "@/lib/utils";
+import { formatNaira, formatCompact, resourceImage } from "@/lib/utils";
 
 export default async function DashboardOverview() {
   const user = await requireUser();
@@ -151,7 +151,7 @@ export default async function DashboardOverview() {
                 >
                   <span className="relative size-14 shrink-0 overflow-hidden rounded-xl">
                     <Image
-                      src={picsum(r.thumbnailSeed, 120, 120)}
+                      src={resourceImage(r.id)}
                       alt=""
                       fill
                       sizes="56px"

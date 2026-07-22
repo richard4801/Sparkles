@@ -3,6 +3,7 @@ import { Star, Quotes } from "@phosphor-icons/react/dist/ssr";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeading } from "./section-heading";
 import { testimonials } from "@/lib/data";
+import { avatar } from "@/lib/utils";
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -43,7 +44,7 @@ export function Testimonials() {
               </div>
               <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-5">
                 <Image
-                  src={`https://i.pravatar.cc/96?u=${t.avatarSeed}`}
+                  src={avatar(t.avatarSeed)}
                   alt=""
                   width={44}
                   height={44}

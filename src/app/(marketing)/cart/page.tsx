@@ -12,7 +12,7 @@ import {
   cartTotal,
 } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
-import { picsum, formatNaira } from "@/lib/utils";
+import { resourceImage, formatNaira } from "@/lib/utils";
 
 export default function CartPage() {
   const cart = useSyncExternalStore(
@@ -56,7 +56,7 @@ export default function CartPage() {
               >
                 <span className="relative size-16 shrink-0 overflow-hidden rounded-xl">
                   <Image
-                    src={picsum(item.thumbnailSeed, 160, 160)}
+                    src={resourceImage(item.id)}
                     alt=""
                     fill
                     sizes="64px"

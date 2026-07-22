@@ -8,7 +8,7 @@ import { DashPageHeader } from "@/components/dashboard/page-header";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { picsum, formatNaira } from "@/lib/utils";
+import { resourceImage, formatNaira } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Purchases" };
 
@@ -49,7 +49,7 @@ export default async function PurchasesPage() {
           >
             <span className="relative h-20 w-full shrink-0 overflow-hidden rounded-xl sm:size-20">
               <Image
-                src={picsum(p.thumbnailSeed, 200, 200)}
+                src={resourceImage(p.resourceId)}
                 alt=""
                 fill
                 sizes="80px"

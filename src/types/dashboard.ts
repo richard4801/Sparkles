@@ -1,7 +1,7 @@
 export interface DashUser {
   name: string; // realistic Nigerian name
   email: string;
-  avatarSeed: string; // kebab seed for pravatar
+  avatarSeed: string; // name-based seed → a Nigerian face from the /avatars pool
   institution: string;
   department: string;
   level: string; // e.g. "BSc"
