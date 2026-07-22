@@ -42,10 +42,10 @@ export function HeroShowcase() {
         />
       </div>
 
-      {/* Glass: students joined (top-left) */}
+      {/* Glass: students joined (tucked by her left shoulder) */}
       <motion.div
         {...float(0)}
-        className="absolute left-0 top-8 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl sm:top-12"
+        className="absolute left-2 top-10 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl lg:left-[13%] lg:top-[20%]"
       >
         <span className="grid size-9 place-items-center rounded-xl bg-accent-lime text-accent-lime-foreground">
           <Users weight="fill" className="size-4" aria-hidden />
@@ -56,10 +56,10 @@ export function HeroShowcase() {
         </div>
       </motion.div>
 
-      {/* Glass: rating with avatars (lower-left) */}
+      {/* Glass: rating with avatars (by her left shin) */}
       <motion.div
         {...float(0.9)}
-        className="absolute -left-2 bottom-16 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl lg:bottom-[13.5rem]"
+        className="absolute -left-2 bottom-16 z-20 flex items-center gap-2.5 rounded-2xl border border-white/25 bg-white/15 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_30px_rgba(10,40,36,0.25)] backdrop-blur-xl lg:bottom-[34%] lg:left-[4%]"
       >
         <div className="flex -space-x-2">
           {["ada", "chidi", "zainab"].map((s) => (
@@ -82,10 +82,10 @@ export function HeroShowcase() {
         </div>
       </motion.div>
 
-      {/* Lime solid: downloads (right) */}
+      {/* Lime solid: downloads (over her right knee) */}
       <motion.div
         {...float(1.4)}
-        className="absolute -right-1 bottom-28 z-20 rounded-2xl bg-accent-lime px-4 py-3 shadow-[0_14px_30px_rgba(191,242,63,0.45)] lg:bottom-36"
+        className="absolute -right-1 bottom-28 z-20 rounded-2xl bg-accent-lime px-4 py-3 shadow-[0_14px_30px_rgba(191,242,63,0.45)] lg:bottom-[34%] lg:right-[15%]"
       >
         <span className="flex items-center gap-1.5 text-[0.7rem] font-bold uppercase tracking-wide text-accent-lime-foreground/80">
           <TrendUp weight="bold" className="size-3.5" aria-hidden />
