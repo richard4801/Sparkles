@@ -28,7 +28,7 @@ import { ResourceCard } from "@/components/resource-card";
 import { PurchaseCard } from "@/components/resource-detail/purchase-card";
 import { PreviewGallery } from "@/components/resource-detail/preview-gallery";
 import { Reviews } from "@/components/resource-detail/reviews";
-import { formatNaira, formatCompact, resourceImage, slugify } from "@/lib/utils";
+import { formatNaira, formatCompact, coverImage, slugify } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -146,7 +146,7 @@ export default async function ResourcePage({
           {/* Cover */}
           <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-sm)]">
             <Image
-              src={resourceImage(resource.id)}
+              src={coverImage(resource)}
               alt=""
               fill
               priority
@@ -233,12 +233,14 @@ export default async function ResourcePage({
           {/* Preview */}
           <div className="mt-10">
             <PreviewGallery
+              resourceId={resource.id}
               title={resource.title}
               type={resource.type}
               abstract={resource.abstract}
               tableOfContents={resource.tableOfContents}
               pages={resource.pages}
               owned={owned}
+              previewImages={resource.previewImages}
             />
           </div>
 

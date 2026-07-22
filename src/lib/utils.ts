@@ -30,6 +30,12 @@ export function resourceImage(id: string) {
   return `/catalog/${id}.jpg`;
 }
 
+/** Cover source for a resource: the admin-uploaded image (served through
+ *  /api/cover) when one exists, otherwise the generated placeholder. */
+export function coverImage(resource: { id: string; imageUrl?: string | null }) {
+  return resource.imageUrl ? `/api/cover/${resource.id}` : resourceImage(resource.id);
+}
+
 /** Tile image for a category, keyed by slug: /public/categories/<slug>.jpg */
 export function categoryImage(slug: string) {
   return `/categories/${slug}.jpg`;

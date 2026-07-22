@@ -30,6 +30,8 @@ export interface ResourceInitial {
   thumbnailSeed: string;
   trending: boolean;
   fileName?: string | null;
+  imageUrl?: string | null;
+  previewImages?: string[] | null;
 }
 
 interface Option {
@@ -275,6 +277,40 @@ export function ResourceForm({
           type="file"
           name="file"
           accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-primary-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-[#c6e6e0]"
+        />
+      </section>
+
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
+        <h2 className="font-display text-lg font-bold text-foreground">Cover image</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Shown on cards and the resource page. JPG, PNG or WebP.
+          {initial.imageUrl
+            ? " A cover is set — upload a new one to replace it."
+            : " Without one, a generated placeholder is used."}
+        </p>
+        <input
+          type="file"
+          name="image"
+          accept="image/png,image/jpeg,image/webp"
+          className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-primary-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-[#c6e6e0]"
+        />
+      </section>
+
+      <section className="rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-xs)]">
+        <h2 className="font-display text-lg font-bold text-foreground">Preview pages</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Screenshots of the document&apos;s pages, in order. The first two are shown free;
+          the rest unlock after purchase. Selecting new images replaces the current set.
+          {initial.previewImages && initial.previewImages.length > 0
+            ? ` Currently ${initial.previewImages.length} page(s).`
+            : ""}
+        </p>
+        <input
+          type="file"
+          name="previewImages"
+          accept="image/png,image/jpeg,image/webp"
+          multiple
           className="mt-4 block w-full text-sm text-muted-foreground file:mr-4 file:rounded-full file:border-0 file:bg-primary-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-[#c6e6e0]"
         />
       </section>

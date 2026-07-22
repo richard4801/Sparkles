@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button";
 
 type PageContent =
   | { kind: "cover"; type: string; title: string; body: string }
-  | { kind: "body"; heading?: string; body: string; toc?: string[] };
+  | { kind: "body"; heading?: string; body: string; toc?: string[] }
+  | { kind: "image"; src: string };
 
 interface PreviewPage {
   n: number;
@@ -26,22 +27,27 @@ interface PreviewPage {
  *  later pages are locked until the resource is purchased (admins and buyers see
  *  everything). Clicking a locked page you don't own prompts you to buy. */
 export function PreviewGallery({
+  resourceId,
   title,
   type,
   abstract,
   tableOfContents,
   pages,
   owned = false,
+  previewImages = null,
 }: {
+  resourceId: string;
   title: string;
   type: string;
   abstract: string;
   tableOfContents: string[];
   pages: number;
   owned?: boolean;
+  previewImages?: string[] | null;
 }) {
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState(0);
+  const FREE = 2;
 
   // Split the abstract into two readable opening pages, then synthesise the
   // start of the first chapters for the locked pages.
@@ -55,40 +61,49 @@ export function PreviewGallery({
     `and the scope within which the findings should be read. Each section that follows expands ` +
     `on the summary above with the supporting data, analysis and references in complete detail.`;
 
-  const previewPages: PreviewPage[] = [
-    {
-      n: 1,
-      locked: false,
-      content: { kind: "cover", type, title, body: page1Body },
-    },
-    {
-      n: 2,
-      locked: false,
-      content: {
-        kind: "body",
-        body: page2Body,
-        toc: tableOfContents.slice(0, 6),
-      },
-    },
-    {
-      n: 3,
-      locked: true,
-      content: {
-        kind: "body",
-        heading: tableOfContents[0] || "Chapter One: Introduction",
-        body: chapterBody(tableOfContents[0] || "Chapter One: Introduction"),
-      },
-    },
-    {
-      n: 4,
-      locked: true,
-      content: {
-        kind: "body",
-        heading: tableOfContents[1] || "Chapter Two: Literature Review",
-        body: chapterBody(tableOfContents[1] || "Chapter Two: Literature Review"),
-      },
-    },
-  ];
+  // Prefer admin-uploaded page screenshots; otherwise synthesise pages from the
+  // abstract and table of contents.
+  const previewPages: PreviewPage[] =
+    previewImages && previewImages.length > 0
+      ? previewImages.map((_, i) => ({
+          n: i + 1,
+          locked: i >= FREE,
+          content: { kind: "image", src: `/api/preview/${resourceId}/${i}` },
+        }))
+      : [
+          {
+            n: 1,
+            locked: false,
+            content: { kind: "cover", type, title, body: page1Body },
+          },
+          {
+            n: 2,
+            locked: false,
+            content: {
+              kind: "body",
+              body: page2Body,
+              toc: tableOfContents.slice(0, 6),
+            },
+          },
+          {
+            n: 3,
+            locked: true,
+            content: {
+              kind: "body",
+              heading: tableOfContents[0] || "Chapter One: Introduction",
+              body: chapterBody(tableOfContents[0] || "Chapter One: Introduction"),
+            },
+          },
+          {
+            n: 4,
+            locked: true,
+            content: {
+              kind: "body",
+              heading: tableOfContents[1] || "Chapter Two: Literature Review",
+              body: chapterBody(tableOfContents[1] || "Chapter Two: Literature Review"),
+            },
+          },
+        ];
 
   const openAt = (i: number) => {
     setActive(i);
@@ -243,6 +258,21 @@ function PageBody({
           bodyClamp: "",
           gap: "mt-4",
         };
+
+  if (content.kind === "image") {
+    // eslint-disable-next-line @next/next/no-img-element
+    return (
+      <img
+        src={content.src}
+        alt=""
+        className={
+          variant === "thumb"
+            ? "absolute inset-0 size-full object-cover"
+            : "mx-auto max-h-[70dvh] w-auto rounded-md"
+        }
+      />
+    );
+  }
 
   if (content.kind === "cover") {
     return (

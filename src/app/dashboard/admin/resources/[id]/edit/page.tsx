@@ -44,6 +44,8 @@ export default async function EditResourcePage({
     thumbnailSeed: row.thumbnailSeed,
     trending: row.trending,
     fileName: row.fileName,
+    imageUrl: row.imageUrl,
+    previewImages: row.previewImages,
   };
 
   return (
