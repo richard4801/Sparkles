@@ -20,7 +20,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="We&apos;d love to hear from you"
-        subtitle="Questions about a resource, a refund, or selling on Sparklyn? Send us a message."
+        subtitle="Questions about a resource, a refund, or your download? Send us a message."
       />
 
       <section className="container-page py-14 lg:py-20">

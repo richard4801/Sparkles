@@ -47,7 +47,7 @@ export function ActiveFilters({
           key={c.key}
           type="button"
           onClick={c.remove}
-          className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft py-1 pl-3 pr-2 text-sm font-medium text-primary transition-colors hover:bg-[#e3ddfc]"
+          className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft py-1 pl-3 pr-2 text-sm font-medium text-primary transition-colors hover:bg-[#c6e6e0]"
         >
           {c.label}
           <X weight="bold" aria-hidden className="size-3.5" />
