@@ -8,7 +8,7 @@ import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "motion/
 import {
   MagnifyingGlass,
   Heart,
-  ShoppingBag,
+  ShoppingCart,
   List,
   X,
   CaretDown,
@@ -323,36 +323,44 @@ function MobileDrawer({ user, light }: { user?: NavUser; light?: boolean }) {
   );
 }
 
-function IconLink({
+function UtilityLink({
   href,
   label,
   count,
   light,
-  children,
+  icon: Icon,
 }: {
   href: string;
   label: string;
   count?: number;
   light?: boolean;
-  children: React.ReactNode;
+  icon: React.ComponentType<{ weight?: "bold" | "fill"; className?: string; "aria-hidden"?: boolean }>;
 }) {
   return (
     <a
       href={href}
       aria-label={count ? `${label}, ${count} items` : label}
       className={cn(
-        "relative grid size-10 place-items-center rounded-full transition-colors",
+        "group flex items-center gap-2 rounded-full px-2.5 py-2 text-sm font-semibold transition-colors sm:px-3",
         light
-          ? "text-white/85 hover:bg-white/15 hover:text-white"
-          : "text-muted-foreground hover:bg-surface hover:text-foreground",
+          ? "text-white/85 hover:bg-white/10 hover:text-white"
+          : "text-muted-foreground hover:bg-surface-subtle hover:text-foreground",
       )}
     >
-      {children}
-      {count ? (
-        <span className="absolute right-1.5 top-1.5 grid min-h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[0.6rem] font-bold text-primary-foreground">
-          {count}
-        </span>
-      ) : null}
+      <span className="relative">
+        <Icon weight="bold" className="size-[1.3rem]" aria-hidden />
+        {count ? (
+          <span
+            className={cn(
+              "absolute -right-1.5 -top-1.5 grid min-h-4 min-w-4 place-items-center rounded-full px-1 text-[0.6rem] font-bold",
+              light ? "bg-accent-lime text-accent-lime-foreground" : "bg-primary text-primary-foreground",
+            )}
+          >
+            {count}
+          </span>
+        ) : null}
+      </span>
+      <span className="hidden lg:inline">{label}</span>
     </a>
   );
 }
@@ -384,12 +392,29 @@ export function Navbar({ user }: { user?: NavUser }) {
           : "border-b border-border bg-surface/85 backdrop-blur-xl",
       )}
     >
-      <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
-        <div className="flex items-center gap-1">
-          <Link href="/" aria-label="Sparklyn home">
+      <div className="container-page flex h-16 items-center justify-between gap-3 lg:h-[4.5rem]">
+        {/* Mobile: plain brand */}
+        <Link href="/" aria-label="Sparklyn home" className="lg:hidden">
+          <Logo light={overlay} />
+        </Link>
+
+        {/* Desktop: a single pill holding the brand and the menus */}
+        <div
+          className={cn(
+            "hidden items-center rounded-full py-1.5 pl-2 pr-2 lg:flex",
+            overlay
+              ? "border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]"
+              : "border border-border bg-surface-subtle/70",
+          )}
+        >
+          <Link href="/" aria-label="Sparklyn home" className="px-1.5">
             <Logo light={overlay} />
           </Link>
-          <nav className="ml-6 hidden items-center gap-1 lg:flex" aria-label="Primary">
+          <span
+            className={cn("mx-2 h-6 w-px", overlay ? "bg-white/15" : "bg-border-strong")}
+            aria-hidden
+          />
+          <nav className="flex items-center gap-0.5" aria-label="Primary">
             <BrowseMega light={overlay} />
             {topLinks.map((l) => (
               <a
@@ -408,28 +433,18 @@ export function Navbar({ user }: { user?: NavUser }) {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          {/* Utility cluster — a single frosted control, not loose icons */}
-          <div
-            className={cn(
-              "flex items-center gap-0.5 rounded-full p-1",
-              overlay
-                ? "border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]"
-                : "border border-border bg-surface-subtle/70",
-            )}
-          >
-            <IconLink href="/search" label="Search" light={overlay}>
-              <MagnifyingGlass weight="bold" className="size-[1.2rem]" aria-hidden />
-            </IconLink>
-            <IconLink href="/wishlist" label="Wishlist" light={overlay}>
-              <Heart weight="bold" className="size-[1.2rem]" aria-hidden />
-            </IconLink>
-            <IconLink href="/cart" label="Cart" count={cart.length || undefined} light={overlay}>
-              <ShoppingBag weight="bold" className="size-[1.2rem]" aria-hidden />
-            </IconLink>
-          </div>
+        {/* Right: wishlist + cart (labelled), then account */}
+        <div className="flex items-center gap-0.5 lg:gap-1">
+          <UtilityLink href="/wishlist" label="Wishlist" light={overlay} icon={Heart} />
+          <UtilityLink
+            href="/cart"
+            label="Cart"
+            count={cart.length || undefined}
+            light={overlay}
+            icon={ShoppingCart}
+          />
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="ml-1.5 hidden items-center gap-2 lg:flex">
             {user ? (
               <Link
                 href="/dashboard"
