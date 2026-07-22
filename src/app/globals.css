@@ -3,36 +3,44 @@
 /*
   Sparklyn design system
   -----------------------------------------------------------------------------
-  Brief tokens: primary purple #6C4CF5, blue accent, soft-white #FAFAFD ground,
-  white cards with soft shadows, 16-20px radii, generous spacing.
-  Light theme is intentional per the brief's design direction; the token layer
-  is variable-based so a dark theme can drop in later without touching markup.
+  Deep-teal brand with a bright lime accent for primary action, on a clean
+  near-white ground with teal-tinted neutrals and soft teal shadows. The lime is
+  reserved for the single most important CTA and headline highlight; teal carries
+  everything else. Light theme; the hero rides a deep-teal brand band.
 */
 
 :root {
   /* Ground + surfaces */
-  --background: #fafafd;
+  --background: #f6faf8;
   --surface: #ffffff;
-  --surface-subtle: #f4f3fa;
+  --surface-subtle: #eef5f2;
 
-  /* Text (cool violet-tinted neutrals, harmonised with the purple accent) */
-  --foreground: #171425;
-  --muted-foreground: #6b6780;
-  --faint-foreground: #928da6;
+  /* Text (cool teal-tinted neutrals) */
+  --foreground: #0f1f1b;
+  --muted-foreground: #566661;
+  --faint-foreground: #869891;
 
-  /* Brand */
-  --primary: #6c4cf5;
-  --primary-hover: #5a3ce0;
+  /* Brand (deep teal) */
+  --primary: #0f766e;
+  --primary-hover: #0b5f58;
   --primary-foreground: #ffffff;
-  --primary-soft: #ede9fe;
-  --primary-tint: #f6f3ff;
+  --primary-soft: #d4ece7;
+  --primary-tint: #edf7f4;
 
-  /* Secondary accent (blue) - used sparingly, never as a second CTA colour */
-  --accent-blue: #3d6bf6;
-  --accent-cyan: #22b8cf;
+  /* Lime accent - the single high-energy CTA / highlight colour. Dark text on
+     lime for AA contrast. */
+  --accent-lime: #bff23f;
+  --accent-lime-hover: #aee52c;
+  --accent-lime-foreground: #12271f;
+
+  /* Deep brand band (hero) + secondary accents */
+  --brand-deep: #0a4a45;
+  --accent-cyan: #14b8a6;
+  /* Retained for existing decorative gradients; remapped onto the teal family. */
+  --accent-blue: #14b8a6;
 
   /* Category accent scale (soft foregrounds for chips/icons) */
-  --violet: #6c4cf5;
+  --violet: #7c6cf5;
   --blue: #3d6bf6;
   --emerald: #10b981;
   --amber: #f59e0b;
@@ -40,21 +48,21 @@
   --cyan: #06b6d4;
 
   /* Lines + rings */
-  --border: #eceaf3;
-  --border-strong: #e0dcec;
-  --ring: #6c4cf5;
+  --border: #e4efeb;
+  --border-strong: #d3e4de;
+  --ring: #0f766e;
 
-  /* Radii (brief: 16-20px) */
+  /* Radii */
   --radius: 1rem; /* 16px */
   --radius-lg: 1.25rem; /* 20px */
   --radius-sm: 0.625rem; /* 10px, inputs */
 
-  /* Shadows tinted to the violet ground, never pure black */
-  --shadow-xs: 0 1px 2px rgba(23, 20, 37, 0.04);
-  --shadow-sm: 0 2px 8px rgba(76, 60, 160, 0.06);
-  --shadow-md: 0 8px 24px rgba(76, 60, 160, 0.08);
-  --shadow-lg: 0 18px 48px rgba(76, 60, 160, 0.12);
-  --shadow-glow: 0 12px 32px rgba(108, 76, 245, 0.24);
+  /* Shadows tinted to the teal ground, never pure black */
+  --shadow-xs: 0 1px 2px rgba(10, 40, 36, 0.04);
+  --shadow-sm: 0 2px 8px rgba(13, 90, 82, 0.07);
+  --shadow-md: 0 8px 24px rgba(13, 90, 82, 0.10);
+  --shadow-lg: 0 18px 48px rgba(13, 74, 68, 0.16);
+  --shadow-glow: 0 12px 32px rgba(15, 118, 110, 0.26);
 }
 
 @theme inline {
@@ -72,8 +80,12 @@
   --color-primary-soft: var(--primary-soft);
   --color-primary-tint: var(--primary-tint);
 
-  --color-accent-blue: var(--accent-blue);
+  --color-accent-lime: var(--accent-lime);
+  --color-accent-lime-hover: var(--accent-lime-hover);
+  --color-accent-lime-foreground: var(--accent-lime-foreground);
+  --color-brand-deep: var(--brand-deep);
   --color-accent-cyan: var(--accent-cyan);
+  --color-accent-blue: var(--accent-blue);
 
   --color-violet: var(--violet);
   --color-blue: var(--blue);
@@ -159,12 +171,20 @@ body {
   display: none;
 }
 
-/* Soft lavender aurora used behind the hero and a couple of feature moments. */
+/* Soft teal/lime aurora used behind a couple of feature moments. */
 .aurora {
   background:
-    radial-gradient(40% 55% at 78% 20%, rgba(108, 76, 245, 0.18), transparent 70%),
-    radial-gradient(38% 50% at 90% 60%, rgba(61, 107, 246, 0.14), transparent 72%),
-    radial-gradient(45% 60% at 60% 90%, rgba(244, 63, 110, 0.08), transparent 70%);
+    radial-gradient(40% 55% at 78% 20%, rgba(15, 118, 110, 0.16), transparent 70%),
+    radial-gradient(38% 50% at 90% 60%, rgba(20, 184, 166, 0.12), transparent 72%),
+    radial-gradient(45% 60% at 60% 90%, rgba(191, 242, 63, 0.10), transparent 70%);
+}
+
+/* Deep-teal brand band used behind the hero. */
+.brand-band {
+  background:
+    radial-gradient(60% 80% at 15% 10%, rgba(20, 184, 166, 0.35), transparent 60%),
+    radial-gradient(50% 70% at 95% 90%, rgba(10, 74, 68, 0.55), transparent 65%),
+    linear-gradient(135deg, #0d5f57 0%, #0f766e 45%, #0a4a45 100%);
 }
 
 /* Marquee for the university strip (single marquee on the page, honours reduced motion). */

@@ -10,8 +10,10 @@ const buttonVariants = cva(
       variant: {
         primary:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover hover:shadow-[var(--shadow-glow)]",
+        accent:
+          "bg-accent-lime text-accent-lime-foreground shadow-sm hover:bg-accent-lime-hover hover:shadow-[0_12px_28px_rgba(191,242,63,0.4)]",
         secondary:
-          "bg-primary-soft text-primary hover:bg-[#e3ddfc]",
+          "bg-primary-soft text-primary hover:bg-[#c6e6e0]",
         outline:
           "border border-border-strong bg-surface text-foreground hover:border-primary/40 hover:bg-primary-tint",
         ghost: "text-foreground hover:bg-surface-subtle",

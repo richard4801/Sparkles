@@ -9,13 +9,13 @@ export function Newsletter() {
   return (
     <section className="container-page">
       <Reveal>
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-[#7a58f7] to-[#8b6bff] px-6 py-12 shadow-[var(--shadow-lg)] sm:px-12 lg:py-16">
-          <div className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-white/10 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-10 size-64 rounded-full bg-accent-blue/20 blur-3xl" />
+        <div className="brand-band relative overflow-hidden rounded-[2rem] px-6 py-12 shadow-[var(--shadow-lg)] sm:px-12 lg:py-16">
+          <div className="pointer-events-none absolute -right-16 -top-16 size-64 rounded-full bg-accent-lime/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 size-64 rounded-full bg-accent-cyan/20 blur-3xl" />
 
           <div className="relative mx-auto max-w-2xl text-center">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-              <PaperPlaneTilt weight="fill" className="size-3.5" aria-hidden />
+              <PaperPlaneTilt weight="fill" className="size-3.5 text-accent-lime" aria-hidden />
               Newsletter
             </span>
             <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
