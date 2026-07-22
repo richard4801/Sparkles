@@ -33,15 +33,15 @@ export function Testimonials() {
       <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((t, i) => (
           <Reveal key={t.id} delay={(i % 3) * 0.06}>
-            <figure className="flex h-full flex-col rounded-lg border border-border bg-surface p-6 shadow-[var(--shadow-sm)]">
-              <div className="flex items-center justify-between">
-                <Stars rating={t.rating} />
-                <Quotes weight="fill" className="size-7 text-primary-soft" aria-hidden />
-              </div>
-              <blockquote className="mt-4 flex-1 text-[1.02rem] leading-relaxed text-foreground">
+            <figure className="flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[var(--shadow-lg)]">
+              <Quotes weight="fill" className="size-8 text-primary/25" aria-hidden />
+              <blockquote className="mt-3 flex-1 text-[1.02rem] leading-relaxed text-foreground">
                 {t.quote}
               </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3 border-t border-border pt-5">
+              <div className="mt-5">
+                <Stars rating={t.rating} />
+              </div>
+              <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-5">
                 <Image
                   src={`https://i.pravatar.cc/96?u=${t.avatarSeed}`}
                   alt=""

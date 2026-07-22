@@ -10,10 +10,10 @@ import { universities } from "@/lib/data";
 function UniChip({ shortName, name }: { shortName: string; name: string }) {
   return (
     <div
-      className="flex shrink-0 items-center gap-3 rounded-2xl border border-border bg-surface px-5 py-3 shadow-[var(--shadow-xs)]"
+      className="flex shrink-0 items-center gap-3 rounded-full border border-border bg-surface py-2 pl-2 pr-5 shadow-[var(--shadow-sm)]"
       title={name}
     >
-      <span className="grid size-9 place-items-center rounded-xl bg-primary-soft font-display text-xs font-extrabold text-primary">
+      <span className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-primary to-brand-deep font-display text-[0.7rem] font-extrabold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
         {shortName.slice(0, 3)}
       </span>
       <span className="whitespace-nowrap font-display text-sm font-bold text-foreground">

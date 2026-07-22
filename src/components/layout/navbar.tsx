@@ -25,7 +25,7 @@ import {
   getCartServerSnapshot,
 } from "@/lib/cart";
 import { logoutAction } from "@/lib/auth-actions";
-import { avatar, cn } from "@/lib/utils";
+import { avatar, cn, picsum } from "@/lib/utils";
 
 export interface NavUser {
   name: string;
@@ -167,9 +167,17 @@ function BrowseMega({ light }: { light?: boolean }) {
 
                 <a
                   href="/browse"
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-brand-deep p-5 text-primary-foreground"
+                  className="group relative flex min-h-[15rem] flex-col justify-between overflow-hidden rounded-2xl bg-brand-deep p-5 text-primary-foreground"
                 >
-                  <div>
+                  <Image
+                    src={picsum("sparklyn-university-library-shelves", 640, 720)}
+                    alt=""
+                    fill
+                    sizes="20rem"
+                    className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-deep via-brand-deep/85 to-primary/30" />
+                  <div className="relative">
                     <p className="font-display text-lg font-bold leading-tight">
                       Explore the full library
                     </p>
@@ -177,7 +185,7 @@ function BrowseMega({ light }: { light?: boolean }) {
                       Over 12,000 vetted resources across 148 institutions.
                     </p>
                   </div>
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold">
+                  <span className="relative mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-lime">
                     Browse everything
                     <ArrowRight
                       weight="bold"
