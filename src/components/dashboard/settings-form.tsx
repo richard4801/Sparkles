@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordField } from "@/components/auth/password-field";
 import type { DashUser } from "@/types/dashboard";
-import { updateProfile, updatePassword } from "@/lib/settings-actions";
+import { updateProfile, updatePassword, setGender } from "@/lib/settings-actions";
+import { useRouter } from "next/navigation";
 import { avatar, cn } from "@/lib/utils";
 
 const LEVELS = ["ND", "HND", "BSc", "PGD", "MSc", "PhD"];
@@ -58,6 +59,9 @@ function Card({ title, description, children }: { title: string; description?: s
 }
 
 export function SettingsForm({ user }: { user: DashUser }) {
+  const router = useRouter();
+  const [gender, setGenderState] = React.useState<"f" | "m" | null>(user.gender);
+  const [genderPending, setGenderPending] = React.useState(false);
   const [profile, setProfile] = React.useState({
     name: user.name,
     email: user.email,
@@ -115,6 +119,18 @@ export function SettingsForm({ user }: { user: DashUser }) {
   const field = (k: keyof typeof profile, v: string) =>
     setProfile((p) => ({ ...p, [k]: v }));
 
+  function chooseGender(next: "f" | "m") {
+    if (next === gender || genderPending) return;
+    setGenderState(next);
+    setGenderPending(true);
+    startTransition(async () => {
+      const res = await setGender(next);
+      setGenderPending(false);
+      if (res.ok) router.refresh(); // refresh the avatar preview
+      else setGenderState(user.gender);
+    });
+  }
+
   return (
     <div className="grid gap-6">
       <Card title="Profile" description="This information appears on your receipts and reviews.">
@@ -126,9 +142,30 @@ export function SettingsForm({ user }: { user: DashUser }) {
             height={64}
             className="size-16 rounded-full object-cover"
           />
-          <p className="text-sm text-muted-foreground">
-            Your avatar is generated automatically and is unique to your account.
-          </p>
+          <div className="min-w-0">
+            <p className="text-sm text-muted-foreground">
+              Your avatar is generated automatically and is unique to your account.
+            </p>
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-sm font-semibold text-foreground">Gender:</span>
+              {(["f", "m"] as const).map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  disabled={genderPending}
+                  onClick={() => chooseGender(g)}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-sm font-semibold transition-colors disabled:opacity-60",
+                    gender === g
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-border-strong text-foreground hover:border-primary/40",
+                  )}
+                >
+                  {g === "f" ? "Female" : "Male"}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <form
