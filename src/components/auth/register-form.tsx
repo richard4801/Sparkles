@@ -12,6 +12,7 @@ import { registerAction } from "@/lib/auth-actions";
 export function RegisterForm() {
   const [state, formAction, pending] = useActionState(registerAction, undefined);
   const [password, setPassword] = React.useState("");
+  const [gender, setGender] = React.useState<"f" | "m" | "">("");
 
   return (
     <form action={formAction} className="grid gap-4">
@@ -43,6 +44,34 @@ export function RegisterForm() {
           placeholder="you@university.edu.ng"
           className="h-12"
         />
+      </Field>
+
+      <Field id="gender" label="Gender" hint="Used to pick an avatar that fits you.">
+        <div className="grid grid-cols-2 gap-3">
+          {([
+            { value: "f", label: "Female" },
+            { value: "m", label: "Male" },
+          ] as const).map((opt) => (
+            <label
+              key={opt.value}
+              className={`flex h-12 cursor-pointer items-center justify-center rounded-[var(--radius-sm)] border text-sm font-semibold transition-colors ${
+                gender === opt.value
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border-strong text-foreground hover:border-primary/40"
+              }`}
+            >
+              <input
+                type="radio"
+                name="gender"
+                value={opt.value}
+                checked={gender === opt.value}
+                onChange={() => setGender(opt.value)}
+                className="sr-only"
+              />
+              {opt.label}
+            </label>
+          ))}
+        </div>
       </Field>
 
       <Field id="password" label="Password" hint="At least 8 characters.">

@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { auth } from "@/auth";
+import { makeAvatarSeed } from "@/lib/avatar";
 
 export interface SettingsResult {
   ok: boolean;
@@ -49,6 +50,36 @@ export async function updateProfile(fd: FormData): Promise<SettingsResult> {
     return { ok: true };
   } catch {
     return { ok: false, error: "Could not save your profile." };
+  }
+}
+
+/**
+ * Record the signed-in user's gender and regenerate their avatar to match. Used
+ * by the one-time onboarding prompt (mainly Google sign-ups, who never see the
+ * signup form) and by the Settings screen. Once set, the name-based guess is no
+ * longer used for this account.
+ */
+export async function setGender(gender: "f" | "m"): Promise<SettingsResult> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "You need to be signed in." };
+  if (gender !== "f" && gender !== "m") return { ok: false, error: "Choose a gender." };
+
+  const [user] = await db
+    .select({ id: users.id, name: users.name })
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .limit(1);
+  if (!user) return { ok: false, error: "Account not found." };
+
+  try {
+    await db
+      .update(users)
+      .set({ gender, avatarSeed: makeAvatarSeed(user.name, gender) })
+      .where(eq(users.id, user.id));
+    revalidatePath("/dashboard", "layout");
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Could not save your choice." };
   }
 }
 

@@ -98,6 +98,7 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash"), // null for OAuth-only accounts
+  gender: text("gender"), // "f" | "m" — chosen at signup; null = guess from name
   avatarSeed: text("avatar_seed").notNull().default("new-student"),
   institution: text("institution").notNull().default(""),
   department: text("department").notNull().default(""),

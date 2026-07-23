@@ -22,6 +22,7 @@ export const currentUser: DashUser = {
   name: "Adaeze Chukwuma",
   email: "adaezechukwuma01@gmail.com",
   avatarSeed: "adaeze-chukwuma-portrait",
+  gender: "f",
   institution: "University of Nigeria, Nsukka",
   department: "Computer Science",
   level: "BSc",

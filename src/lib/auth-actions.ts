@@ -42,10 +42,13 @@ export async function registerAction(
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").toLowerCase().trim();
   const password = String(formData.get("password") ?? "");
+  const genderRaw = String(formData.get("gender") ?? "");
+  const gender = genderRaw === "f" || genderRaw === "m" ? genderRaw : null;
   const agree = formData.get("agree") === "on";
 
   if (name.length < 2) return { error: "Enter your full name." };
   if (!EMAIL_RE.test(email)) return { error: "Enter a valid email address." };
+  if (!gender) return { error: "Please choose your gender." };
   if (password.length < 8) return { error: "Password must be at least 8 characters." };
   if (!agree) return { error: "Please accept the terms to continue." };
 
@@ -63,7 +66,8 @@ export async function registerAction(
     name,
     email,
     passwordHash,
-    avatarSeed: makeAvatarSeed(name),
+    gender,
+    avatarSeed: makeAvatarSeed(name, gender),
   });
   await sendVerificationFor(email); // best-effort welcome/verify email
 

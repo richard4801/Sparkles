@@ -155,6 +155,20 @@ export async function getRelatedResources(
 /*  Dashboard reads (per user)                                                 */
 /* -------------------------------------------------------------------------- */
 
+/** Lightweight chrome data for the dashboard shell. Read fresh from the DB (not
+ *  the cached session token) so a just-changed avatar shows immediately, and so
+ *  we know whether to prompt for a still-unset gender (e.g. Google sign-ups). */
+export async function getUserChrome(
+  userId: string,
+): Promise<{ name: string; avatarSeed: string; gender: string | null } | null> {
+  const [u] = await db
+    .select({ name: users.name, avatarSeed: users.avatarSeed, gender: users.gender })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  return u ?? null;
+}
+
 export async function getDashUser(userId: string): Promise<DashUser | null> {
   const [u] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
   if (!u) return null;
@@ -162,6 +176,7 @@ export async function getDashUser(userId: string): Promise<DashUser | null> {
     name: u.name,
     email: u.email,
     avatarSeed: u.avatarSeed,
+    gender: u.gender === "f" || u.gender === "m" ? u.gender : null,
     institution: u.institution,
     department: u.department,
     level: u.level,

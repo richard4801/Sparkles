@@ -35,19 +35,39 @@ const FEMALE = new Set([
   "rita", "vivian", "cynthia", "gloria", "juliana", "gladys", "stella", "helen",
   "victoria", "veronica", "loveth", "chidimma", "ashley", "sophia", "sophie",
   "emily", "olivia", "jessica", "linda", "susan", "nancy", "diana", "clara",
+  "onyinye", "onyinyechi", "ifunanya", "obiageli", "uju", "sandra", "juliet",
+  "queen", "princess", "rejoice", "goodness", "zubaida", "maryamu", "hannatu",
+  "hauwau", "rukaiya", "sadia", "amara", "kosisochukwu", "munachiso", "somtoo",
 ]);
 
-// A handful of common male names so unisex-leaning ones resolve to male, plus
-// disambiguation for names that also appear female elsewhere.
+// Common male names so a known token anywhere in the name resolves to male.
 const MALE = new Set([
-  "abdulrahman", "abubakar", "ibrahim", "yusuf", "suleiman", "musa", "bashir",
-  "aliyu", "kabir", "sani", "umar", "usman", "bello", "danladi", "sadiq", "idris",
+  // Igbo
   "emeka", "chidi", "chinedu", "chukwuemeka", "obinna", "ifeanyi", "kelechi",
-  "tobenna", "nnamdi", "uche", " chibuzo", "chukwudi", "okechukwu", "chuka",
-  "tunde", "segun", "wale", "kunle", "femi", "gbenga", "seyi", "dele", "biodun",
-  "ayodeji", "olamide", "damilare", "temitope", "tope", "ayo", "daniel", "david",
-  "emmanuel", "samuel", "john", "peter", "paul", "james", "michael", "joseph",
-  "victor", "goodluck", "richard", "chinonso", "kingsley", "success", "godwin",
+  "tobenna", "nnamdi", "uche", "chibuzo", "chukwudi", "okechukwu", "chuka",
+  "azuka", "ebuka", "ikenna", "ikechukwu", "obiora", "arinze", "chukwuebuka",
+  "chibueze", "chinweike", "ekene", "ikem", "kenechukwu", "nonso", "okwudili",
+  "somadina", "ugochukwu", "ndubuisi", "chidozie", "chukwuma", "nnaemeka",
+  "obumneme", "izuchukwu", "chinonso", "chibuike", "chetachi", "obieze",
+  // Yoruba
+  "tunde", "segun", "wale", "kunle", "femi", "gbenga", "dele", "biodun",
+  "ayodeji", "olamide", "damilare", "babatunde", "babajide", "adeyemi",
+  "adewale", "adebayo", "kayode", "kola", "lekan", "niyi", "olawale", "rotimi",
+  "bode", "dare", "sanya", "sesan", "sina", "ayomide", "gbolahan", "tomiwa",
+  // Hausa / Muslim
+  "abdulrahman", "abubakar", "ibrahim", "yusuf", "suleiman", "sulaiman", "musa",
+  "bashir", "aliyu", "kabir", "sani", "umar", "usman", "bello", "danladi",
+  "sadiq", "idris", "abdullahi", "aminu", "auwal", "garba", "habib", "haruna",
+  "isah", "lawal", "nasir", "salihu", "shehu", "yahaya", "yakubu", "nuhu",
+  "murtala", "jibril", "kamal", "abdulmalik", "bala", "tijani",
+  // Common English / Christian
+  "innocent", "emmanuel", "samuel", "daniel", "david", "john", "peter", "paul",
+  "james", "michael", "joseph", "victor", "goodluck", "richard", "kingsley",
+  "godwin", "godswill", "ebenezer", "solomon", "isaac", "jacob", "joshua",
+  "benjamin", "anthony", "francis", "patrick", "charles", "henry", "frank",
+  "nathaniel", "gideon", "elijah", "philip", "stephen", "andrew", "thomas",
+  "simon", "matthew", "timothy", "collins", "bright", "prince", "gabriel",
+  "chinonso", "success", "ephraim", "sunday", "monday", "friday",
 ]);
 
 function hashPick(s: string): "f" | "m" {
@@ -56,18 +76,39 @@ function hashPick(s: string): "f" | "m" {
   return h % 2 === 0 ? "f" : "m";
 }
 
-/** Best-effort gender guess from a name, for choosing the avatar's look. */
+/**
+ * Best-effort gender guess from a full name. Checks every token (first, middle
+ * and last), so a known name anywhere — e.g. the "Innocent" in "Azuka Innocent"
+ * — decides it. Only truly unknown names fall back to a deterministic guess.
+ */
 export function guessGender(name?: string | null): "f" | "m" {
-  const first = (name ?? "").toLowerCase().trim().split(/\s+/)[0]?.replace(/[^a-z]/g, "") ?? "";
-  if (!first) return "m";
-  if (FEMALE.has(first)) return "f";
-  if (MALE.has(first)) return "m";
-  return hashPick(first);
+  const tokens = (name ?? "").toLowerCase().split(/[^a-z]+/).filter(Boolean);
+  for (const t of tokens) {
+    if (FEMALE.has(t)) return "f";
+    if (MALE.has(t)) return "m";
+  }
+  return hashPick(tokens.join("-"));
 }
 
-/** A fresh, unique, gender-tagged avatar seed for a new account. */
-export function makeAvatarSeed(name?: string | null): string {
-  return `${guessGender(name)}-${globalThis.crypto.randomUUID()}`;
+/**
+ * The gender we should use for an account: an explicit choice (made at signup)
+ * always wins; otherwise fall back to guessing from the name.
+ */
+export function resolveGender(
+  gender?: string | null,
+  name?: string | null,
+): "f" | "m" {
+  if (gender === "f" || gender === "m") return gender;
+  return guessGender(name);
+}
+
+/**
+ * A fresh, unique, gender-tagged avatar seed for a new account. Pass an explicit
+ * `gender` ("f" | "m") when the user chose it themselves; otherwise it's guessed
+ * from the name (e.g. for Google sign-ups where we only have a display name).
+ */
+export function makeAvatarSeed(name?: string | null, gender?: string | null): string {
+  return `${resolveGender(gender, name)}-${globalThis.crypto.randomUUID()}`;
 }
 
 /** The gender encoded in a seed, or guessed from it for legacy seeds. */
