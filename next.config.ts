@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Placeholder photography during Phase 1. Swap for the real asset CDN
-    // (Cloudflare R2 / S3) when the backend lands.
-    remotePatterns: [
-      { protocol: "https", hostname: "picsum.photos" },
-      { protocol: "https", hostname: "i.pravatar.cc" },
-    ],
+    // Account avatars are generated SVGs served from our own /api/avatar route.
+    // Allowing SVG is safe here because we only ever serve our own generated
+    // markup (never user-uploaded SVG), and the CSP sandbox neutralises scripts.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   experimental: {
     // Admin resource-file uploads go through a server action; allow larger PDFs.

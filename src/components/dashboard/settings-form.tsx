@@ -131,9 +131,9 @@ export function SettingsForm({ user }: { user: DashUser }) {
             height={64}
             className="size-16 rounded-full object-cover"
           />
-          <Button type="button" variant="outline" size="sm">
-            Change photo
-          </Button>
+          <p className="text-sm text-muted-foreground">
+            Your avatar is generated automatically and is unique to your account.
+          </p>
         </div>
 
         <form

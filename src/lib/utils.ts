@@ -46,32 +46,13 @@ export function sceneImage(name: string) {
   return `/scenes/${name}.jpg`;
 }
 
-// First names in our seed data that belong to women, so a seed routes to a
-// female face in the avatar pool. Anything else falls back to the male pool.
-const FEMALE_GIVEN_NAMES = new Set([
-  "chiamaka", "ngozi", "fatima", "chidinma", "blessing", "aisha", "folake",
-  "grace", "halima", "ifeoma", "adaeze", "precious", "nkechi", "ada", "zainab",
-  "amaka", "hauwa", "funmilayo", "rukayat", "chinelo", "damilola", "esther",
-]);
-
-function hashSeed(seed: string) {
-  let h = 0;
-  for (let i = 0; i < seed.length; i += 1) {
-    h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-  }
-  return h;
-}
-
 /**
- * A consistent Nigerian portrait for a name or seed, drawn from a committed
- * pool: /public/avatars/f1..f8 (women) and m1..m8 (men). The same seed always
- * maps to the same face, and the face's gender matches the name where known.
+ * A unique cartoon avatar for a seed, rendered on the fly by /api/avatar.
+ * The same seed always yields the same avatar, and each account's seed is
+ * unique, so no two users ever share one. See src/lib/avatar.ts.
  */
 export function avatar(seed: string) {
-  const given = seed.toLowerCase().split(/[^a-z]+/).filter(Boolean)[0] ?? "";
-  const group = FEMALE_GIVEN_NAMES.has(given) ? "f" : "m";
-  const index = (hashSeed(seed) % 8) + 1;
-  return `/avatars/${group}${index}.jpg`;
+  return `/api/avatar/${encodeURIComponent(seed || "new-student")}`;
 }
 
 /** Slugify a label for use in URLs and filter params. */

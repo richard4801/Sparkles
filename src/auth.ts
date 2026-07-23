@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+import { makeAvatarSeed } from "@/lib/avatar";
 
 declare module "next-auth" {
   interface Session {
@@ -67,11 +68,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-        token.avatarSeed = user.avatarSeed;
+    // Google users have no row yet (JWT strategy, no adapter) — create one on
+    // first sign-in, with an auto-generated avatar.
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        const email = user.email.toLowerCase();
+        const [existing] = await db
+          .select({ id: users.id })
+          .from(users)
+          .where(eq(users.email, email))
+          .limit(1);
+        if (!existing) {
+          await db.insert(users).values({
+            name: user.name ?? "Student",
+            email,
+            emailVerified: new Date(),
+            avatarSeed: makeAvatarSeed(user.name),
+          });
+        }
+      }
+      return true;
+    },
+    async jwt({ token, user }) {
+      // On sign-in, resolve to our canonical DB row (works for both credentials
+      // and Google) and backfill a unique avatar for any legacy/default seed.
+      if (user?.email) {
+        const [dbUser] = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, user.email.toLowerCase()))
+          .limit(1);
+        if (dbUser) {
+          let avatarSeed = dbUser.avatarSeed;
+          if (!avatarSeed || avatarSeed === "new-student") {
+            avatarSeed = makeAvatarSeed(dbUser.name);
+            await db.update(users).set({ avatarSeed }).where(eq(users.id, dbUser.id));
+          }
+          token.id = dbUser.id;
+          token.role = dbUser.role;
+          token.avatarSeed = avatarSeed;
+        }
       }
       return token;
     },
