@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { makeAvatarSeed } from "@/lib/avatar";
+import { makeAvatarSeed, guessGender } from "@/lib/avatar";
 
 declare module "next-auth" {
   interface Session {
@@ -100,7 +100,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           .limit(1);
         if (dbUser) {
           let avatarSeed = dbUser.avatarSeed;
-          if (!avatarSeed || avatarSeed === "new-student") {
+          // (Re)generate when there's no seed, or when the gender baked into an
+          // older seed no longer matches what we'd detect now — so a mis-gendered
+          // avatar self-corrects on the user's next sign-in.
+          const stored = /^([fm])-/.exec(avatarSeed ?? "")?.[1];
+          if (!avatarSeed || avatarSeed === "new-student" || stored !== guessGender(dbUser.name)) {
             avatarSeed = makeAvatarSeed(dbUser.name);
             await db.update(users).set({ avatarSeed }).where(eq(users.id, dbUser.id));
           }
