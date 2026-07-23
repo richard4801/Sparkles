@@ -4,7 +4,7 @@
 export function GoogleButton({ label }: { label: string }) {
   return (
     <button
-      type="button"
+      type="submit"
       className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-full border border-border-strong bg-surface text-[0.95rem] font-semibold text-foreground shadow-[var(--shadow-xs)] transition-colors hover:bg-surface-subtle active:scale-[0.99]"
     >
       <svg viewBox="0 0 48 48" className="size-5" aria-hidden focusable="false">
