@@ -1,6 +1,6 @@
 // Small external store over localStorage so components can read recent searches
 // via useSyncExternalStore (no setState-in-effect, SSR-safe).
-const KEY = "sparklyn:recent-searches";
+const KEY = "skola:recent-searches";
 const MAX = 6;
 const EMPTY: string[] = [];
 

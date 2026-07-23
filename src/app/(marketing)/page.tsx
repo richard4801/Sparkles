@@ -11,15 +11,15 @@ import { Newsletter } from "@/components/sections/newsletter";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Sparklyn",
-  url: "https://sparklyn.ng",
+  name: "Skola",
+  url: "https://skola.edu.ng",
   description:
     "Nigeria's academic resource marketplace for research projects, past questions, journals and business plans.",
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://sparklyn.ng/search?q={search_term_string}",
+      urlTemplate: "https://skola.edu.ng/search?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Sparklyn has no subscription. Pay once per resource — priced fairly, previewable before you buy, and yours to download instantly.",
+    "Skola has no subscription. Pay once per resource — priced fairly, previewable before you buy, and yours to download instantly.",
 };
 
 const howYouPay = [
@@ -32,7 +32,7 @@ export default function PricingPage() {
       <PageHero
         eyebrow="Pricing"
         title="Simple, honest pricing"
-        subtitle="No monthly fees and no lock-in. Every resource in the Sparklyn library is a one-time purchase, priced fairly for students."
+        subtitle="No monthly fees and no lock-in. Every resource in the Skola library is a one-time purchase, priced fairly for students."
       />
 
       <section className="container-page py-14 lg:py-20">

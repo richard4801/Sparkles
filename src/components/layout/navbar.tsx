@@ -400,7 +400,7 @@ export function Navbar({ user }: { user?: NavUser }) {
     >
       <div className="container-page flex h-16 items-center justify-between gap-3 lg:h-[4.5rem]">
         {/* Mobile: plain brand */}
-        <Link href="/" aria-label="Sparklyn home" className="lg:hidden">
+        <Link href="/" aria-label="Skola home" className="lg:hidden">
           <Logo light={overlay} />
         </Link>
 
@@ -413,7 +413,7 @@ export function Navbar({ user }: { user?: NavUser }) {
               : "border border-border bg-surface-subtle/70",
           )}
         >
-          <Link href="/" aria-label="Sparklyn home" className="px-1.5">
+          <Link href="/" aria-label="Skola home" className="px-1.5">
             <Logo light={overlay} />
           </Link>
           <span

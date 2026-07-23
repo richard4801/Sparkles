@@ -27,7 +27,7 @@ export default async function VerifyPage({
       </h1>
       <p className="mt-2 text-muted-foreground">
         We&apos;ve sent a verification link to your inbox. Click it to confirm your account.
-        You can keep using Sparklyn in the meantime.
+        You can keep using Skola in the meantime.
       </p>
 
       <Link

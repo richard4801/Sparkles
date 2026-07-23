@@ -46,7 +46,7 @@ export default async function ReceiptPage({
                     <Sparkle weight="fill" className="size-[1.15rem]" aria-hidden />
                   </span>
                   <span className="font-display text-xl font-extrabold text-foreground">
-                    Sparklyn
+                    Skola
                   </span>
                 </span>
                 <p className="mt-2 text-sm text-muted-foreground">Payment receipt</p>
@@ -104,7 +104,7 @@ export default async function ReceiptPage({
             </table>
 
             <p className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-              Thank you for your purchase. Sparklyn, Lagos, Nigeria.
+              Thank you for your purchase. Skola, Lagos, Nigeria.
             </p>
           </article>
         </div>

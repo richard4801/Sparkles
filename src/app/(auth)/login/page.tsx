@@ -40,7 +40,7 @@ export default function LoginPage() {
       <LoginForm />
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
-        New to Sparklyn?{" "}
+        New to Skola?{" "}
         <Link
           href="/register"
           className="font-semibold text-primary transition-colors hover:text-primary-hover"

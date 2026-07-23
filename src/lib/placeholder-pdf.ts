@@ -103,11 +103,11 @@ export function placeholderPdf(title: string, subtitle: string): Buffer {
   const page: PdfLine[] = [
     { size: 20, text: title, bold: true, gap: 10 },
     { size: 12, text: subtitle, gap: 18 },
-    { size: 11, text: "Thank you for your purchase on Sparklyn." },
+    { size: 11, text: "Thank you for your purchase on Skola." },
     { size: 11, text: "The full document for this resource is being prepared and" },
     { size: 11, text: "will be available for download here shortly." },
     { size: 11, text: "", gap: 6 },
-    { size: 11, text: "If you need it urgently, contact support at hello@sparklyn.ng." },
+    { size: 11, text: "If you need it urgently, contact support at hello@skola.edu.ng." },
   ];
   return buildPdf([page]);
 }

@@ -212,7 +212,7 @@ export function DashboardShell({
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-[100dvh] flex-col border-r border-border bg-surface p-4 lg:flex">
         <div className="px-2 py-2">
-          <Link href="/" aria-label="Sparklyn home">
+          <Link href="/" aria-label="Skola home">
             <Logo />
           </Link>
         </div>
@@ -261,7 +261,7 @@ export function DashboardShell({
               </Dialog.Portal>
             </Dialog.Root>
 
-            <Link href="/" className="lg:hidden" aria-label="Sparklyn home">
+            <Link href="/" className="lg:hidden" aria-label="Skola home">
               <Logo />
             </Link>
           </div>

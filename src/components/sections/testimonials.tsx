@@ -27,7 +27,7 @@ export function Testimonials() {
       <SectionHeading
         eyebrow="Loved by students"
         title={<span id="testimonials-heading">Trusted at every stage of the semester</span>}
-        description="From first drafts to final submissions, students rely on Sparklyn to move faster."
+        description="From first drafts to final submissions, students rely on Skola to move faster."
         align="center"
       />
 

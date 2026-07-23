@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "How it works",
   description:
-    "Find, preview, pay and download vetted academic resources on Sparklyn in four simple steps.",
+    "Find, preview, pay and download vetted academic resources on Skola in four simple steps.",
 };
 
 const steps = [
@@ -45,7 +45,7 @@ export default function HowItWorksPage() {
       <PageHero
         eyebrow="How it works"
         title="From search to download in minutes"
-        subtitle="Sparklyn cuts out the endless WhatsApp groups and photocopy shops. Everything vetted, previewable and one payment away."
+        subtitle="Skola cuts out the endless WhatsApp groups and photocopy shops. Everything vetted, previewable and one payment away."
       />
 
       <section className="container-page py-16 lg:py-24">

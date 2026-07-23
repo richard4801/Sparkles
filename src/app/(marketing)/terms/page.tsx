@@ -3,7 +3,7 @@ import { PageHero, Prose } from "@/components/marketing/page-hero";
 
 export const metadata: Metadata = {
   title: "Terms of service",
-  description: "The terms that govern your use of the Sparklyn marketplace.",
+  description: "The terms that govern your use of the Skola marketplace.",
 };
 
 export default function TermsPage() {
@@ -12,7 +12,7 @@ export default function TermsPage() {
       <PageHero eyebrow="Legal" title="Terms of service" />
       <Prose>
         <p>
-          These terms govern your use of Sparklyn (&quot;the platform&quot;). By creating an
+          These terms govern your use of Skola (&quot;the platform&quot;). By creating an
           account or buying a resource you agree to them. Last updated{" "}
           {new Date().getFullYear()}.
         </p>
@@ -34,14 +34,14 @@ export default function TermsPage() {
 
         <h2>3. Our content</h2>
         <p>
-          Resources in the catalogue are curated and provided by Sparklyn. They remain the
-          property of Sparklyn or its licensors, and are made available to you under the
+          Resources in the catalogue are curated and provided by Skola. They remain the
+          property of Skola or its licensors, and are made available to you under the
           personal licence described above. You may not copy, redistribute or resell them.
         </p>
 
         <h2>4. Academic integrity</h2>
         <p>
-          Sparklyn is a study aid. Submitting purchased material as your own for assessment
+          Skola is a study aid. Submitting purchased material as your own for assessment
           may breach your institution&apos;s academic-integrity policy. You are solely
           responsible for how you use what you buy.
         </p>
@@ -54,7 +54,7 @@ export default function TermsPage() {
 
         <h2>6. Liability</h2>
         <p>
-          The platform is provided &quot;as is&quot;. To the extent permitted by law, Sparklyn
+          The platform is provided &quot;as is&quot;. To the extent permitted by law, Skola
           is not liable for how resources are used or for any academic outcome.
         </p>
 

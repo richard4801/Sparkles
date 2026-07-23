@@ -82,7 +82,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Sparklyn. Built for Nigerian students.
+            © {new Date().getFullYear()} Skola. Built for Nigerian students.
           </p>
           <p className="text-sm text-muted-foreground">
             Lagos, Nigeria

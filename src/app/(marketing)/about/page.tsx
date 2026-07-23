@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Sparklyn is a vetted academic marketplace built to help Nigerian students find quality study resources quickly and support the students who create them.",
+    "Skola is a vetted academic marketplace built to help Nigerian students find quality study resources quickly and support the students who create them.",
 };
 
 const values = [
@@ -34,12 +34,12 @@ export default function AboutPage() {
       <PageHero
         eyebrow="About us"
         title="Helping Nigerian students learn faster"
-        subtitle="Sparklyn is a curated library of vetted academic resources — quality research projects, past questions and study material, all in one place."
+        subtitle="Skola is a curated library of vetted academic resources — quality research projects, past questions and study material, all in one place."
       />
 
       <section className="container-page py-14 lg:py-20">
         <div className="mx-auto max-w-3xl">
-          <h2 className="font-display text-2xl font-extrabold text-foreground">Why we built Sparklyn</h2>
+          <h2 className="font-display text-2xl font-extrabold text-foreground">Why we built Skola</h2>
           <p className="mt-4 leading-relaxed text-muted-foreground">
             Finding good project references, past questions or seminar papers in Nigeria
             usually means trawling group chats, paying for photocopies sight-unseen, or
@@ -47,7 +47,7 @@ export default function AboutPage() {
             pay, and often never reaches the students who need it.
           </p>
           <p className="mt-3 leading-relaxed text-muted-foreground">
-            Sparklyn fixes that. We build and curate a single, vetted library of academic
+            Skola fixes that. We build and curate a single, vetted library of academic
             resources so students can search, preview and download exactly what they need in
             minutes — everything reviewed for quality, fairly priced, with secure local
             payments and instant delivery.

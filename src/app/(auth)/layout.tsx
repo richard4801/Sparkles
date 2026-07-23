@@ -61,7 +61,7 @@ export default function AuthLayout({
       <main id="main" className="flex flex-col justify-center px-5 py-10 sm:px-10">
         <div className="mx-auto w-full max-w-md">
           <div className="mb-8 lg:hidden">
-            <Link href="/" aria-label="Sparklyn home">
+            <Link href="/" aria-label="Skola home">
               <Logo />
             </Link>
           </div>

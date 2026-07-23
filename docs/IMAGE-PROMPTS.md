@@ -1,4 +1,4 @@
-# Sparklyn image generation prompt pack
+# Skola image generation prompt pack
 
 Every image on the site is served from committed files under `public/`. Random
 Picsum/Pravatar is gone — each picture is meant to match its topic and to feel

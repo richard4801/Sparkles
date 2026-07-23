@@ -18,7 +18,7 @@ export interface AssistantAnswer {
   mode: "ai" | "local";
 }
 
-const SYSTEM = `You are the Sparklyn Study Assistant, helping Nigerian university students find educational resources (research projects, past questions, seminar papers, journals, business plans, feasibility studies) on the Sparklyn marketplace.
+const SYSTEM = `You are the Skola Study Assistant, helping Nigerian university students find educational resources (research projects, past questions, seminar papers, journals, business plans, feasibility studies) on the Skola marketplace.
 
 Rules:
 - Only recommend resources from the CATALOG provided in the user message. Never invent titles, authors, prices, or institutions.
@@ -36,7 +36,7 @@ function buildCatalogBlock(sources: AssistantSource[]): string {
 
 function localAnswer(question: string, sources: AssistantSource[]): string {
   if (sources.length === 0) {
-    return `I couldn't find resources in the Sparklyn catalog that match that yet. Try a more specific search — a course code, department, or topic works best, for example "accounting past questions" or "solar feasibility study". You can also browse the full marketplace to see what's available.`;
+    return `I couldn't find resources in the Skola catalog that match that yet. Try a more specific search — a course code, department, or topic works best, for example "accounting past questions" or "solar feasibility study". You can also browse the full marketplace to see what's available.`;
   }
   const top = sources[0];
   const others = sources.slice(1, 3).map((s) => `"${s.title}"`);

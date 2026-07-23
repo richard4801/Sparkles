@@ -10,7 +10,7 @@ export function emailConfigured(): boolean {
 
 function fromAddress(): string {
   // Set EMAIL_FROM to an address on your verified Resend domain in production.
-  return process.env.EMAIL_FROM || "Sparklyn <onboarding@resend.dev>";
+  return process.env.EMAIL_FROM || "Skola <onboarding@resend.dev>";
 }
 
 export function siteUrl(): string {
@@ -24,14 +24,14 @@ function shell(title: string, bodyHtml: string): string {
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f5f4f8;padding:24px">
   <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #ece9f3">
     <div style="background:#5b3df5;padding:20px 28px">
-      <span style="color:#fff;font-weight:800;font-size:18px;letter-spacing:-0.02em">✦ Sparklyn</span>
+      <span style="color:#fff;font-weight:800;font-size:18px;letter-spacing:-0.02em">✦ Skola</span>
     </div>
     <div style="padding:28px">
       <h1 style="margin:0 0 12px;font-size:20px;color:#1a1524">${title}</h1>
       ${bodyHtml}
     </div>
     <div style="padding:18px 28px;border-top:1px solid #ece9f3;color:#8b8698;font-size:12px">
-      Sparklyn · Lagos, Nigeria · The academic marketplace for Nigerian students.
+      Skola · Lagos, Nigeria · The academic marketplace for Nigerian students.
     </div>
   </div>
 </div>`;
@@ -87,25 +87,25 @@ export async function sendReceiptEmail(params: {
      <p style="color:#8b8698;font-size:13px">Paid with ${params.method}.</p>
      ${btn(`${siteUrl()}/dashboard/purchases`, "Go to my purchases")}`,
   );
-  return sendEmail({ to: params.to, subject: `Your Sparklyn receipt — ${params.orderId}`, html });
+  return sendEmail({ to: params.to, subject: `Your Skola receipt — ${params.orderId}`, html });
 }
 
 export async function sendPasswordResetEmail(to: string, url: string): Promise<boolean> {
   const html = shell(
     "Reset your password",
-    `<p style="color:#4a4557;line-height:1.6">We received a request to reset your Sparklyn password. This link expires in 1 hour. If you didn't ask for this, you can ignore this email.</p>
+    `<p style="color:#4a4557;line-height:1.6">We received a request to reset your Skola password. This link expires in 1 hour. If you didn't ask for this, you can ignore this email.</p>
      ${btn(url, "Reset password")}
      <p style="color:#8b8698;font-size:12px;margin-top:12px;word-break:break-all">Or paste this link: ${url}</p>`,
   );
-  return sendEmail({ to, subject: "Reset your Sparklyn password", html });
+  return sendEmail({ to, subject: "Reset your Skola password", html });
 }
 
 export async function sendVerificationEmail(to: string, url: string): Promise<boolean> {
   const html = shell(
     "Confirm your email",
-    `<p style="color:#4a4557;line-height:1.6">Welcome to Sparklyn! Confirm your email address to secure your account.</p>
+    `<p style="color:#4a4557;line-height:1.6">Welcome to Skola! Confirm your email address to secure your account.</p>
      ${btn(url, "Verify email")}
      <p style="color:#8b8698;font-size:12px;margin-top:12px;word-break:break-all">Or paste this link: ${url}</p>`,
   );
-  return sendEmail({ to, subject: "Confirm your Sparklyn email", html });
+  return sendEmail({ to, subject: "Confirm your Skola email", html });
 }

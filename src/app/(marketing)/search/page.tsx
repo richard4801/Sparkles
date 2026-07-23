@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Search",
   description:
-    "Search Sparklyn for research projects, past questions, journals and business plans across Nigerian institutions.",
+    "Search Skola for research projects, past questions, journals and business plans across Nigerian institutions.",
 };
 
 const trending = [
@@ -52,7 +52,7 @@ export default async function SearchPage({
     <main id="main" className="container-page py-8 lg:py-12">
       <div className="mx-auto max-w-3xl text-center">
         <h1 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-          Search Sparklyn
+          Search Skola
         </h1>
         <p className="mt-3 text-lg text-muted-foreground">
           Find the exact resource you need across every institution and department.
