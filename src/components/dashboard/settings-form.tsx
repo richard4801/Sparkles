@@ -37,16 +37,11 @@ function Switch({
         aria-label={label}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-          checked ? "bg-primary" : "bg-border-strong",
+          "flex h-6 w-11 shrink-0 items-center rounded-full px-0.5 transition-colors",
+          checked ? "justify-end bg-primary" : "justify-start bg-border-strong",
         )}
       >
-        <span
-          className={cn(
-            "absolute top-0.5 size-5 rounded-full bg-white shadow-sm transition-transform",
-            checked ? "translate-x-[1.375rem]" : "translate-x-0.5",
-          )}
-        />
+        <span className="size-5 rounded-full bg-white shadow-sm" />
       </button>
     </div>
   );

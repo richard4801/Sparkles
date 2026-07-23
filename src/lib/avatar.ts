@@ -90,9 +90,25 @@ export function guessGender(name?: string | null): "f" | "m" {
   return hashPick(tokens.join("-"));
 }
 
-/** A fresh, unique, gender-tagged avatar seed for a new account. */
-export function makeAvatarSeed(name?: string | null): string {
-  return `${guessGender(name)}-${globalThis.crypto.randomUUID()}`;
+/**
+ * The gender we should use for an account: an explicit choice (made at signup)
+ * always wins; otherwise fall back to guessing from the name.
+ */
+export function resolveGender(
+  gender?: string | null,
+  name?: string | null,
+): "f" | "m" {
+  if (gender === "f" || gender === "m") return gender;
+  return guessGender(name);
+}
+
+/**
+ * A fresh, unique, gender-tagged avatar seed for a new account. Pass an explicit
+ * `gender` ("f" | "m") when the user chose it themselves; otherwise it's guessed
+ * from the name (e.g. for Google sign-ups where we only have a display name).
+ */
+export function makeAvatarSeed(name?: string | null, gender?: string | null): string {
+  return `${resolveGender(gender, name)}-${globalThis.crypto.randomUUID()}`;
 }
 
 /** The gender encoded in a seed, or guessed from it for legacy seeds. */
