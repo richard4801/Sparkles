@@ -7,7 +7,7 @@ export interface CartItem {
   type: string;
 }
 
-const KEY = "sparklyn:cart";
+const KEY = "skola:cart";
 const EMPTY: CartItem[] = [];
 
 function read(): CartItem[] {

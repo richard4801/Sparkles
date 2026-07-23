@@ -1185,7 +1185,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "How do you make sure the work is good quality?",
-    a: "Every resource is reviewed and curated by the Sparklyn team before it goes live, and each one shows its source institution so you can judge it yourself. We still recommend using materials as a study guide, not for direct submission.",
+    a: "Every resource is reviewed and curated by the Skola team before it goes live, and each one shows its source institution so you can judge it yourself. We still recommend using materials as a study guide, not for direct submission.",
   },
   {
     q: "What file formats are the resources available in?",

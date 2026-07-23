@@ -73,7 +73,7 @@ export default async function DashboardOverview() {
           icon={Wallet}
           label="Total spend"
           value={formatNaira(dashStats.totalSpendNaira)}
-          sublabel="Lifetime on Sparklyn"
+          sublabel="Lifetime on Skola"
           accent="emerald"
         />
       </div>
@@ -120,7 +120,7 @@ export default async function DashboardOverview() {
             <p className="text-sm text-muted-foreground">
               {personalized
                 ? "Picked from what you've bought."
-                : "Trending across Sparklyn to get you started."}
+                : "Trending across Skola to get you started."}
             </p>
           </div>
           <Link

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "What Sparklyn offers Nigerian students — vetted research projects, past questions, seminar papers, journals, business plans and an AI study assistant.",
+    "What Skola offers Nigerian students — vetted research projects, past questions, seminar papers, journals, business plans and an AI study assistant.",
 };
 
 const services = [
@@ -46,7 +46,7 @@ const services = [
   {
     icon: SealCheck,
     title: "Vetted for quality",
-    body: "Every resource in the catalogue is reviewed and curated by the Sparklyn team before it goes live — so you can trust what you download.",
+    body: "Every resource in the catalogue is reviewed and curated by the Skola team before it goes live — so you can trust what you download.",
   },
 ];
 

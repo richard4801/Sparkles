@@ -90,7 +90,7 @@ export function AssistantChat() {
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Ask about a topic, course or project and I&apos;ll find the most relevant
-              resources in the Sparklyn catalog.
+              resources in the Skola catalog.
             </p>
             <div className="mt-6 grid w-full gap-2 sm:grid-cols-2">
               {SUGGESTIONS.map((s) => (

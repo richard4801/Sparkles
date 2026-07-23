@@ -12,13 +12,13 @@ const montserrat = localFont({
   weight: "100 900",
 });
 
-const siteUrl = "https://sparklyn.ng";
+const siteUrl = "https://skola.edu.ng";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Sparklyn - Nigeria's academic resource marketplace",
-    template: "%s | Sparklyn",
+    default: "Skola - Nigeria's academic resource marketplace",
+    template: "%s | Skola",
   },
   description:
     "Find research projects, past questions, journals and business plans from Nigerian universities. Preview, buy securely and download in seconds.",
@@ -31,20 +31,20 @@ export const metadata: Metadata = {
     "business plans",
     "academic resources",
   ],
-  authors: [{ name: "Sparklyn" }],
+  authors: [{ name: "Skola" }],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: siteUrl,
-    siteName: "Sparklyn",
-    title: "Sparklyn - Nigeria's academic resource marketplace",
+    siteName: "Skola",
+    title: "Skola - Nigeria's academic resource marketplace",
     description:
       "Preview, buy and download vetted academic resources from Nigerian universities in seconds.",
     locale: "en_NG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sparklyn - Nigeria's academic resource marketplace",
+    title: "Skola - Nigeria's academic resource marketplace",
     description:
       "Preview, buy and download vetted academic resources from Nigerian universities in seconds.",
   },

@@ -3,7 +3,7 @@ import { PageHero, Prose } from "@/components/marketing/page-hero";
 
 export const metadata: Metadata = {
   title: "Refund policy",
-  description: "When and how you can get a refund on a Sparklyn purchase.",
+  description: "When and how you can get a refund on a Skola purchase.",
 };
 
 export default function RefundsPage() {

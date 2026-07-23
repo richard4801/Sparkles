@@ -3,7 +3,7 @@ import { getAllResources } from "@/db/queries";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** llms.txt — a machine-readable index of the Sparklyn catalog for AI agents.
+/** llms.txt — a machine-readable index of the Skola catalog for AI agents.
  *  See https://llmstxt.org. Regenerated from the live database on each request. */
 export async function GET() {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "https://sparkles-six.vercel.app";
@@ -13,10 +13,10 @@ export async function GET() {
   for (const r of resources) byType.set(r.type, (byType.get(r.type) ?? 0) + 1);
 
   const lines: string[] = [];
-  lines.push("# Sparklyn");
+  lines.push("# Skola");
   lines.push("");
   lines.push(
-    "> Sparklyn is a premium marketplace of educational resources for Nigerian university students — research projects, past questions, seminar papers, journals, business plans and feasibility studies.",
+    "> Skola is a premium marketplace of educational resources for Nigerian university students — research projects, past questions, seminar papers, journals, business plans and feasibility studies.",
   );
   lines.push("");
   lines.push("## Search API");

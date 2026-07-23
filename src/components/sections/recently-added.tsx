@@ -14,7 +14,7 @@ export async function RecentlyAdded() {
         <SectionHeading
           title={
             <span id="recent-heading" className="inline-flex items-center gap-2.5">
-              Fresh on Sparklyn
+              Fresh on Skola
             </span>
           }
           description="New material is vetted and published every day. Here is the latest."

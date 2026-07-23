@@ -5,11 +5,11 @@ import { ContactForm } from "@/components/marketing/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact us",
-  description: "Get in touch with the Sparklyn team — support, refunds, partnerships and more.",
+  description: "Get in touch with the Skola team — support, refunds, partnerships and more.",
 };
 
 const details = [
-  { icon: EnvelopeSimple, label: "Email", value: "hello@sparklyn.ng" },
+  { icon: EnvelopeSimple, label: "Email", value: "hello@skola.edu.ng" },
   { icon: MapPin, label: "Location", value: "Lagos, Nigeria" },
   { icon: Clock, label: "Response time", value: "Within 1 business day" },
 ];

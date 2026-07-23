@@ -3,7 +3,7 @@ import { PageHero, Prose } from "@/components/marketing/page-hero";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
-  description: "How Sparklyn collects, uses and protects your data.",
+  description: "How Skola collects, uses and protects your data.",
 };
 
 export default function PrivacyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <PageHero eyebrow="Legal" title="Privacy policy" />
       <Prose>
         <p>
-          This policy explains what data Sparklyn collects and how we use it. Last updated{" "}
+          This policy explains what data Skola collects and how we use it. Last updated{" "}
           {new Date().getFullYear()}.
         </p>
 

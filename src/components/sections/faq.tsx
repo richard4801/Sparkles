@@ -23,7 +23,7 @@ export function Faq() {
               Questions, answered
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              Everything you need to know about buying and downloading on Sparklyn.
+              Everything you need to know about buying and downloading on Skola.
             </p>
           </Reveal>
           <Reveal delay={0.1}>

@@ -24,7 +24,7 @@ function shortNameFrom(name: string) {
 
 /**
  * Seeds the catalogue only — categories, universities, resources and reviews.
- * No user accounts are created: Sparklyn is a first-party library, so real
+ * No user accounts are created: Skola is a first-party library, so real
  * users register through the app. To grant yourself admin, run:
  *   UPDATE users SET role = 'admin' WHERE email = 'you@example.com';
  */
